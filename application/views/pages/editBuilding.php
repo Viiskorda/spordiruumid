@@ -826,7 +826,7 @@ $( document ).ready(function() {
 		   $(this).val(value);
 		
 		if($('#allowUserBooking').is(":checked")){
-			console.log(value);
+		
 			$( "#showOrHide" ).show();
 		}else{
 			$( "#showOrHide" ).hide();
@@ -846,7 +846,7 @@ $( document ).ready(function() {
 
 
   $(".btn-delete").on("click", function() {
-	console.log($(this).data("id"));
+//	console.log($(this).data("id"));
 	var elementToDelete=$(this);
     $.ajax({
 	  url: "<?php echo base_url(); ?>building/deleteRoom",
@@ -976,7 +976,7 @@ function removemandatory(checkboxtoselect){
 	
 	$('#'+mainquestion).prop('checked', true);
 	if(thisbox.substring(0, 6)=='mandat'){
-		console.log(thisbox.substring(0, 6));
+	//	console.log(thisbox.substring(0, 6));
 		$('#'+otherboxtoselect).prop('checked', true);
 		$('#'+mandatorymainquestion).prop('checked', true);
 	}
