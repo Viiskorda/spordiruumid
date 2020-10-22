@@ -106,12 +106,12 @@
     font-size: 9px !important;
     font-weight: 300 !important;
     padding-top: 1px;
-    padding-bottom: 4px;
+    padding-bottom: 2px;
 }
 
 .fc-content div, .fc-time span {
     font-size: 13px;
-    line-height: 15px;
+    line-height: 14px;
     font-weight: 400;
 }
 
@@ -196,6 +196,28 @@
 .tooltip.bs-tooltip-top .arrow:before {
     border-top-color: #1A7AB7 !important;
 }
+
+
+
+
+.fc-time-grid-event.fc-short .fc-time span {
+    display: inline;
+}
+
+.fc-time-grid-event.fc-short .fc-time:before {
+    content: normal;
+}  
+
+.fc-time-grid-event.fc-short .fc-time:after {
+    content: normal;
+}
+
+
+
+
+
+
+
 
 /* .modal-backdrop {
     position: fixed;

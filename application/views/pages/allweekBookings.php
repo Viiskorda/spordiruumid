@@ -65,17 +65,16 @@ foreach($rooms as $value){
     var calendar1 = new FullCalendar.Calendar(calendar1El, {
 		//schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
 	resourceRender: function(info) {
-	
+	  console.log(info.resource._resource.extendedProps.description);
+		info.el.style.backgroundColor = info.resource.eventBackgroundColor;
         var roomTitle = document.createElement('span');
     //    roomTitle.setAttribute('class', 'btn btn-secondary');
-        roomTitle.setAttribute("data-toggle","tooltip");
-        roomTitle.setAttribute("data-placement","top");
-        roomTitle.setAttribute("title", info.resource._resource.extendedProps.description);
-				info.el.textContent=""
-        roomTitle.innerText =info.resource.title ;
+       	info.el.textContent="";
+        roomTitle.innerText =info.resource.title;
+				//roomTitle.innerText ='\n';
 //	<button type="button" class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Tooltip on top">  Tooltip on top</button>
         info.el.appendChild(roomTitle);
-
+				info.el.title=info.resource._resource.extendedProps.description;
         // var tooltip = new Tooltip(roomTitle, {
         //   title: info.resource.title + '!!!',
         //   placement: 'top',
@@ -109,6 +108,7 @@ foreach($rooms as $value){
 				eventTooltip.innerText=(info.el.innerText).substring(0, 13)+" "+(info.el.innerText).substring( 13);
 				info.el.textContent=""
 				info.el.prepend(eventTooltip);
+				info.el.title=info.el.innerText;
     // var tooltip = new Tooltip(info.el, {
     //   title: info.event.extendedProps.description,
     //   placement: 'top',

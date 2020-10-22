@@ -430,26 +430,37 @@
 		
 			eventRender: function(event, element) {
 			
-
+				var bookingDuration=diffMinutes($.fullCalendar.formatDate(event.start, 'YYYY-MM-DD HH:m:s'), $.fullCalendar.formatDate(event.end, 'YYYY-MM-DD HH:m:s'));
+				var spaceOrnextLine=' ';
 				if (!event.isMirror) {
 				var tooltipTitle=(event.title) ? '\n'+ event.title : '';
 				var tooltipDescription= (event.description) ?  '\n'+ event.description : '';
+
+				//järgmisel real element[0].title tähistab popupi
 				element[0].title = $.fullCalendar.formatDate(event.start, "HH:mm") + ' - '+ $.fullCalendar.formatDate(event.end, "HH:mm") +tooltipTitle+ tooltipDescription;
 		//	 $(element).tooltip({title: $.fullCalendar.formatDate(event.start, "HH:mm") + ' - '+ $.fullCalendar.formatDate(event.end, "HH:mm") +tooltipTitle+ tooltipDescription , container: "body",  trigger: 'hover'});  
 				}
 				if (event.description) {
-					element.find('.fc-time').append('<br /> <span style="padding-top:4px;font-weight:450;font-size:12px">' + event.description + "<br/>" + '</span>');
+					if(bookingDuration>60){
+						spaceOrnextLine='</br>'; // Päringu kirje broneeringu lahtris
+					}
+					element.find('.fc-time').append(spaceOrnextLine+'<span style="padding-top:4px;font-weight:450;font-size:12px">' + event.description + spaceOrnextLine + '</span>');
+
 				} 
 				if ((displayOrNot == 2 || displayOrNot == 3) && (event.typeID == 1 || event.typeID == 2)) {
 					if(event.takesPlace != 1){
-						element.find('.fc-time').before("<del><span class='timequery'>Päring: " + moment(event.created_at).format("DD.MM.YYYY HH:mm") + "</span></del>"); // Päringu kirje broneeringu lahtris
+						element.find('.fc-time').before("<del><div class='timequery'>Päring: " + moment(event.created_at).format("DD.MM.YYYY HH:mm") + "</div></del>"); // Päringu kirje broneeringu lahtris
 					}
 					else{
-					element.find('.fc-time').before("<span class='timequery'>Päring: " + moment(event.created_at).format("DD.MM.YYYY HH:mm") + "</span>"); // Päringu kirje broneeringu lahtris
+					element.find('.fc-time').before("<div class='timequery'>Päring: " + moment(event.created_at).format("DD.MM.YYYY HH:mm") + "</div>"); // Päringu kirje broneeringu lahtris
 				}
 				}
 				else{
-					element.find('.fc-time').before("<span class='timequery'></span>"); // Päringu kirje broneeringu lahtris
+					//see lisab paddingut juurde, kui slot on suurem kui 45 minutit - tavavaates
+					if(bookingDuration>45){
+						element.find('.fc-time').before("<span class='timequery'></span>"); 
+					}
+				
 				}
 				element.css('border-top', '1px solid #DDD');
 				element.css('border-right', '1px solid #DDD');
@@ -1581,6 +1592,14 @@
 		return false;
 	}
 		
+	function diffMinutes(start, end){
+	
+		var diff =(new Date(end).getTime() - new Date(start).getTime()) / 1000;
+		diff /= 60;
+		return Math.abs(Math.round(diff));
+
+	}
+
 
 	$('#allCalenderLink').click( function(e) { 
 		e.preventDefault();
