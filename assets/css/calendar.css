@@ -95,7 +95,7 @@
 }
 
 .fc-content {
-    display:flex;
+    /* display:flex; */
     flex-flow: column;
     text-align: left;
     margin-bottom: 8px;
@@ -111,7 +111,7 @@
 
 .fc-content div, .fc-time span {
     font-size: 13px;
-    line-height: 14px;
+    line-height: 15px;
     font-weight: 400;
 }
 

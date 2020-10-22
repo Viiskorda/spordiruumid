@@ -238,7 +238,18 @@
 
 											<p id="info" class="pt-3 txt-regular">Lisainfo</p>
 											<p id="comment" class="pb-4"></p>
-											<input type="text" class="d-none" name="comment" id="comment">
+											
+											<div class="d-flex justify-content-between">
+											<div class="form-group p-0 col-10">
+												<label for="exampleInputPassword1">Kommentaar</label>
+												<input type="text"  class="form-control timeComment" name="timeComment" id="timeComment">
+											</div>
+											<div class="form-check col-2">
+										
+											Näita	<label class="px-2"><input class="timeCommentShow" type="checkbox" name="timeCommentShow" id="" value=""><span></span></label> 
+                 
+											</div>
+											</div>
 
 										</div>
 									</div>
@@ -364,7 +375,7 @@
 
 		$("#selectAll").click(function() {
 			var c = this.checked;
-			$(':checkbox').prop('checked', c);
+			$(':checkbox.abc').prop('checked', c);
 			$('#countNr').text('Kõik ajad (' +$('.abc:checked').length + '/'+ $('#myTable tr:has(td)').length + ')');
 		});
 
@@ -429,12 +440,13 @@
 			selectHelper: true,
 		
 			eventRender: function(event, element) {
-			
+				
 				var bookingDuration=diffMinutes($.fullCalendar.formatDate(event.start, 'YYYY-MM-DD HH:m:s'), $.fullCalendar.formatDate(event.end, 'YYYY-MM-DD HH:m:s'));
 				var spaceOrnextLine=' ';
 				if (!event.isMirror) {
 				var tooltipTitle=(event.title) ? '\n'+ event.title : '';
 				var tooltipDescription= (event.description) ?  '\n'+ event.description : '';
+				var timeComment="";
 
 				//järgmisel real element[0].title tähistab popupi
 				element[0].title = $.fullCalendar.formatDate(event.start, "HH:mm") + ' - '+ $.fullCalendar.formatDate(event.end, "HH:mm") +tooltipTitle+ tooltipDescription;
@@ -444,21 +456,26 @@
 					if(bookingDuration>60){
 						spaceOrnextLine='</br>'; // Päringu kirje broneeringu lahtris
 					}
-					element.find('.fc-time').append(spaceOrnextLine+'<span style="padding-top:4px;font-weight:450;font-size:12px">' + event.description + spaceOrnextLine + '</span>');
+					element.find('.fc-time').append(spaceOrnextLine+'<span style="padding-top:4px;padding-right:1px;font-weight:450;font-size:12px">' + event.description + spaceOrnextLine + ' </span>');
 
 				} 
 				if ((displayOrNot == 2 || displayOrNot == 3) && (event.typeID == 1 || event.typeID == 2)) {
+					if(event.timeComment && event.showComment){
+						timeComment='<span class="d-inline"> &#128172; </span>';
+						}
 					if(event.takesPlace != 1){
-						element.find('.fc-time').before("<del><div class='timequery'>Päring: " + moment(event.created_at).format("DD.MM.YYYY HH:mm") + "</div></del>"); // Päringu kirje broneeringu lahtris
+						element.find('.fc-time').before(timeComment+"<del><div class='d-inline timequery'>Päring: " + moment(event.created_at).format("DD.MM.YYYY HH:mm") + "</div></del></br>"); // Päringu kirje broneeringu lahtris
 					}
 					else{
-					element.find('.fc-time').before("<div class='timequery'>Päring: " + moment(event.created_at).format("DD.MM.YYYY HH:mm") + "</div>"); // Päringu kirje broneeringu lahtris
+					element.find('.fc-time').before(timeComment+"<div class='d-inline timequery'>Päring: " + moment(event.created_at).format("DD.MM.YYYY HH:mm") + "</div></br>"); // Päringu kirje broneeringu lahtris
 				}
+				
+
 				}
 				else{
 					//see lisab paddingut juurde, kui slot on suurem kui 45 minutit - tavavaates
 					if(bookingDuration>45){
-						element.find('.fc-time').before("<span class='timequery'></span>"); 
+						element.find('.fc-time').before("<div class='timequery'></div>"); 
 					}
 				
 				}
@@ -591,7 +608,7 @@
 			var checkIfIsAfter8 = moment(event.start).subtract(3,'hour').toDate();
 			var checkIfIsBefore22 = moment(event.end).subtract(3,'hour').toDate();
 			var startDate = createDateTime("6:00", moment(event.start).toDate() );
-			var endDate = createDateTime("22:00", moment(event.start).toDate() );	
+			var endDate = createDateTime("23:00", moment(event.start).toDate() );	
 			var isBetween = startDate <= checkIfIsAfter8 && checkIfIsAfter8 <= endDate;
 			var isBetween2 = startDate <= checkIfIsBefore22 && checkIfIsBefore22 <= endDate;
 			
@@ -892,8 +909,19 @@
 				$("#contact #building").text(event.building);
 				$('#selectedroom').val(event.roomName);
 				$("#contact #selectedroom").text(event.roomName);
-				$('#comment').val(event.comment);
 				$("#contact #comment").text(event.comment);
+				$('.timeComment').val(event.timeComment);
+				$('.timeComment').attr("id",event.timeID);
+				$('.timeCommentShow').val(event.showComment);
+				$('.timeCommentShow').attr("id",event.timeID);
+				if(event.showComment==1){
+					$(".timeCommentShow").prop("checked", true);
+				} else{
+					$(".timeCommentShow").prop("checked", false);
+				}
+				
+				
+				
 				$('#editModal').modal();
 
 
@@ -1459,6 +1487,74 @@
 			} else {
 		
 			}
+		});
+
+		
+		$(".timeCommentShow").click(function() {
+			var $this = $(this);
+			var id = $this.attr("id");
+			var showComment=$this.val();
+			if(showComment==1){
+				$this.val(0)
+			}
+			if(showComment==0){
+				$this.val(1)
+			}
+			console.log(showComment);
+			
+			$.ajax({
+				url: "<?php echo base_url(); ?>fullcalendar/showComment",
+				type: "POST",
+				data: {
+					timeID: id,
+					showComment: $this.val()
+				},
+				success: function() {
+				
+				},
+				error: function(returnval) {
+					$(".message").text(returnval + " failure");
+					$(".message").fadeIn("slow");
+					$(".message").delay(2000).fadeOut(1000);
+				},
+				complete: function (data) {
+					
+					
+				}
+			});
+			setTimeout(function(){calendar.fullCalendar('refetchEvents'); }, 200);
+		
+		});
+		
+
+		$('.timeComment').on('change', function(){
+			var $this = $(this);
+			var id = $this.attr("id");
+			var commentText=$this.val();
+			console.log(commentText);
+			
+			$.ajax({
+				url: "<?php echo base_url(); ?>fullcalendar/updateComment",
+				type: "POST",
+				data: {
+					timeID: id,
+					comment: commentText
+				},
+				success: function() {
+				
+				},
+				error: function(returnval) {
+					$(".message").text(returnval + " failure");
+					$(".message").fadeIn("slow");
+					$(".message").delay(2000).fadeOut(1000);
+				},
+				complete: function (data) {
+					
+					
+				}
+			});
+			setTimeout(function(){calendar.fullCalendar('refetchEvents'); }, 200);
+	
 		});
 
 		$('#calendar').fullCalendar({

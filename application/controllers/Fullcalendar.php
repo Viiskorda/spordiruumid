@@ -53,6 +53,8 @@ class Fullcalendar extends CI_Controller {
 						'typeID'	=>	$row['typeID'],
 						'color'	=>	$row['bookingTimeColor'],
 						'hasChanged'	=>	$row['hasChanged'],
+						'timeComment'	=>	$row['timecomment'],
+						'showComment'	=>	$row['showcomment'],
 					);
 
 					
@@ -266,7 +268,39 @@ class Fullcalendar extends CI_Controller {
 	}
 
 
+	function showComment()
+	{
+		if($this->session->userdata('roleID')==='2' || $this->session->userdata('roleID')==='3'){
+				if($this->input->post('timeID'))
+				{
+					$data = array(
+						'showcomment'			=>	$this->input->post('showComment')
+						);
 
+					$this->fullcalendar_model->update_event($data, $this->input->post('timeID'));
+				
+					print_r($data);
+			}
+		}
+	}
+	function updateComment()
+	{
+		if($this->session->userdata('roleID')==='2' || $this->session->userdata('roleID')==='3'){
+				if($this->input->post('timeID'))
+				{
+					$data = array(
+						'timecomment'			=>	$this->input->post('comment')
+						);
+
+					$this->fullcalendar_model->update_event($data, $this->input->post('timeID'));
+				
+			}
+			
+		}
+	}
+
+
+	
 
 }
 
