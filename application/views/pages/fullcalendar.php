@@ -456,7 +456,7 @@
 					if(bookingDuration>60){
 						spaceOrnextLine='</br>'; // Päringu kirje broneeringu lahtris
 					}
-					element.find('.fc-time').append(spaceOrnextLine+'<span style="padding-top:4px;padding-right:1px;font-weight:450;font-size:12px">' + event.description + spaceOrnextLine + ' </span>');
+					element.find('.fc-time').append(spaceOrnextLine+'<span style="padding-top:4px;padding-right:1px;font-weight:450;font-size:12px">' + event.description + ' </span>');
 
 				} 
 				if ((displayOrNot == 2 || displayOrNot == 3) && (event.typeID == 1 || event.typeID == 2)) {
