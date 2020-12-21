@@ -145,28 +145,47 @@ if(!empty($conflictDates)){// print_r($conflictDates);
                             <div class="form-label-group px-md-5 mx-md-5" id="timestamp">
 							
                                 <div id="InputsWrapper" class="mb-3 p-md-0">
-                                    <div class="row d-flex align-items-center mb-3 justify-content-between">
+                                    <div class="row d-flex align-items-center justify-content-between">
 										<div class="col-sm-4 col-9 m-0 p-md-0">
 											<label class="col-md-5 m-0 p-md-0" for="datetime">Kuupäev</label>
-											<input class="datePicker col-11 form-control" id="datefield_1" data-toggle="datepicker" name="workoutDate[]" value="<?php  if(isset($data['workoutDate'])){ echo $data['workoutDate'][0];} else if(isset($_GET["startDate"])){echo $_GET["startDate"];}?>">
 										</div>
-                                        <a href="#" class="removeclass mt-3 col-3 col-sm-1 pl-md-1 pr-xl-5 pr-md-0"><span class="icon-cancel"></span></a>
-
+                                        <a class="removeclass mt-3 col-3 col-sm-1 pl-md-1 pr-xl-5 pr-md-0"><span class=""></span></a>
                                         <div class="col-4 col-sm-2">
 											<div>	
 												<label class="col-2 m-0 p-md-0" for="from1">Alates</label>
-												<input type="input" class="clock pl-2 form-control" name="timesStart[]" data-minimum="06:00" data-maximum="22:00" id="timestartfield_1" value="<?php if(isset($data['timesStart'][0])){ echo $data['timesStart'][0];}else{ echo $this->input->get('start') ? $this->input->get('start') : date('H:i'); };?>">
 											</div>
 										</div>
                                         <div class="col-4 col-sm-2">
 										<div>	
 											<label class="col-2 m-0 p-md-0" for="until1">Kuni</label>
-                                            <input type="input" class="clock pl-2 form-control" name="timeTo[]" data-minimum="06:00" data-maximum="22:00" id="timeendfield_1" value="<?php if(isset($data['timeTo'][0])){ echo $data['timeTo'][0];}else{  echo $this->input->get('end') ? $this->input->get('end') :  date("H:i", strtotime('+90 minutes')); }?>">
 										</div>
 										</div>
 										<div class="col-4 col-sm-3">
 										<div>	
 										<label class="col-2 m-0 p-md-0" for="color">Värv </label>
+										</div>
+										</div>
+									</div>
+
+
+									<div class="row d-flex align-items-center mb-3 justify-content-between">
+										<div class="col-sm-4 col-9 m-0 p-md-0">
+											<input class="datePicker col-11 form-control" id="datefield_1" data-toggle="datepicker" name="workoutDate[]" value="<?php  if(isset($data['workoutDate'])){ echo $data['workoutDate'][0];} else if(isset($_GET["startDate"])){echo $_GET["startDate"];}?>">
+										</div>
+                                        <a class="removeclass mt-3 col-3 col-sm-1 pl-md-1 pr-xl-5 pr-md-0"><span class="icon-cancel"></span></a>
+
+                                        <div class="col-4 col-sm-2">
+											<div>	
+												<input type="input" class="clock pl-2 form-control" name="timesStart[]" data-minimum="06:00" data-maximum="22:00" id="timestartfield_1" value="<?php if(isset($data['timesStart'][0])){ echo $data['timesStart'][0];}else{ echo $this->input->get('start') ? $this->input->get('start') : date('H:i'); };?>">
+											</div>
+										</div>
+                                        <div class="col-4 col-sm-2">
+										<div>	
+											<input type="input" class="clock pl-2 form-control" name="timeTo[]" data-minimum="06:00" data-maximum="22:00" id="timeendfield_1" value="<?php if(isset($data['timeTo'][0])){ echo $data['timeTo'][0];}else{  echo $this->input->get('end') ? $this->input->get('end') :  date("H:i", strtotime('+90 minutes')); }?>">
+										</div>
+										</div>
+										<div class="col-4 col-sm-3">
+										<div>	
 											<input type="color" class="form-control" name="color[]" value="<?php if(isset($data['color'][0])){ echo $data['color'][0];}else{  echo "#ffffff";}?>" list="presetColors">
 											<datalist id="presetColors">
 											<?php if(isset($bookingformdata['color1'])){
@@ -373,14 +392,35 @@ if(!empty($conflictDates)){// print_r($conflictDates);
                             </div>
                         </div>                        
                            
-                        <h4 class="mt-5 txt-xl px-md-5 mx-md-5 ml-3">Kuupäev ja kellaaeg</h4>
+                        <h4 class="mt-5 txt-xl px-md-5 mx-md-5 ml-3">Nädalapäev ja kellaaeg</h4>
                         <div class="mt-4 bg-grey py-2">
                             <div class="form-label-group px-md-5 mx-md-5"  id="InputsWrapper1">
                               
                                 <div id="dateContainer">
+								<div class="row d-flex align-items-center justify-content-between">
+										<div class="col-sm-4 col-9 m-0 p-md-0">
+										<label class="col-md-5 m-0 p-md-0" for="periodicWeekDay">Nädalapäev <?php if($this->session->flashdata('weekDayMissing')){  echo $this->session->flashdata('weekDayMissing');} ?></label>
+										</div>
+                                        <a class="removeclass1 mt-3 col-3 col-sm-1 pl-md-1 pr-xl-5 pr-md-0"><span class=""></span></a>
+                                        <div class="col-4 col-sm-2">
+											<div>	
+												<label class="col-2 m-0 p-md-0" for="from1">Alates</label>
+											</div>
+										</div>
+                                        <div class="col-4 col-sm-2">
+										<div>	
+											<label class="col-2 m-0 p-md-0" for="until1">Kuni</label>
+										</div>
+										</div>
+										<div class="col-4 col-sm-3">
+										<div>	
+										<label class="col-2 m-0 p-md-0" for="color">Värv </label>
+										</div>
+										</div>
+									</div>
 									<div class="row d-flex align-items-center mb-3 justify-content-between">
 										<div class="col-sm-4 col-9 m-0 p-md-0">
-											<label class="col-md-5 m-0 p-md-0" for="periodicWeekDay">Nädalapäev <?php if($this->session->flashdata('weekDayMissing')){  echo $this->session->flashdata('weekDayMissing');} ?></label>
+											
 										<input class="form-control col-11 arrow <?php if($this->session->flashdata('weekDayMissing')){ echo 'is-invalid'; }?>" id="periodicWeekDay" list="weekdays" name="weekday[]" required  value="<?php if(isset($data['weekday'])){ echo $data['weekday'][0];} else if (null!==($this->input->get('startDate'))){echo $weekdays[date('N', strtotime($this->input->get('startDate')))];} else {echo $weekdays[date('N', strtotime(date("d.m.Y")))]; ;}?>">
 										
 										
@@ -394,19 +434,19 @@ if(!empty($conflictDates)){// print_r($conflictDates);
 											<option data-value="7"<?php if(isset($data['weekday'][0])&&$data['weekday'][0]=="Pühapäev"): echo 'selected';endif; ?> value="Pühapäev"></option>       
 										</datalist>
 										</div>
-                                        <a href="#" class="removeclass col-3 mt-3 col-sm-1 pl-md-1 pr-xl-5 pr-md-0"><span class="icon-cancel"></span></a>
+                                        <a class="removeclass1 col-3 mt-3 col-sm-1 pl-md-1 pr-xl-5 pr-md-0"><span class="icon-cancel"></span></a>
 										
                                         <div class="col-4 col-sm-2">
-											<label class="col-2 m-0 p-md-0" for="from1">Alates</label>
+											
                                             <input type="text" class="clock pl-2 form-control" name="timesStart[]" data-minimum="06:00" data-maximum="22:00" id="from1" value="<?php if(isset($data['timesStart'][0])){ echo $data['timesStart'][0];}else{ echo $this->input->get('start') ? $this->input->get('start') : date('H:i'); };?>">
                                         </div>
 										
                                         <div class="col-4 col-sm-2">
-											<label class="col-2 m-0 p-md-0" for="until1">Kuni</label>
+											
                                             <input type="text" class="clock pl-2 form-control" name="timeTo[]" data-minimum="06:00" data-maximum="22:00" id="until1" value="<?php if(isset($data['timeTo'][0])){ echo $data['timeTo'][0];}else{  echo $this->input->get('end') ? $this->input->get('end') :  date("H:i", strtotime('+90 minutes')); }?>">
 										</div>   
 										<div class="col-4 col-sm-3">
-											<label class="col-2 m-0 p-md-0" for="color">Värv </label>
+											
 										<input type="color" class="form-control" name="color[]" value="<?php if(isset($data['color'][0])){ echo $data['color'][0];}else{  echo "#ffffff";}?>" list="presetColors">
 											<datalist id="presetColors">
 											<?php if(isset($bookingformdata['color1'])){
@@ -433,57 +473,57 @@ if(!empty($conflictDates)){// print_r($conflictDates);
 										</div>                                   
                                     </div>
                              
-                                <?php if(isset($data['weekday'])){ for ($i = 1; $i<count($data['weekday']); $i++) { ?>
-                                    
-									<div class="row d-flex align-items-center mb-3 justify-content-between">
+									<?php if(isset($data['weekday'])){ for ($i = 1; $i<count($data['weekday']); $i++) { ?>
+										
+										<div class="row d-flex align-items-center mb-3 justify-content-between">
 
-                                      <div class="col-sm-4 col-9 m-0 p-md-0">  <input class="form-control 	<?php if($this->session->flashdata('weekDayMissing')){ echo 'is-invalid';}?>  col-11 arrow" id="periodicWeekDay<?php echo $i;?>" list="weekdays<?php echo $i;?>" name="weekday[]" value="<?php if($data['weekday'][$i]): echo $data['weekday'][$i];endif; ?>">
-                                        <datalist id="weekdays<?php echo $i;?>">
-                                            <option data-value="1" <?php if($data['weekday'][$i]=="Esmaspäev"): echo 'selected';endif; ?> value="Esmaspäev"></option>
-                                            <option data-value="2" <?php if($data['weekday'][$i]=="Teisipäev"): echo 'selected';endif; ?> value="Teisipäev"></option>
-                                            <option data-value="3" <?php if($data['weekday'][$i]=="Kolmapäev"): echo 'selected';endif; ?> value="Kolmapäev"></option>
-                                            <option data-value="4" <?php if($data['weekday'][$i]=="Neljapäev"): echo 'selected';endif; ?> value="Neljapäev"></option>
-                                            <option data-value="5" <?php if($data['weekday'][$i]=="Reede"): echo 'selected';endif; ?> value="Reede"></option>
-                                            <option data-value="6" <?php if($data['weekday'][$i]=="Laupäev"): echo 'selected';endif; ?> value="Laupäev"></option>
-                                            <option data-value="7" <?php if($data['weekday'][$i]=="Pühapäev"): echo 'selected';endif; ?> value="Pühapäev"></option>       
-                                      </datalist>
-                                      </div>
-                                    <a href="#" class="removeclass1 col-3 mt-3 col-sm-1 pl-md-1 pr-xl-5 pr-md-0"><span class="icon-cancel"></span></a>
-                                    <div class="col-4 col-sm-2">
-                                        <input type="text" class="clock pl-2 form-control" name="timesStart[]" data-minimum="06:00" data-maximum="22:00" id="from<?php echo $i;?>" value="<?php if(isset($data['timesStart'][$i])){ echo $data['timesStart'][$i];}else{ echo $this->input->get('start') ? $this->input->get('start') : date('H:i'); };?>">
-                                    </div>
-                                    <div class="col-4 col-sm-2">
-                                        <input type="text" class="clock pl-2 form-control" name="timeTo[]" data-minimum="06:00" data-maximum="22:00" id="until<?php echo $i;?>" value="<?php if(isset($data['timeTo'][$i])){ echo $data['timeTo'][$i];}else{  echo $this->input->get('end') ? $this->input->get('end') :  date("H:i", strtotime('+90 minutes')); }?>">
+										<div class="col-sm-4 col-9 m-0 p-md-0">  <input class="form-control 	<?php if($this->session->flashdata('weekDayMissing')){ echo 'is-invalid';}?>  col-11 arrow" id="periodicWeekDay<?php echo $i;?>" list="weekdays<?php echo $i;?>" name="weekday[]" value="<?php if($data['weekday'][$i]): echo $data['weekday'][$i];endif; ?>">
+											<datalist id="weekdays<?php echo $i;?>">
+												<option data-value="1" <?php if($data['weekday'][$i]=="Esmaspäev"): echo 'selected';endif; ?> value="Esmaspäev"></option>
+												<option data-value="2" <?php if($data['weekday'][$i]=="Teisipäev"): echo 'selected';endif; ?> value="Teisipäev"></option>
+												<option data-value="3" <?php if($data['weekday'][$i]=="Kolmapäev"): echo 'selected';endif; ?> value="Kolmapäev"></option>
+												<option data-value="4" <?php if($data['weekday'][$i]=="Neljapäev"): echo 'selected';endif; ?> value="Neljapäev"></option>
+												<option data-value="5" <?php if($data['weekday'][$i]=="Reede"): echo 'selected';endif; ?> value="Reede"></option>
+												<option data-value="6" <?php if($data['weekday'][$i]=="Laupäev"): echo 'selected';endif; ?> value="Laupäev"></option>
+												<option data-value="7" <?php if($data['weekday'][$i]=="Pühapäev"): echo 'selected';endif; ?> value="Pühapäev"></option>       
+										</datalist>
+										</div>
+										<a class="removeclass1 col-3 mt-3 col-sm-1 pl-md-1 pr-xl-5 pr-md-0"><span class="icon-cancel"></span></a>
+										<div class="col-4 col-sm-2">
+											<input type="text" class="clock pl-2 form-control" name="timesStart[]" data-minimum="06:00" data-maximum="22:00" id="from<?php echo $i;?>" value="<?php if(isset($data['timesStart'][$i])){ echo $data['timesStart'][$i];}else{ echo $this->input->get('start') ? $this->input->get('start') : date('H:i'); };?>">
+										</div>
+										<div class="col-4 col-sm-2">
+											<input type="text" class="clock pl-2 form-control" name="timeTo[]" data-minimum="06:00" data-maximum="22:00" id="until<?php echo $i;?>" value="<?php if(isset($data['timeTo'][$i])){ echo $data['timeTo'][$i];}else{  echo $this->input->get('end') ? $this->input->get('end') :  date("H:i", strtotime('+90 minutes')); }?>">
+										</div>
+										<div class="col-4 col-sm-3">
+										<input type="color" class="form-control" name="color[]" value="<?php if(isset($data['color'][$i])){ echo $data['color'][$i];}else{  echo "#ffffff";}?>" list="presetColors">
+												<datalist id="presetColors">
+												<?php if(isset($bookingformdata['color1'])){
+													echo "<option>".$bookingformdata['color1']."</option>";
+													echo "<option>".$bookingformdata['color2']."</option>";
+													echo "<option>".$bookingformdata['color3']."</option>";
+													echo "<option>".$bookingformdata['color4']."</option>";
+													echo "<option>".$bookingformdata['color5']."</option>";
+													echo "<option>".$bookingformdata['color6']."</option>";
+													echo "<option>".$bookingformdata['color7']."</option>";
+													echo "<option>".$bookingformdata['color8']."</option>";
+												} else {
+												echo "<option>#ffffff</option>";
+												echo "<option>#ddffee</option>";
+												echo "<option>#cceeff</option>";
+												echo "<option>#ffccee</option>";
+												echo "<option>#ffffcc</option>";
+												echo "<option>#aaffaa</option>";
+												echo "<option>#eeffff</option>";
+												echo "<option>#f6e5ff</option>";
+												}
+													?>	
+												</datalist>
+											</div>
 									</div>
-									<div class="col-4 col-sm-3">
-									<input type="color" class="form-control" name="color[]" value="<?php if(isset($data['color'][$i])){ echo $data['color'][$i];}else{  echo "#ffffff";}?>" list="presetColors">
-											<datalist id="presetColors">
-											<?php if(isset($bookingformdata['color1'])){
-												echo "<option>".$bookingformdata['color1']."</option>";
-												echo "<option>".$bookingformdata['color2']."</option>";
-												echo "<option>".$bookingformdata['color3']."</option>";
-												echo "<option>".$bookingformdata['color4']."</option>";
-												echo "<option>".$bookingformdata['color5']."</option>";
-												echo "<option>".$bookingformdata['color6']."</option>";
-												echo "<option>".$bookingformdata['color7']."</option>";
-												echo "<option>".$bookingformdata['color8']."</option>";
-											} else {
-											echo "<option>#ffffff</option>";
-											echo "<option>#ddffee</option>";
-											echo "<option>#cceeff</option>";
-											echo "<option>#ffccee</option>";
-											echo "<option>#ffffcc</option>";
-											echo "<option>#aaffaa</option>";
-											echo "<option>#eeffff</option>";
-											echo "<option>#f6e5ff</option>";
-											}
-												?>	
-											</datalist>
-										</div>
-                                </div>
-                                
-										<?php 	} };?>
-										</div>
+									
+											<?php 	} };?>
+								</div>
                                 <div id="AddMoreFileId1" class="flex ">
                                     <a id="AddMoreFileBoxPeriod" class="btn btn-custom text-white text-center py-2 px-4 pluss ml-3 ml-md-0"><p class="m-0 px-0 txt-lg txt-strong text-center align-items-center">Lisa nädalapäev</p></a>
 								</div>
@@ -614,14 +654,28 @@ if(!empty($conflictDates)){// print_r($conflictDates);
                                 <input class="d-none" type="checkbox" name="approveNow" value="1" checked>
                             </div>
                         </div>
-
+						<h4 class="mt-5 txt-xl px-md-5 mx-md-5 ml-3">Nädalapäev ja kellaaeg</h4>
                         <div class="mt-4 bg-grey py-2">
                             <div class="form-label-group px-md-5 mx-md-5"  id="InputsWrapper2">
                       
 							<div id="closeContainer">
+								<div class="row d-flex align-items-center justify-content-between">
+									<div class="col-sm-5 col-9 m-0 p-md-0">
+									<label class="col-5 m-0 p-md-0" for="closedWeekDay">Nädalapäev <?php if($this->session->flashdata('weekDayMissing')){  echo $this->session->flashdata('weekDayMissing');} ?></label>
+										</div>
+										<a class="removeclass2 col-sm-1 col-3 pl-1 pr-xl-5"><span class=""></span></a>
+										<div class="col-6 col-sm-3">
+												<label class="col-2 m-0 pl-3" for="from2">Alates</label>
+											</div>
+											<div class="col-6 col-sm-3">
+												<label class="col-2 m-0 p-md-0" for="until2">Kuni</label>
+                                    	</div>
+										<div class="col-4 col-sm-3">
+										</div>
+									</div>
 								<div class="row d-flex align-items-center mb-3 justify-content-between">
 										<div class="col-sm-5 col-9 m-0 p-md-0">
-									<label class="col-5 m-0 p-md-0" for="closedWeekDay">Nädalapäev <?php if($this->session->flashdata('weekDayMissing')){  echo $this->session->flashdata('weekDayMissing');} ?></label>
+								
 									<input class="form-control col-11 arrow <?php if($this->session->flashdata('weekDayMissing')){ echo 'is-invalid'; }?>" id="closedWeekDay" list="weekdays" name="weekday[]" required  value="<?php if(isset($data['weekday'])){ echo $data['weekday'][0];}else if (null!==($this->input->get('startDate'))){echo $weekdays[date('N', strtotime($this->input->get('startDate')))];} else {echo $weekdays[date('N', strtotime(date("d.m.Y")))]; ;}?>">
 									<datalist id="weekdays">
 										<option data-value="1"<?php if(isset($data['weekday'][0])&&$data['weekday'][0]=="Esmaspäev"): echo 'selected';endif; ?> value="Esmaspäev"></option>
@@ -633,15 +687,15 @@ if(!empty($conflictDates)){// print_r($conflictDates);
                                                 <option data-value="7"<?php if(isset($data['weekday'][0])&&$data['weekday'][0]=="Pühapäev"): echo 'selected';endif; ?> value="Pühapäev"></option>       
                                             </datalist>
 										</div>
-											<a href="#" class="removeclass2 col-sm-1 col-3 pl-1 pr-xl-5"><span class="icon-cancel"></span></a>
+											<a class="removeclass2 col-sm-1 col-3 pl-1 pr-xl-5"><span class="icon-cancel"></span></a>
 											
 											<div class="col-6 col-sm-3">
-												<label class="col-2 m-0 pl-3" for="from2">Alates</label>
+											
 												<input type="text" class="clock pl-2 form-control" data-minimum="06:00" data-maximum="22:00" name="timesStart[]" id="from2" value="<?php if(isset($data['timesStart'][0])){ echo $data['timesStart'][0];}else{ echo "08:00"; };?>">
 											</div>
 											
 											<div class="col-6 col-sm-3">
-												<label class="col-2 m-0 p-md-0" for="until2">Kuni</label>
+											
                                             <input type="text" class="clock pl-2 form-control" data-minimum="06:00" data-maximum="22:00" name="timeTo[]" id="until2" value="<?php if(isset($data['timeTo'][0])){ echo $data['timeTo'][0];}else{ echo "22:00"; };?>">
 										</div>
 										<input type="color" class="d-none form-control" name="color[]" value="#ffffff"  list="presetColors">
@@ -686,7 +740,7 @@ if(!empty($conflictDates)){// print_r($conflictDates);
                                             <option data-value="7" <?php if($data['weekday'][$i]=="Pühapäev"): echo 'selected';endif; ?> value="Pühapäev"></option>       
                                       </datalist>
                                       </div>
-                                    <a href="#" class="removeclass2 col-sm-1 col-3 pl-1 pr-xl-5"><span class="icon-cancel"></span></a>
+                                    <a class="removeclass2 col-sm-1 col-3 pl-1 pr-xl-5"><span class="icon-cancel"></span></a>
                                     <div class="col-6 col-sm-3">
                                         <input type="text" class="clock pl-2 form-control" name="timesStart[]" data-minimum="06:00" data-maximum="22:00" id="from<?php echo $i;?>" value="<?php if(isset($data['timesStart'][$i])){ echo $data['timesStart'][$i];}else{ echo $this->input->get('start') ? $this->input->get('start') : date('H:i'); };?>">
                                         </div>
@@ -913,7 +967,7 @@ if(!empty($conflictDates)){// print_r($conflictDates);
 
         $("#timestamp").on("click", ".removeclass", function(e) { //user click on remove text
      
-            if (x > 1) {
+            if (x > 2) {
                 $(this).parent('div').remove(); //remove text box
                 x--; //decrement textbox
                 $("#AddMoreFileId").show();
@@ -936,7 +990,7 @@ if(!empty($conflictDates)){// print_r($conflictDates);
             if (y <= maxPeriod) {
                 FieldCount++; //text box added ncrement
                 //add input box
-                $('#dateContainer').append('<div class="row d-flex align-items-center mb-3 justify-content-between"><div class="col-sm-4 col-9 m-0 p-md-0"><input class="form-control col-11 arrow" id="periodicWeekDay' + FieldCount + '" list="weekdays" name="weekday[]"><datalist id="weekdays"><option data-value="1" value="Esmaspäev"></option><option data-value="2" value="Teisipäev"></option><option data-value="3" value="Kolmapäev"></option><option data-value="4" value="Neljapäev"></option><option data-value="5" value="Reede"></option><option data-value="6" value="Laupäev"></option><option data-value="7" value="Pühapäev"></option></datalist></div><a href="#" class="removeclass1 col-3 col-sm-1 pl-md-1 pr-xl-5 pr-md-0"><span class="icon-cancel"></span></a><div class="col-4 col-sm-2"><input type="text" class="clock pl-2 form-control" name="timesStart[]" data-minimum="06:00" data-maximum="22:00" id="from' + FieldCount + '" value="<?php if(isset($data['timesStart'][0])){ echo $data['timesStart'][0];}else{ echo $this->input->get('start') ? $this->input->get('start') : date('H:i'); };?>"></div><div class="col-4 col-sm-2"><input type="text" class="clock pl-2 form-control" name="timeTo[]" data-minimum="06:00" data-maximum="22:00" id="until' + FieldCount + '" value="<?php if(isset($data['timeTo'][0])){ echo $data['timeTo'][0];}else{  echo $this->input->get('end') ? $this->input->get('end') :  date("H:i", strtotime('+90 minutes')); }?>"></div>	<div class="col-4 col-sm-3"><input type="color" class="form-control" name="color[]" value="#ffffff"  list="presetColors"><datalist id="presetColors"><option>#ddffee</option><option>#cceeff</option><option>#ffccee</option><option>#ffffcc</option><option>#aaffaa</option><option>#eeffff</option><option>#f6e5ff</option>	</div></div>');
+                $('#dateContainer').append('<div class="row d-flex align-items-center mb-3 justify-content-between"><div class="col-sm-4 col-9 m-0 p-md-0"><input class="form-control col-11 arrow" id="periodicWeekDay' + FieldCount + '" list="weekdays" name="weekday[]"><datalist id="weekdays"><option data-value="1" value="Esmaspäev"></option><option data-value="2" value="Teisipäev"></option><option data-value="3" value="Kolmapäev"></option><option data-value="4" value="Neljapäev"></option><option data-value="5" value="Reede"></option><option data-value="6" value="Laupäev"></option><option data-value="7" value="Pühapäev"></option></datalist></div><a class="removeclass1 col-3 col-sm-1 pl-md-1 pr-xl-5 pr-md-0"><span class="icon-cancel"></span></a><div class="col-4 col-sm-2"><input type="text" class="clock pl-2 form-control" name="timesStart[]" data-minimum="06:00" data-maximum="22:00" id="from' + FieldCount + '" value="<?php if(isset($data['timesStart'][0])){ echo $data['timesStart'][0];}else{ echo $this->input->get('start') ? $this->input->get('start') : date('H:i'); };?>"></div><div class="col-4 col-sm-2"><input type="text" class="clock pl-2 form-control" name="timeTo[]" data-minimum="06:00" data-maximum="22:00" id="until' + FieldCount + '" value="<?php if(isset($data['timeTo'][0])){ echo $data['timeTo'][0];}else{  echo $this->input->get('end') ? $this->input->get('end') :  date("H:i", strtotime('+90 minutes')); }?>"></div>	<div class="col-4 col-sm-3"><input type="color" class="form-control" name="color[]" value="#ffffff"  list="presetColors"><datalist id="presetColors"><option>#ddffee</option><option>#cceeff</option><option>#ffccee</option><option>#ffffcc</option><option>#aaffaa</option><option>#eeffff</option><option>#f6e5ff</option>	</div></div>');
 
                 $('.clock').clockTimePicker({
                     duration: true,
@@ -966,7 +1020,7 @@ if(!empty($conflictDates)){// print_r($conflictDates);
         });
 
         $("#dateContainer").on("click", ".removeclass1", function(e) { //user click on remove text
-            if (y > 1) {
+            if (y > 2) {
                 $(this).parent('div').remove(); //remove text box
                 y--; 
                 $("#AddMoreFileId1").show();
@@ -989,7 +1043,7 @@ if(!empty($conflictDates)){// print_r($conflictDates);
             if (z <= maxClosed) {
                 FieldCount++; //text box added ncrement
                 //add input box
-				$('#closeContainer').append('<div class="row d-flex align-items-center mb-3 justify-content-between"><div class="col-sm-5 col-9 m-0 p-md-0"><input class="form-control col-11 arrow" id="closedWeekDay" list="weekdays" name="weekday[]"><datalist id="weekdays"><option data-value="1" value="Esmaspäev"></option><option data-value="2" value="Teisipäev"></option><option data-value="3" value="Kolmapäev"></option><option data-value="4" value="Neljapäev"></option><option data-value="5" value="Reede"></option><option data-value="6" value="Laupäev"></option><option data-value="7" value="Pühapäev"></option></datalist></div><a href="#" class="removeclass2 col-sm-1 col-3 pl-1 pr-xl-5"><span class="icon-cancel"></span></a><div class="col-6 col-sm-3"><input type="text" class="clock pl-2 form-control" name="timesStart[]" id="from' + FieldCount + '" value="08:00"></div><div class="col-6 col-sm-3"><input type="text" class="clock pl-2 form-control" name="timeTo[]" data-minimum="06:00" data-maximum="22:00" id="until' + FieldCount + '" value="22:00"></div></div>');
+				$('#closeContainer').append('<div class="row d-flex align-items-center mb-3 justify-content-between"><div class="col-sm-5 col-9 m-0 p-md-0"><input class="form-control col-11 arrow" id="closedWeekDay" list="weekdays" name="weekday[]"><datalist id="weekdays"><option data-value="1" value="Esmaspäev"></option><option data-value="2" value="Teisipäev"></option><option data-value="3" value="Kolmapäev"></option><option data-value="4" value="Neljapäev"></option><option data-value="5" value="Reede"></option><option data-value="6" value="Laupäev"></option><option data-value="7" value="Pühapäev"></option></datalist></div><a class="removeclass2 col-sm-1 col-3 pl-1 pr-xl-5"><span class="icon-cancel"></span></a><div class="col-6 col-sm-3"><input type="text" class="clock pl-2 form-control" name="timesStart[]" id="from' + FieldCount + '" value="08:00"></div><div class="col-6 col-sm-3"><input type="text" class="clock pl-2 form-control" name="timeTo[]" data-minimum="06:00" data-maximum="22:00" id="until' + FieldCount + '" value="22:00"></div></div>');
            
                 $('.clock').clockTimePicker({
                     duration: true,
@@ -1019,7 +1073,7 @@ if(!empty($conflictDates)){// print_r($conflictDates);
         });
 
         $('#closeContainer').on('click', '.removeclass2', function(e) { //user click on remove text
-            if (z > 1) {
+            if (z > 2) {
                 $(this).parent('div').remove(); //remove text box
                 z--; 
                 $("#AddMoreFileId2").show();
