@@ -16,7 +16,7 @@
 			}
 
 		function fetch_allbookings(){  
-			if (empty($this->session->userdata('roleID'))  || $this->session->userdata('roleID')==='4'  || $this->session->userdata('roleID')==='1'){
+			if (empty($this->session->userdata('roleID'))  || $this->session->userdata('roleID')==='4'  ){
 				$this->session->set_flashdata('errors', 'Sul ei ole õigusi');
 				redirect('');
 			}
@@ -70,7 +70,7 @@
 
 
 		public function index(){
-			if (empty($this->session->userdata('roleID'))  || $this->session->userdata('roleID')==='4'  || $this->session->userdata('roleID')==='1'){
+			if (empty($this->session->userdata('roleID'))  || $this->session->userdata('roleID')==='4' ){
 				$this->session->set_flashdata('errors', 'Sul ei ole õigusi');
 				redirect('');
 			}

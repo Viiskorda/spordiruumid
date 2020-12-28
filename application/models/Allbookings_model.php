@@ -49,7 +49,9 @@
 			 $this->db->join('rooms', 'bookingTimes.roomID = rooms.id' , 'left');
 			
 			 $this->db->join('buildings', 'rooms.buildingID = buildings.id' , 'left');
-			 $this->db->where('buildingID',  $this->session->userdata('building'));
+			 if($this->session->userdata('roleID')=='2' || $this->session->userdata('roleID')=='3'){
+				$this->db->where('buildingID',  $this->session->userdata('building'));
+			 }
 			 $this->db->from($this->table);
 			 if(isset($data["is_date_search"])){
 			

@@ -47,7 +47,7 @@
 					<th class="py-2 txt-strong text-darkblue" scope="col">Telefon</th>
 					<th class="py-2 txt-strong text-darkblue" scope="col">e-mail</th>
 					<th class="py-2 txt-strong text-darkblue" scope="col">Jäi ära</th>
-					<th class="py-2 txt-strong text-darkblue" scope="col">Muuda või kustuta</th>
+					<th class="py-2 txt-strong text-darkblue" scope="col"><?php echo ($this->session->userdata('roleID')==='1') ? 'Vaata' : 'Muuda või kustuta'; ?></th>
 					
 
                               
