@@ -78,7 +78,6 @@ Under the GPL license, you may use Scheduler and this project without charge. Yo
 											<?php } ?>
 													<?php endif; ?>
 											<?php if($this->session->userdata('roleID')==='1'):?>
-												<li class="nav-item"><a class="nav-link text-white py-0 pr-lg-5 pr-md-2 pr-sm-1 mr-lg-0 mr-md-0 mr-sm-0" href="<?php echo base_url(); ?>allbookings/"> <?php if($menu=='allbookings'){echo ' <strong><u>Broneeringud</u></strong>';} else {echo 'Broneeringud';} ?>  	<?php if(isset($unapprovedBookings)){ if($unapprovedBookings!=0){echo '<span class="badge badge-danger">'.$unapprovedBookings.'</span>';}}; ?></a></li>
 													<li class="nav-item"><a class="nav-link text-white py-0 pr-lg-5 pr-md-2 pr-sm-1 mr-lg-0 mr-md-0 mr-sm-0" href="<?php echo base_url(); ?>building/view/"><?php if($menu=='building'){echo ' <strong><u>Asutused</u></strong>';} else {echo 'Asutused';} ?></a></li>
 													<li class="nav-item"><a class="nav-link text-white py-0 pr-lg-5 pr-md-2 pr-sm-1 mr-lg-0 mr-md-0 mr-sm-0" href="<?php echo base_url(); ?>region/view/"><?php if($menu=='region'){echo ' <strong><u>Piirkonnad</u></strong>';} else {echo 'Piirkonnad';} ?> </a></li>
 											<?php endif; ?>
