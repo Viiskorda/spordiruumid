@@ -139,8 +139,20 @@
 											<td id="color" class="text-white txt-regular td-width-s p-1 pl-3">Värv</td>
 										</tr> <br/>
 										<!-- Genereerib automaatselt -->
+
+										
 									</tbody>
 								</table>
+								<?php if(!empty($allPostData['additionalBookingDate'])){ ?>
+								Uued lisatud ajad:
+								<table>
+								<tbody>
+								<tr id="x"> <td class="td-width-l"><b>K</b>,&nbsp;<?php echo $allPostData['additionalBookingDate'][0]; ?></td><td class="td-width-m">&nbsp;&nbsp;<?php echo $allPostData['additionalBookingtimeStart'][0]; ?>‑<?php echo $allPostData['additionalBookingtimeEnd'][0]; ?></td><td class="td-width-s pl-3"><input class="datePicker form-control p" id="time_x" data-toggle="datepicker" name="additionalBookingDate[0]" value="<?php echo $allPostData['additionalBookingDate'][0]; ?>" style="border: 1px solid rgb(158, 50, 83);"></td><td class="td-width-s pl-3"><input type="text" class="clock form-control" name="additionalBookingtimeStart[]" data-minimum="06:00" data-maximum="22:00" id="timestartfield28" value="<?php echo $allPostData['additionalBookingtimeStart'][0]; ?>" style="border: 1px solid rgb(158, 50, 83);"></td>  <td class="td-width-s pl-3"><input type="text" class="clock form-control" name="additionalBookingtimeEnd[]" data-minimum="06:00" data-maximum="22:00" id="timeendfield_28" value="<?php echo $allPostData['additionalBookingtimeEnd'][0]; ?>" style="border: 1px solid rgb(158, 50, 83);"></td><td class="pl-3"><input name="addcolor[]" type="color" class="form-control" value="<?php echo $allPostData['addcolor'][0]; ?>" list="presetColors"><datalist id="presetColors">	<option>#ffffff</option><option>#fbebff</option><option>#ffecd6</option><option>#d6ffc7</option><option>#ccffe2</option><option>#dbfbff</option><option>#d9d1ff</option><option>#fffedb</option>	</datalist></td></tr>
+						</tbody>
+							</table>
+								<?php print_r($allPostData); ?>
+								<?php } ?>
+
 								<!-- <div class="row d-flex col-5 p-0">
                             <a id="addTimes" class="btn btn-custom text-white text-center py-2 px-4 pluss"><p class="m-0 px-0 txt-lg text-center align-items-center">Lisa veel üks kuupäev</p></a>
                         </div> -->
@@ -395,18 +407,18 @@ foreach ($_POST['timesIdArray'] as $key => $value) {
 			//max input box allowed
 			FieldCount++;
 			//add input box
-			$('#myTable > tbody').append('<tr> <td class="td-width-l"></td><td class="td-width-m pl-3"><span class="removeclass col-1 pl-1 pr-5"><span class="icon-cancel"></span></span></td><td class="td-width-s pl-3"><input class="datePicker form-control p" id="date_' + FieldCount + '" data-toggle="datepicker" name="additionalBookingDate[]"  value="<?php echo date("d.m.Y");?>"></td><td class="td-width-s pl-3"><input type="text" class="clock form-control" name="additionalBookingtimeStart[]" data-minimum="06:00" data-maximum="22:00" id="timestartfield_' + FieldCount + '"value="<?php echo date("H:i"); ?>"></td>  <td class="td-width-s pl-3"><input type="text" class="clock form-control" name="additionalBookingtimeEnd[]" data-minimum="06:00" data-maximum="22:00" id="timeendfield_' + FieldCount + '"value="<?php echo date("H:i", strtotime('+90 minutes')); ?>"></td></tr>');
+			$('#myTable > tbody').append('<tr> <td class="td-width-l"></td><td class="td-width-m pl-3"><span class="removeclass col-1 pl-1 pr-5"><span class="icon-cancel"></span></span></td><td class="td-width-s pl-3"><input class="addTimes datePicker form-control p" id="date_' + FieldCount + '" data-toggle="datepicker" name="additionalBookingDate[]"  value="<?php echo date("d.m.Y");?>"></td><td class="td-width-s pl-3"><input type="text" class="addTimes clock form-control" name="additionalBookingtimeStart[]" data-minimum="06:00" data-maximum="22:00" id="timestartfield_' + FieldCount + '"value="<?php echo date("H:i", round( time() / (15 * 60)) * (15 * 60)); ?>"></td>  <td class="td-width-s pl-3"><input type="text" class="addTimes clock form-control" name="additionalBookingtimeEnd[]" data-minimum="06:00" data-maximum="22:00" id="timeendfield_' + FieldCount + '"value="<?php echo date("H:i", 5400+ round( time() / (15 * 60)) * (15 * 60)); ?>"></td><td class="pl-3"><input type="color" id="periodWorkoutColor" class="form-control" name="addcolor[]" value="#ffffff"  list="presetColors"></td></tr>');
 			var once = false;
 			$('.datePicker, .clock').focusin(function() {
 				if (once == false) {
-					$(".datePicker").datepicker({
+					$(".addTimes.datePicker").datepicker({
 						language: "et-EE",
 						autoHide: true,
 						date: new Date(),
 						autoPick: true
 					});
 
-					$('.clock').clockTimePicker({
+					$('.addTimes.clock').clockTimePicker({
 						duration: true,
 						durationNegative: true,
 						precision: 15,

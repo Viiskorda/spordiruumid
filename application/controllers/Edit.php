@@ -433,7 +433,7 @@ class Edit extends CI_Controller {
 					}
 			
 				
-			
+			//print_r($this->input->post());
 
 		if($this->input->post('additionalBookingDate')){
 		
@@ -453,27 +453,23 @@ class Edit extends CI_Controller {
 					'roomID' => $this->input->post('roomID'),
 					'startTime' => $start_date,
 					'endTime' => $end_date,
-					'bookingID' =>$this ->input->post('id'),
-					'bookingTimeColor' =>$this->input->post('color')[$t],
+					'bookingID' =>$this ->input->post('BookingID'),
+					'bookingTimeColor' =>$this->input->post('addcolor')[$t],
 				
 				);
 			
 				$this->edit_model->insert($addtimes[$t], $this->input->post('id'));
-			
 				
-			}else{
-
-				}
 			}
-
+			}
 		}	
-		else{
+	
 			if($RedirectToCalendar){
 				redirect('fullcalendar?roomId='.$this->input->post('roomID').'&date='. date('d.m.Y', strtotime($this->input->post('bookingtimesFrom')[0])));
 	
 			}
 		
-		}
+		
 	}
 
 	}else{
