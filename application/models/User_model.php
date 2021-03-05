@@ -35,14 +35,32 @@
 			return $this->db->update('users', $data);
 		}
 
-
-
 		public function getAllBuildings()
 		{
 			$this->db->select('name, id');  
 			$query = $this->db->get('buildings');
 			return $query->result_array();
 		}
+
+		public function getRoleName($roleID)
+		{
+			$this->db->select('role');  
+			$this->db->where('id', $roleID);
+			$query = $this->db->get('userroles');
+			return $query->row()->role;
+		}
+
+		// public function getAllBuildingsICanGiveAccessTo($user_id)
+		// {
+		// 	$this->db->distinct();
+		// 	$this->db->select('name, buildings.id');  
+		// 	$this->db->join('userrights', 'buildings.id=userrights.buildingID ' , 'left');
+		// 	$this->db->join('users', 'buildings.id = users.buildingID' , 'left');
+		// 	$this->db->where('userrights.userID',$user_id);
+		// 	$query = $this->db->get('buildings');
+		// 	return $query->result_array();
+		// }
+		
 
 		public function get_one_building_data($buildingID)
 		{
@@ -134,8 +152,9 @@
 
 		public function get_users($slug = FALSE){
 			if($slug === FALSE){
-				$this->db->order_by('roleID');
+				$this->db->order_by('users.roleID');
 				$this->db->order_by('users.userName');
+			//	$this->db->join('userrights', 'users.userID = userrights.userID' , 'left');
 				$this->db->join('buildings', 'users.buildingID = buildings.id' , 'left');
 				$this->db->join('userRoles', 'users.roleID = userRoles.id' , 'left');
 				$query = $this->db->get('users');
@@ -153,6 +172,13 @@
 		public function delete_user($id){
 			$this->db->where('userID', $id);
 			$this->db->delete('users');
+			return true;
+		}
+
+		public function delete_userrights($userID, $buildingID){
+			$this->db->where('userID', $userID);
+			$this->db->where('buildingID', $buildingID);
+			$this->db->delete('userrights');
 			return true;
 		}
 
@@ -266,7 +292,7 @@
 
 		function check_if_user_has_already_rights_in_building($userID){
 
-			$this->db->select('buildingID');  
+			$this->db->select('buildingID, userID, roleID');  
 			$this->db->where('userID',$userID);
 			$query = $this->db->get('users');
 			return $query->row_array();
@@ -292,6 +318,106 @@
 			);
 			$this->db->where('email',$email);
 			return $this->db->update('users', $data);
+		}
+
+		function getAllBuildingIdsWhereIAmAdmin($email){
+			$this->db->select('userrights.buildingID, name');  
+			$this->db->where('email',$email);
+			$this->db->join('userrights', 'users.userID = userrights.userID' , 'left');
+			$this->db->join('buildings', 'userrights.buildingID = buildings.id' , 'left');
+			$query = $this->db->get('users');
+			return $query->result_array();
+		}
+		
+		function getBuildingName($buildingID){
+			$this->db->select('name');  
+			$this->db->where('id', $buildingID);
+			$query = $this->db->get('buildings');
+			return $query->row_array();
+		}
+
+		function get_user_buildingids_and_roleids($email, $buildingID){
+			$this->db->select('userrights.buildingID, userrights.roleID');  
+			$this->db->where('email',$email);
+			$this->db->where('userrights.buildingID', $buildingID);
+			$this->db->join('userrights', 'users.userID = userrights.userID' , 'left');
+			$query = $this->db->get('users');
+			if(empty($query->result_array())){
+				return false;
+			} else {
+				return $query->result_array();
+			}
+		}
+		function this_user_has_rights($user_id){
+	
+			$this->db->where('userID', $user_id);
+			$query = $this->db->get('userrights');
+			if(empty($query->result_array())){
+				return false;
+			} else {
+				return $query->result_array();
+			}
+		}
+
+		function this_user_has_rights_and_get_building_names($user_id){
+			$this->db->select('role, name');  
+			$this->db->where('userID', $user_id);
+			$this->db->join('buildings', 'userrights.buildingID = buildings.id' , 'left');
+			$this->db->join('userRoles', 'userrights.roleID = userRoles.id' , 'left');
+			$query = $this->db->get('userrights');
+			if(empty($query->result_array())){
+				return false;
+			} else {
+				return $query->result_array();
+			}
+		}
+		
+		public function insert_old_rights($getOldRightsData, $roomID){
+
+			$data = array(
+				'userID' => $getOldRightsData['userID'],
+				'buildingID' => $getOldRightsData['buildingID'],
+				'roleID' => $getOldRightsData['roleID'],
+		       'default_room_id' => $roomID,
+			);
+
+			return $this->db->insert('userrights', $data);
+		}
+
+		public function insert_new_rights($userID, $buildingID, $roleID, $roomID){
+
+			$this->db->where('userID', $userID);
+			$this->db->where('buildingID', $buildingID);
+			$this->db->where('roleID', $roleID);
+			$this->db->where('default_room_id', $roomID);
+			$query = $this->db->get('userrights');
+			if(empty($query->result_array())){
+				$data = array(
+					'userID' => $userID,
+					'buildingID' => $buildingID,
+					'roleID' => $roleID,
+					'default_room_id' => $roomID,
+				);
+	
+				return $this->db->insert('userrights', $data);
+			} else {
+				return false;
+			}
+
+			
+		}
+
+		
+		public function get_room($buildingID){
+			$this->db->select('id');  
+			$this->db->where('buildingID', $buildingID);
+			$query = $this->db->get('rooms');
+			if(empty($query->result_array())){
+				return false;
+			} else {
+				return $query->row()->id;
+			}
+			
 		}
 
 	}

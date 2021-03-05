@@ -66,4 +66,11 @@
 	  
 			  return $query;
 		  }
+
+		  function getBuildingName($buildingID){
+			$this->db->select('name');  
+			$this->db->where('id', $buildingID);
+			$query = $this->db->get('buildings');
+			return $query->row_array();
+		}
     }

@@ -28,8 +28,24 @@
 				<td class="pl-3 p-1 text-darkblue border-bottom-light"><?php echo $singleUser['email']; ?></td>
                     <td class="p-1 text-darkblue border-bottom-light"><?php echo $singleUser['userName']; ?></td>
                     <td class="p-1 text-darkblue border-bottom-light"><?php echo $singleUser['userPhone']; ?></td>
-                    <td class="p-1 text-darkblue border-bottom-light"><?php echo $singleUser['name']; ?></td>
-					<td class="p-1 text-darkblue border-bottom-light"><?php echo $singleUser['role']; ?> &nbsp; &nbsp;</td>
+
+                    <td class="p-1 text-darkblue border-bottom-light"><?php if (!is_array($singleUser['buildingName'])){
+						echo $singleUser['buildingName'].'<br>';
+					} else {
+						foreach ($singleUser['buildingName'] as $role){
+							echo $role.'<br>'; }
+					} 
+					 ?></td>
+
+					<td class="p-1 text-darkblue border-bottom-light"><?php if (!is_array($singleUser['roleName'])){
+						echo $singleUser['roleName'].'<br>';
+					} else {
+						foreach ($singleUser['roleName'] as $role){
+							echo $role.'<br>'; }
+					} 
+					 ?> &nbsp; &nbsp;</td>
+					
+				
 					<td class="p-1 text-darkblue border-bottom-light"><?php echo $singleUser['last_login']; ?> &nbsp; &nbsp;</td>
                     <!-- <td class="p-1 text-darkblue border-bottom-light"><?php if( $singleUser['status']==1){ echo "Aktiivne";} else {echo "Mitteakviivne";} ?></td> -->
                     <td class="d-flex justify-content-end p-1 pr-3">

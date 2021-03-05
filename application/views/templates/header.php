@@ -49,6 +49,7 @@ Under the GPL license, you may use Scheduler and this project without charge. Yo
 </head>
 
 <body>
+<?php print_r($this->session->all_userdata()); ?>
 <!-- Navigation -->
     <header>
         <nav class="navbar navbar-expand-md p-0 nav-bg">
@@ -85,15 +86,29 @@ Under the GPL license, you may use Scheduler and this project without charge. Yo
 													<li class="nav-item"><a class="nav-link text-white py-0 pr-lg-5 pr-md-2 pr-sm-1 mr-lg-0 mr-md-0 mr-sm-0" href="<?php echo base_url(); ?>manageUsers"><?php if($menu=='users'){echo ' <strong><u>Kasutajad</u></strong>';} else {echo 'Kasutajad';} ?></a></li>
 											<?php endif; ?>
 											<?php if($this->session->userdata('roleID')==='2' || $this->session->userdata('roleID')==='3'):?>
-													<li class="nav-item"><a class="nav-link text-white py-0 pr-lg-5 pr-md-2 pr-sm-1 mr-lg-0 mr-md-0 mr-sm-0" href="<?php echo base_url(); ?>building/view/<?php  print_r($this->session->userdata['building']);  ?>"><?php if($menu=='building'){echo ' <strong><u>Asutuse sätted</u></strong>';} else {echo 'Asutuse sätted';} ?></a></li>
+													<li class="nav-item"><a class="nav-link text-white py-0 pr-lg-5 pr-md-2 pr-sm-1 mr-lg-0 mr-md-0 mr-sm-0" href="<?php echo base_url(); ?>building/view/<?php  print_r($this->session->userdata['building']);  ?>"><?php if($menu=='building'){echo ' <strong><u>'.$this->session->userdata['buildingName'].' sätted</u></strong>';} else {echo $this->session->userdata['buildingName'].' sätted';} ?></a></li>
 											<?php endif; ?>
 										
 									<?php ;}  if(!empty($this->session->userdata('userID'))){?>
 												<li class="nav-item"><a class="nav-link text-white py-0" href="<?php echo base_url(); ?>profile/edit/<?php echo $this->session->userdata('userID');?>"> <?php if($menu=='profile'){echo ' <strong><u>'.$this->session->userdata('userName').' profiil</u></strong>';} else {echo ''.$this->session->userdata('userName').' profiil';} ?>  	<?php if(isset($requestFromBuilding)){if($requestFromBuilding['requestFromBuilding']=='1'){echo '<span class="badge badge-danger">1</span>';}} ?></a></li>
 									<?php ;}?>
 
+
 									</ul>
-										
+										<?php if($this->session->userdata('session_id') && count($this->session->userdata('my_building_ids')) >1){ ?>
+										<div class="dropdown show mr-3">
+											<a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+											Vali asutus
+											</a>
+
+											<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+											<?php foreach($this->session->userdata('my_building_ids') as $building){ ?>
+												<a class="dropdown-item" href="<?php echo base_url(); ?>users/changeSessionData/<?php echo $building['buildingID']; ?>"><?php echo $building['name'] ?></a>
+
+												<?php } ?>
+											</div>
+										</div>
+									<?php } ?>										
                   <?php if($this->session->userdata('session_id')) : ?>
 										<ul class="nav navbar-nav navbar-right p-0">
 									
