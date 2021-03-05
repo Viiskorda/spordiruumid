@@ -304,7 +304,7 @@
 			if($this->user_model->check_email_exists($email)){
 				return true;
 			} else {
-				$this->session->set_flashdata('emailIsNotCorrect', 'That email is taken. Please choose a different one');
+				$this->session->set_flashdata('emailIsNotCorrect', 'See email on juba võetud. Palun vali muu email');
 				return false;
 			}
 		}
