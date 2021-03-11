@@ -46,7 +46,7 @@
 		{
 			$this->db->select('role');  
 			$this->db->where('id', $roleID);
-			$query = $this->db->get('userroles');
+			$query = $this->db->get('userRoles');
 			return $query->row()->role;
 		}
 

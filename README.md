@@ -317,6 +317,17 @@ CREATE TABLE `paymentandagreement` (
 	PRIMARY KEY (id)    
 );
 
+CREATE TABLE `userrights` (
+  `userrightsID` int(11) NOT NULL AUTO_INCREMENT,
+  `userID` int(11) NOT NULL,
+  `buildingID` int(11) NOT NULL,
+  `roleID` int(11) NOT NULL,
+  `default_room_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (userrightsID)    
+
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
 ```
 
 Head rakenduse kasutamist!
