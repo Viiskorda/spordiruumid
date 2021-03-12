@@ -147,7 +147,9 @@
 
 
 		public function insert_user_in_DB_and_give_rights($data){
-			return $this->db->insert('users', $data);
+			$this->db->insert('users', $data);
+			$insert_id = $this->db->insert_id();
+ 			return  $insert_id;
 		}
 
 		public function get_users($slug = FALSE){
@@ -337,9 +339,10 @@
 			return $query->row_array();
 		}
 
-		function get_user_buildingids_and_roleids($email, $buildingID){
+		function get_user_buildingids_and_roleids($email, $userID, $buildingID){
 			$this->db->select('userrights.buildingID, userrights.roleID');  
 			$this->db->where('email',$email);
+			$this->db->where('users.userID',$userID);
 			$this->db->where('userrights.buildingID', $buildingID);
 			$this->db->join('userrights', 'users.userID = userrights.userID' , 'left');
 			$query = $this->db->get('users');
