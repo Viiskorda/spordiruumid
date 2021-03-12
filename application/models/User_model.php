@@ -151,6 +151,7 @@
 		}
 
 		public function get_users($slug = FALSE){
+			$this->db->select('userID, roleID, buildingID, email, status, userName, userPhone, last_login, requestFromBuilding, regionID, name, phone, role');  
 			if($slug === FALSE){
 				$this->db->order_by('users.roleID');
 				$this->db->order_by('users.userName');
@@ -360,7 +361,7 @@
 		}
 
 		function this_user_has_rights_and_get_building_names($user_id){
-			$this->db->select('role, name');  
+			$this->db->select('role, name, buildingID');  
 			$this->db->where('userID', $user_id);
 			$this->db->join('buildings', 'userrights.buildingID = buildings.id' , 'left');
 			$this->db->join('userRoles', 'userrights.roleID = userRoles.id' , 'left');

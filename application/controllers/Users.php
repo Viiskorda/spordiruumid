@@ -20,11 +20,18 @@
 			
 			$data=$this->menu();
 			$data['manageUsers'] = $this->user_model->get_users();
+		//	print_r($data['manageUsers']);
 			for ($i=0; $i<count($data['manageUsers']); $i++){
-				if($data['manageUsers'][$i]['userID']==2 or $data['manageUsers'][$i]['userID']==3){
-					$userHasAlreadyAdditionalRights=$this->user_model->this_user_has_rights_and_get_building_names($data['manageUsers'][$i]['userID']);
+				$userHasAlreadyAdditionalRights=$this->user_model->this_user_has_rights_and_get_building_names($data['manageUsers'][$i]['userID']);
+				if($data['manageUsers'][$i]['roleID']==2 or $data['manageUsers'][$i]['roleID']==3){
+					$data['additionalRights'] = $userHasAlreadyAdditionalRights;
+					// echo "<pre>";
+					// print_r($data['manageUsers'][$i]['userID']);
+					// print_r($userHasAlreadyAdditionalRights);
+					// echo "</pre>";
 					$data['manageUsers'][$i]['buildingName']=array_column($userHasAlreadyAdditionalRights, 'name');
 					$data['manageUsers'][$i]['roleName']=array_column($userHasAlreadyAdditionalRights, 'role');
+					$data['manageUsers'][$i]['additionalBuilding']=array_column($userHasAlreadyAdditionalRights, 'buildingID');
 				
 				}else {
 					$data['manageUsers'][$i]['buildingName']=($this->user_model->getBuildingName($data['manageUsers'][$i]['buildingID'])) ? ($this->user_model->getBuildingName($data['manageUsers'][$i]['buildingID']))['name'] : '';
@@ -188,7 +195,7 @@
 					   
 						//kasutaja on juba olemas ja tal on olemas ka õigused, seega vaata, kas tal on olemas midagi userrights all
 						$userHasAlreadyAdditionalRights=$this->user_model->this_user_has_rights($emailIsInDB['userID']);
-						print_r($userHasAlreadyAdditionalRights);
+				//		print_r($userHasAlreadyAdditionalRights);
 
 						if(!in_array($buildingID, array_column($userHasAlreadyAdditionalRights, 'buildingID'))){
 							//kas kasutajal on juba sellele asutusele ligipääs olemas?
@@ -400,11 +407,12 @@
 		}
 
 
-		public function edit($slug){
+		public function edit($slug, $buildingID){
 			if ($this->session->userdata('roleID')==='1' || $this->session->userdata('roleID')==='2'){
 				$data=$this->menu();
 				$data['post'] = $this->user_model->get_users($slug);
 				$data['buildings'] = $this->user_model->getAllBuildings();
+				
 
 				if ($this->session->userdata('roleID')==='2'){
 					$data['buildings'] = $this->user_model->get_one_building_data($this->session->userdata('building'));
@@ -413,6 +421,16 @@
 						$this->session->set_flashdata('message', 'Sul ei ole õigusi muuta neid kasutajaid');
 						redirect('manageUsers');
 					}
+				} else if($this->session->userdata('roleID')==='1'){
+					$data['additionalRights'] = $this->user_model->this_user_has_rights_and_get_building_names($data['post']['userID']);
+					$data['post']['additionalBuilding']=array_column($data['additionalRights'], 'buildingID');
+				//	print_r(in_array($buildingID, $data['post']['additionalBuilding']));
+					if(in_array($buildingID, $data['post']['additionalBuilding'])){
+						$data['post']['buildingID']=$buildingID;
+					}
+					// $buildingID
+
+				//	print_r($data['additionalRights']);
 				}
 			
 				if(empty($data['post'])){
@@ -469,14 +487,16 @@
 				} 
 
 				// if user was already in one buildingID and we want to change roleID from 2 to 3 or 3 to 2, then requestFromBuilding has to be 0
-				$ifUserIsAlreadyInBuildingAndWeWantToChangeroleID2or3=$this->user_model->check_if_user_has_already_rights_in_building($userID);
+				$ifUserIsAlreadyInBuildingAndWeWantToChangeroleID2or3=$this->user_model->this_user_has_rights($userID);
 
-				if($ifUserIsAlreadyInBuildingAndWeWantToChangeroleID2or3['buildingID']==$buildingID){
-					$requestFromBuilding='0';
+				foreach($ifUserIsAlreadyInBuildingAndWeWantToChangeroleID2or3 as $rights){
+					if($rights['buildingID']==$buildingID){
+						$requestFromBuilding='0';
+					}
 				}
 			
 				$roleIDtoDB= $this->input->post('roleID');
-				$this->user_model->delete_userrights($userID, $this->input->post('buildingID'));
+			//	$this->user_model->delete_userrights($userID, $this->input->post('buildingID'));
 				//check if user has some other permissions
 				
 				if($roleIDtoDB==4){

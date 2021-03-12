@@ -3,7 +3,7 @@
        <div class="mb-2 pb-5">
 		<?php if( $this->session->userdata('roleID')==='1' || $this->session->userdata('roleID')==='2'):?>
 			<a class="btn btn-custom text-white text-center py-2 px-sm-2 px-lg-5 px-md-4 float-right pluss cursor-pointer" onclick="location.href='<?php echo base_url(); ?>users/addRightsToUser';">
-                <p class="m-0 txt-lg txt-strong text-center cursor-pointer">Lisa asutuse kasutaja</p>
+                <p class="m-0 txt-lg txt-strong text-center cursor-pointer">Lisa õigused või asutuse kasutaja</p>
             </a>
 		<?php endif; ?>
         </div>
@@ -20,6 +20,7 @@
 					<th class="py-2 txt-strong text-darkblue" scope="col">Viimane sisse logimine</th>
                     <!-- <th class="py-2 txt-strong text-darkblue" scope="col">Staatus</th> -->
                     <th class="py-2 txt-strong text-darkblue" scope="col"></th>
+					<th class="py-2 txt-strong text-darkblue" scope="col"></th>
                 </tr>
             </thead>
             <tbody class="">
@@ -43,20 +44,49 @@
 						foreach ($singleUser['roleName'] as $role){
 							echo $role.'<br>'; }
 					} 
-					 ?> &nbsp; &nbsp;</td>
+					 ?> </td>
 					
 				
-					<td class="p-1 text-darkblue border-bottom-light"><?php echo $singleUser['last_login']; ?> &nbsp; &nbsp;</td>
+					<td class="p-1 text-darkblue border-bottom-light"><?php echo $singleUser['last_login']; ?> </td>
+					<td class="p-1 text-darkblue border-bottom-light">
+					<?php if (empty($singleUser['additionalBuilding'])){  ?>
+						<form class="cat-delete" action="users/edit/<?php echo $singleUser['userID'].'/'. $singleUser['buildingID'] ?>" method="POST">
+						<button type="submit" class="btn btn-second btn-width-mg text-white text-center py-1 px-2 mb-1 txt-strong ">Halda õigusi</button>
+					</form>
+
+						<?php 	} else {
+						foreach ($singleUser['additionalBuilding'] as $buildingID){ ?>
+							<form class="cat-delete" action="users/edit/<?php echo $singleUser['userID'].'/'. $buildingID ?>" method="POST">
+							<button type="submit" class="btn btn-second btn-width-mg text-white text-center py-1 px-2 mb-1 txt-strong ">Halda õigusi</button>
+						</form>
+						<?php } ?>
+					<?php } ?>
+					</td>
                     <!-- <td class="p-1 text-darkblue border-bottom-light"><?php if( $singleUser['status']==1){ echo "Aktiivne";} else {echo "Mitteakviivne";} ?></td> -->
-                    <td class="d-flex justify-content-end p-1 pr-3">
-                        <form class="cat-delete" action="users/edit/<?php echo $singleUser['userID']; ?>" method="POST">
-                            <button type="submit" class="btn btn-second btn-width-mg text-white text-center py-1 px-2 txt-strong ">Halda õigusi</button>
-                        </form>
+					<td class="p-1 text-darkblue border-bottom-light">
+					
+
+                      
                         <?php if($this->session->userdata('roleID')==='1'):?>
-						<form class="cat-delete pl-1" action="users/delete" method="POST">
+
+							<?php if (empty($singleUser['additionalBuilding'])){  ?>
+								<form class="cat-delete pl-1" action="users/delete" method="POST">
 							<input type="hidden" name="userID" value="<?php echo $singleUser['userID']; ?>" />
-                            <input type="submit" value="Kustuta" class="btn btn-delete btn-width text-white text-center py-1 px-2 txt-strong " onclick="return confirm('Oled kindel kustutada kasutaja <?php echo $singleUser['userName']; ?>?')" />
+                            <input type="submit" value="Kustuta" class="btn btn-delete btn-width text-white text-center py-1 px-2 mb-1 txt-strong " onclick="return confirm('Oled kindel kustutada kasutaja <?php echo $singleUser['userName']; ?>?')" />
                         </form>
+
+						<?php 	} else {
+						foreach ($singleUser['additionalBuilding'] as $buildingID){ ?>
+									<form class="cat-delete pl-1" action="users/delete" method="POST">
+							<input type="hidden" name="userID" value="<?php echo $singleUser['userID']; ?>" />
+                            <input type="submit" value="Kustuta" class="btn btn-delete btn-width text-white text-center py-1 px-2 mb-1 txt-strong " onclick="return confirm('Oled kindel kustutada kasutaja <?php echo $singleUser['userName']; ?>?')" />
+                        </form>
+						<?php } ?>
+					<?php } ?>
+
+				
+
+
                         <?php endif;?>
                     </td>
                 </tr>                
@@ -89,11 +119,11 @@
 					<td class="p-1 text-darkblue border-bottom-light"><?php if($singleUser['requestFromBuilding']=='1'){echo '/Nimi ja telefon kuvatakse kui kasutaja on teie kutset aktsepteerinud/';}else {echo $singleUser['userName'];} ?></td>
                     <td class="p-1 text-darkblue border-bottom-light"><?php if($singleUser['requestFromBuilding']=='1'){echo '';}else {echo $singleUser['userPhone'];} ?></td>
                     <td class="p-1 text-darkblue border-bottom-light"><?php echo $singleUser['name']; ?></td>
-                    <td class="p-1 text-darkblue border-bottom-light"><?php echo $singleUser['role']; ?> &nbsp; &nbsp;</td>
+                    <td class="p-1 text-darkblue border-bottom-light"><?php echo $singleUser['role']; ?></td>
                     <!-- <td class="p-1 text-darkblue border-bottom-light"><?php if( $singleUser['status']==1){ echo "Aktiivne";} else {echo "Mitteakviivne";} ?></td> -->
                     <td class="d-flex justify-content-end p-1 pr-3">
 					<?php if($this->session->userdata('roleID')==='2'):?>
-                        <form class="cat-delete" action="users/edit/<?php echo $singleUser['userID']; ?>" method="POST">
+                       	<form class="cat-delete" action="users/edit/<?php echo $singleUser['userID'].'/'. $singleUser['buildingID'] ?>" method="POST">
                             <button type="submit" class="btn btn-second btn-width-mg text-white text-center py-1 px-2 txt-strong ">Halda õigusi</button>
 						</form>
 						<?php endif;?>
