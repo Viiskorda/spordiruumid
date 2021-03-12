@@ -23,7 +23,7 @@
 		//	print_r($data['manageUsers']);
 			for ($i=0; $i<count($data['manageUsers']); $i++){
 				$userHasAlreadyAdditionalRights=$this->user_model->this_user_has_rights_and_get_building_names($data['manageUsers'][$i]['userID']);
-				if($data['manageUsers'][$i]['roleID']==2 or $data['manageUsers'][$i]['roleID']==3){
+			
 					$data['additionalRights'] = $userHasAlreadyAdditionalRights;
 					// echo "<pre>";
 					// print_r($data['manageUsers'][$i]['userID']);
@@ -32,19 +32,15 @@
 					$data['manageUsers'][$i]['buildingName']=array_column($userHasAlreadyAdditionalRights, 'name');
 					$data['manageUsers'][$i]['roleName']=array_column($userHasAlreadyAdditionalRights, 'role');
 					$data['manageUsers'][$i]['additionalBuilding']=array_column($userHasAlreadyAdditionalRights, 'buildingID');
-				
-				}else {
-					$data['manageUsers'][$i]['buildingName']=($this->user_model->getBuildingName($data['manageUsers'][$i]['buildingID'])) ? ($this->user_model->getBuildingName($data['manageUsers'][$i]['buildingID']))['name'] : '';
-					$data['manageUsers'][$i]['roleName']=$this->user_model->getRoleName($data['manageUsers'][$i]['roleID']);
-				}
+
 			}
 			
 			
 			$data['buildings'] = $this->user_model->getAllBuildings();
 			$data['unapprovedBookings'] = $this->user_model->getUnapprovedBookings($this->session->userdata('building'));
-
 			//check if all users has all rights in db named userrights
 			foreach($data['manageUsers'] as $user){
+			
 					$userHasAlreadyAdditionalRights=$this->user_model->this_user_has_rights($user['userID']);
 					if(!$userHasAlreadyAdditionalRights){
 						//kirjuta õigused andmebaasi
@@ -52,6 +48,7 @@
 						$roomID1 = $this->user_model->get_room($getOldRightsData['buildingID']);
 						$this->user_model->insert_old_rights($getOldRightsData, $roomID1);
 					}
+			
 			
 			}
 			
@@ -143,7 +140,6 @@
 				$this->form_validation->set_rules('email', 'E-mail', 'trim|htmlspecialchars|valid_email');
 				$this->form_validation->set_rules('buildingID', 'Asutuse ID', 'integer|required');
 				$this->form_validation->set_rules('role', 'Roll', 'integer|required');
-				$this->form_validation->set_rules('status', 'Staatus', 'integer');
 			   
 			   if($this->form_validation->run() === FALSE ){
 				   $this->session->set_flashdata('errors', 'Sisetamisel läks midagi valesti. Palun proovi uuesti.');
@@ -178,7 +174,6 @@
 					'email' => $this->input->post('email'),
 					'buildingID' => $buildingID,
 					'roleID' => $role,
-				//	'status' => $this->input->post('status'),
 					'requestFromBuilding' => $requestFromBuilding,
 					); 
 					$roomID2 = $this->user_model->get_room($buildingID);
@@ -283,10 +278,10 @@
 				$getpasswordhash = $this->user_model->get_hash($email)['pw_hash'];
 			
 			
-				$validate = $this->user_model->validate($email);
+				$validate = $this->user_model->get_user_info($email);
 				//print_r(password_verify($password, $getpasswordhash));
 				if(password_verify($password, $getpasswordhash)=='1'){
-					$data  = $validate->row_array();
+					$data  = $validate;
 					$name  = $data['userName'];
 					$phone  = $data['userPhone'];
 
@@ -421,6 +416,10 @@
 				} else if($this->session->userdata('roleID')==='1'){
 					$data['additionalRights'] = $this->user_model->this_user_has_rights_and_get_building_names($data['post']['userID']);
 					$data['post']['additionalBuilding']=array_column($data['additionalRights'], 'buildingID');
+					//siia peab tulema uus roleID
+					print_r($this->user_model->get_user_where_id_and_buildingID($slug, $buildingID));
+					$data['post']['roleID']= ($this->user_model->get_user_where_id_and_buildingID($slug, $buildingID))['roleID'];
+
 				//	print_r(in_array($buildingID, $data['post']['additionalBuilding']));
 					if(in_array($buildingID, $data['post']['additionalBuilding'])){
 						$data['post']['buildingID']=$buildingID;
@@ -447,7 +446,10 @@
 			if ($this->session->userdata('roleID')==='1' || $this->session->userdata('roleID')==='2' ){
 
 				$buildingID=$this->input->post('buildingID');
-				$requestFromBuilding='1';
+				$oldbuildingID=$this->input->post('oldbuildingID');
+				$oldRoleID=$this->input->post('oldRoleID');
+				
+			//	$requestFromBuilding='1';
 				$userID=$this->input->post('id');
 
 				if($this->session->userdata('roleID')==='2'){
@@ -459,26 +461,31 @@
 					}
 				}
 
-				if($this->input->post('roleID')==='1' || $this->input->post('roleID')==='4' ){
-					$requestFromBuilding='0';
+				if($this->input->post('roleID')==='4' ){
+			//		$requestFromBuilding='0';
 					$buildingID='0';
+				}
+				if($this->input->post('roleID')==='1' && $this->input->post('buildingID')!='0'){
+					//		$requestFromBuilding='0';
+					$this->session->set_flashdata('errors', 'Linnavalitsuse administraatori määramiseks tuleb jätta asutus valimata');
+					redirect('users/edit/'.$userID.'/'.$this->input->post('buildingID'));
 				}
 
 				if( $buildingID=='0' && ($this->input->post('roleID')==='2' || $this->input->post('roleID')==='3') ){
 					$this->session->set_flashdata('role',$this->input->post('roleID'));
 					$this->session->set_flashdata('errors', 'Asutus valimata');
-					redirect('users/edit/'.$userID);
+			//		redirect('users/edit/'.$userID.'/'.$this->input->post('buildingID'));
 				}
+				$roomID2 = $this->user_model->get_room($buildingID);
 
 				$this->form_validation->set_rules('id', 'Asutuse ID', 'integer|required');
 				$this->form_validation->set_rules('roleID', 'Roll', 'integer|required');
-				$this->form_validation->set_rules('status', 'Staatus', 'integer');
 				$this->form_validation->set_rules('buildingID', 'Ruumi ID', 'integer|required');
 
 				if($this->form_validation->run() === FALSE){
 				
 					$this->session->set_flashdata('errors', 'Midagi läks valesti');
-					redirect('users/edit/'.$userID);
+					redirect('users/edit/'.$userID.'/'.$this->input->post('buildingID'));
 				} 
 
 				// if user was already in one buildingID and we want to change roleID from 2 to 3 or 3 to 2, then requestFromBuilding has to be 0
@@ -486,32 +493,77 @@
 
 				foreach($ifUserIsAlreadyInBuildingAndWeWantToChangeroleID2or3 as $rights){
 					if($rights['buildingID']==$buildingID){
-						$requestFromBuilding='0';
+					//	$requestFromBuilding='0';
 					}
 				}
 			
 				$roleIDtoDB= $this->input->post('roleID');
-			//	$this->user_model->delete_userrights($userID, $this->input->post('buildingID'));
+			//	
 				//check if user has some other permissions
 				
+				$userHasAdditionalRights=$this->user_model->this_user_has_rights($userID);
 				if($roleIDtoDB==4){
-					$userHasAdditionalRights=$this->user_model->this_user_has_rights($userID);
-					if($userHasAdditionalRights){
-						$roleIDtoDB=$userHasAdditionalRights[0]['roleID'];
-						$buildingID=$userHasAdditionalRights[0]['buildingID'];
+					if(in_array($this->input->post('buildingID'), array_column($userHasAdditionalRights, 'buildingID'))){
+						$this->user_model->delete_userrights($userID, $this->input->post('buildingID'));
 					}
+
+					$getUserData=$this->user_model->get_user_info_by_id($userID);
+					if($getUserData['buildingID']==$this->input->post('buildingID')){
+						$data = array(
+							'roleID' => $roleIDtoDB,
+							'buildingID' => 0
+						);
+						$this->user_model->update_user($data, $userID);
+					}
+				} else {
+
+					//delete old data
+					
+
+					//insert new data
+					$data = array(
+						'userID' => $userID,
+						'roleID' => $roleIDtoDB,
+						'buildingID' => $buildingID,
+						'default_room_id' => $roomID2
+					//	'requestFromBuilding' => $requestFromBuilding,
+					);
+
+					
+					if($buildingID==$oldbuildingID){
+						$this->session->set_flashdata('user_registered', 'Kasutaja õigused uuendatud');
+						$this->user_model->update_userrights($data, $userID, $buildingID, $roleIDtoDB);
+					}
+					else {
+						$this->user_model->delete_userrights($oldRoleID, $oldbuildingID);
+						$insertTODb=$this->user_model->insert_new_rights($userID, $buildingID, $roleIDtoDB, $roomID2);
+						if(!$insertTODb){
+							$this->session->set_flashdata('user_registered', 'Kasutajal on õigused juba olemas');
+						} else {
+							$this->session->set_flashdata('user_registered', 'Kasutajale õigused lisatud');
+						}
+					}
+				
+				
+
 				}
 			
-				$data = array(
-					'status' => $this->input->post('status'),
-					'roleID' => $roleIDtoDB,
-					'buildingID' => $buildingID,
-					'requestFromBuilding' => $requestFromBuilding,
-				);
+				echo '<pre>';
+				print_r($this->db->last_query());   
+				$getUserData=$this->user_model->get_user_info_by_id($userID);
+				echo '<br>';
+			//	print_r($getUserData);
+				echo '</pre>';
+				if($getUserData['buildingID']==$this->input->post('buildingID')){
+					$data = array(
+						'roleID' => $roleIDtoDB,
+						'buildingID' => $buildingID
+					);
+					$this->user_model->update_user($data, $userID);
+				}
 				
-				$this->user_model->update_user($data, $userID);
 				// Set message
-				$this->session->set_flashdata('post_updated', 'Uuendasid kasutajat');
+			//	$this->session->set_flashdata('post_updated', 'Uuendasid kasutajat');
 				redirect('manageUsers');
 			}
 			else{

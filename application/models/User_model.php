@@ -88,11 +88,18 @@
 			return $this->db->insert('users', $data);
 		}
 		// Log user in
-		function validate($email){
+		function get_user_info($email){
+			$this->db->select('userID, roleID, buildingID, email, status, userName, userPhone, last_login, requestFromBuilding');  
 			$this->db->where('email',$email);
-		//	$this->db->join('rooms', 'users.buildingID = rooms.buildingID' , 'left');
 			$result = $this->db->get('users',1);
-			return $result;
+			return $result->row_array();
+		  }
+
+		  function get_user_info_by_id($id){
+			$this->db->select('userID, roleID, buildingID, email, status, userName, userPhone, last_login, requestFromBuilding');  
+			$this->db->where('userID',$id);
+			$result = $this->db->get('users',1);
+			return $result->row_array();
 		  }
 
 		  function getRoomID($buildingID){
@@ -363,8 +370,20 @@
 			}
 		}
 
+		function get_user_where_id_and_buildingID($user_id, $buildingID){
+	
+			$this->db->where('userID', $user_id);
+			$this->db->where('userrights.buildingID', $buildingID);
+			$query = $this->db->get('userrights');
+			if(empty($query->result_array())){
+				return false;
+			} else {
+				return $query->row_array();
+			}
+		}
+
 		function this_user_has_rights_and_get_building_names($user_id){
-			$this->db->select('role, name, buildingID');  
+			$this->db->select('role, roleID, name, buildingID');  
 			$this->db->where('userID', $user_id);
 			$this->db->join('buildings', 'userrights.buildingID = buildings.id' , 'left');
 			$this->db->join('userRoles', 'userrights.roleID = userRoles.id' , 'left');
@@ -407,10 +426,15 @@
 			} else {
 				return false;
 			}
-
-			
 		}
 
+					
+		public function update_userrights($data, $userID, $buildingID){
+			// $slug = url_title($this->input->post('title'));
+			$this->db->where('buildingID',$buildingID);
+			$this->db->where('userID',$userID);
+			return $this->db->update('userrights', $data);
+		}
 		
 		public function get_room($buildingID){
 			$this->db->select('id');  

@@ -9,19 +9,10 @@
                	<input name="email" type="text"  class="form-control arrow" disabled value="<?php echo $post['email']; ?>">
                 </div>
 
-                <!-- <div class="col-12 my-4">
-                    <label for="status">Staatus</label>
-                    <select id="status" name="status" class="form-control arrow">
-                        <option value="1" <?php if ($post['status']==1) echo ' selected'?>>Aktiivne</option>
-                        <option value="0" <?php if ($post['status']==0) echo ' selected'?>>Mitteaktiivne</option>
-                    </select>
-                </div> -->
-			
-				
-				<div class="row">
+              	<div class="row">
                     <div class="col-12 col-md-6">
                         <label for="building">Asutus</label>
-                           
+						<input hidden name="oldbuildingID" type="int" value="<?php echo $post['buildingID']; ?>">
 						<?php if($this->session->userdata('roleID')==='2' && $post['roleID']!=1):?>
                                 <select id="buildingID" name="buildingID" class="form-control arrow">
 								<option value="<?php echo $post['buildingID'];?>" <?php if ($post['buildingID']!=0) echo ' selected'?>><?php echo $post['name']; ?></option>
@@ -46,8 +37,7 @@
                      <div class="col-12 col-md-6">
                         <label for="role">Roll</label>
                       
-                      
-                        <input type="text" class="d-none" name="role" id="role" value="<?php echo $post['roleID']; ?>">
+                        <input type="text" class="d-none" name="oldRoleID" id="role" value="<?php echo $post['roleID']; ?>">
                         
                        
 						<select id="roleID" name="roleID" class="form-control arrow">
