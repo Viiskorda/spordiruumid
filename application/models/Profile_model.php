@@ -73,4 +73,15 @@
 			$query = $this->db->get('buildings');
 			return $query->row_array();
 		}
+
+		function getAllBuildingIdsWhereIAmAdmin($userID){
+			$this->db->select('userrights.buildingID, name, userrights.roleID');  
+			$this->db->where('userrights.userID',$userID);
+			$this->db->join('userrights', 'users.userID = userrights.userID' , 'left');
+			$this->db->join('buildings', 'userrights.buildingID = buildings.id' , 'left');
+			$query = $this->db->get('users');
+			return $query->result_array();
+		}
+
+		
     }

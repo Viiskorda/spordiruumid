@@ -22,6 +22,14 @@
 			$data['manageUsers'] = $this->user_model->get_users();
 		//	print_r($data['manageUsers']);
 			for ($i=0; $i<count($data['manageUsers']); $i++){
+
+				$userHasAlreadyAdditionalRights=$this->user_model->this_user_has_rights($data['manageUsers'][$i]['userID']);
+				if(!$userHasAlreadyAdditionalRights){
+					//kirjuta õigused andmebaasi
+					$getOldRightsData=$this->user_model->check_if_user_has_already_rights_in_building($data['manageUsers'][$i]['userID']);
+					$roomID1 = $this->user_model->get_room($getOldRightsData['buildingID']);
+					$this->user_model->insert_old_rights($getOldRightsData, $roomID1);
+				}
 				$userHasAlreadyAdditionalRights=$this->user_model->this_user_has_rights_and_get_building_names($data['manageUsers'][$i]['userID']);
 			
 					$data['additionalRights'] = $userHasAlreadyAdditionalRights;
@@ -39,18 +47,6 @@
 			$data['buildings'] = $this->user_model->getAllBuildings();
 			$data['unapprovedBookings'] = $this->user_model->getUnapprovedBookings($this->session->userdata('building'));
 			//check if all users has all rights in db named userrights
-			foreach($data['manageUsers'] as $user){
-			
-					$userHasAlreadyAdditionalRights=$this->user_model->this_user_has_rights($user['userID']);
-					if(!$userHasAlreadyAdditionalRights){
-						//kirjuta õigused andmebaasi
-						$getOldRightsData=$this->user_model->check_if_user_has_already_rights_in_building($user['userID']);
-						$roomID1 = $this->user_model->get_room($getOldRightsData['buildingID']);
-						$this->user_model->insert_old_rights($getOldRightsData, $roomID1);
-					}
-			
-			
-			}
 			
 			$this->load->view('templates/header', $this->security->xss_clean($data));
 			$this->load->view('pages/manageUsers', $this->security->xss_clean($data));
@@ -391,7 +387,19 @@
 			// Only admins allowed to make changes
 			if ( $this->session->userdata('roleID')==='1'){
 				$id=$this->input->post('userID');
-				$this->user_model->delete_user($id);
+				$buildingID=$this->input->post('buildingID');
+				$this->user_model->delete_userrights($id, $buildingID);
+
+				$getUserData=$this->user_model->get_user_info_by_id($id);
+					if($getUserData['buildingID']==$this->input->post('buildingID')){
+					$data = array(
+						'roleID' => 4,
+						'buildingID' => 0
+					);
+					$this->user_model->update_user($data, $id);
+				}
+				
+				//$this->user_model->delete_user($id);
 			
 				$this->session->set_flashdata('user_deleted', 'Your user has been deleted');
 				redirect('manageUsers');
@@ -535,7 +543,7 @@
 						$this->user_model->update_userrights($data, $userID, $buildingID, $roleIDtoDB);
 					}
 					else {
-						$this->user_model->delete_userrights($oldRoleID, $oldbuildingID);
+						$this->user_model->delete_userrights($userID, $oldbuildingID);
 						$insertTODb=$this->user_model->insert_new_rights($userID, $buildingID, $roleIDtoDB, $roomID2);
 						if(!$insertTODb){
 							$this->session->set_flashdata('user_registered', 'Kasutajal on õigused juba olemas');

@@ -42,7 +42,10 @@ class Profile extends CI_Controller
             redirect('profile/edit/'.$this->session->userdata['userID']);
         }else{
 		$data=$this->menu();
+
         $data['editProfile'] = $this->profile_model->get_profile($slug);
+		$data['allMyRoles'] = $this->profile_model->getAllBuildingIdsWhereIAmAdmin($slug);
+
     //	var_dump($slug);
         $this->load->view('templates/header', $this->security->xss_clean($data));
         $this->load->view('pages/editProfile', $this->security->xss_clean($data));
@@ -91,10 +94,7 @@ class Profile extends CI_Controller
 		$this->session->set_flashdata('post_updated', 'Vastus salvestatud ning juurdepääs asutuse andmetele on tagatud.');
 		redirect('profile/view/'.$this->session->userdata['userID']);
 
-	
-
 	}
-
 
 
     public function updateProfile(){
@@ -102,37 +102,36 @@ class Profile extends CI_Controller
 
 		$this->form_validation->set_rules('name', 'Nimi', 'trim|htmlspecialchars|required|callback_clubname_check');
 		$this->form_validation->set_rules('phone', 'Telefon', 'trim|htmlspecialchars|callback_PhoneNumber_check');
+		$this->form_validation->set_rules('buildingID', 'Asutus/roll', 'trim|htmlspecialchars|required|is_numeric');
 	
-
 		if($this->form_validation->run() === FALSE ){
-		
 			$this->session->set_flashdata('key',$this->security->xss_clean($postData));
 			redirect('profile/edit/'.$this->session->userdata['userID']);
-
 		}
 
-		
-
-		//check if users password is set
-		
-
-        // Check login
-        // if(!$this->session->buildingdata('logged_in')){
-        // 	redirect('buildings/login');
-		// }
-
-		
+		$data['allMyRoles'] = $this->profile_model->getAllBuildingIdsWhereIAmAdmin($this->session->userdata['userID']);
+		$roleID=4;
+		$buildingID=$this->input->post('buildingID');
+		$array_key=array_search($buildingID, array_column($data['allMyRoles'], 'buildingID'));
+		if(!in_array($buildingID, array_column($data['allMyRoles'], 'buildingID'))){
+			$buildingID=0;
+		} else {
+			$roleID=$data['allMyRoles'][$array_key]['roleID'];
+		}
+	
 		if($this->input->post('passwordnow')=='' && $this->input->post('password')==''){
 			$data = array(
 				'userName' => $this->input->post('name'),
 				'userPhone' => $this->input->post('phone'),
+				'buildingID' => $buildingID,
+				'roleID' => $roleID,
 			);
 		} else {
 			
 			
 			$getpasswordhash = $this->profile_model->get_hash($this->session->userdata('email'));
-			print_r($getpasswordhash['pw_hash'] );
-			print_r(password_verify($this->input->post('passwordnow'), $getpasswordhash['pw_hash']));
+			// print_r($getpasswordhash['pw_hash'] );
+			// print_r(password_verify($this->input->post('passwordnow'), $getpasswordhash['pw_hash']));
 			if(password_verify($this->input->post('passwordnow'), $getpasswordhash['pw_hash'])=='1' || $this->session->userdata('oauth')){
 				$this->form_validation->set_rules('password', 'Parool', 'required|min_length[5]');
 				$this->form_validation->set_rules('password2', 'Parool uuesti', 'required|matches[password]');
@@ -149,6 +148,8 @@ class Profile extends CI_Controller
 					'userName' => $this->input->post('name'),
 					'userPhone' => $this->input->post('phone'),
 					'pw_hash' =>  password_hash($this->input->post('password'), PASSWORD_DEFAULT),
+					'buildingID' => $buildingID,
+					'roleID' => $roleID,
 					);
 			
 			} else {

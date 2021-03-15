@@ -71,6 +71,7 @@
 
 							<?php if (empty($singleUser['additionalBuilding'])){  ?>
 								<form class="cat-delete pl-1" action="users/delete" method="POST">
+								<input type="hidden" name="buildingID" value="<?php echo $singleUser['buildingID']; ?>" />
 							<input type="hidden" name="userID" value="<?php echo $singleUser['userID']; ?>" />
                             <input type="submit" value="Kustuta" class="btn btn-delete btn-width text-white text-center py-1 px-2 mb-1 txt-strong " onclick="return confirm('Oled kindel kustutada kasutaja <?php echo $singleUser['userName']; ?>?')" />
                         </form>
@@ -78,6 +79,7 @@
 						<?php 	} else {
 						foreach ($singleUser['additionalBuilding'] as $buildingID){ ?>
 									<form class="cat-delete pl-1" action="users/delete" method="POST">
+								<input type="hidden" name="buildingID" value="<?php echo  $buildingID; ?>" />
 							<input type="hidden" name="userID" value="<?php echo $singleUser['userID']; ?>" />
                             <input type="submit" value="Kustuta" class="btn btn-delete btn-width text-white text-center py-1 px-2 mb-1 txt-strong " onclick="return confirm('Oled kindel kustutada kasutaja <?php echo $singleUser['userName']; ?>?')" />
                         </form>

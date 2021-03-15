@@ -412,7 +412,7 @@
 			$this->db->where('userID', $userID);
 			$this->db->where('buildingID', $buildingID);
 			$this->db->where('roleID', $roleID);
-			$this->db->where('default_room_id', $roomID);
+		//	$this->db->where('default_room_id', $roomID);
 			$query = $this->db->get('userrights');
 			if(empty($query->result_array())){
 				$data = array(
