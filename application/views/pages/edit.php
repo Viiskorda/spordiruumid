@@ -421,7 +421,7 @@ foreach ($_POST['timesIdArray'] as $key => $value) {
 					$('.addTimes.clock').clockTimePicker({
 						duration: true,
 						durationNegative: true,
-						precision: 15,
+						precision: 5,
 						i18n: {
 							cancelButton: 'Võta tagasi'
 						},
@@ -627,7 +627,7 @@ foreach ($_POST['timesIdArray'] as $key => $value) {
 						$('.clock').clockTimePicker({
 							duration: true,
 							durationNegative: true,
-							precision: 15,
+							precision: 5,
 							i18n: {
 								cancelButton: 'Võta tagasi'
 							},

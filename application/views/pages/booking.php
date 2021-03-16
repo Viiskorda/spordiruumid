@@ -902,7 +902,7 @@ if(!empty($conflictDates)){// print_r($conflictDates);
         $('.clock').clockTimePicker({
             duration: true,
             durationNegative: true,
-            precision: 15,
+            precision: 5,
             i18n: {
                 cancelButton: 'Tühista'
             },
@@ -942,7 +942,7 @@ if(!empty($conflictDates)){// print_r($conflictDates);
                 $('.clock').clockTimePicker({
                     duration: true,
                     durationNegative: true,
-                    precision: 15,
+                    precision: 5,
                     i18n: {
                         cancelButton: 'Võta tagasi'
                     },
@@ -995,7 +995,7 @@ if(!empty($conflictDates)){// print_r($conflictDates);
                 $('.clock').clockTimePicker({
                     duration: true,
                     durationNegative: true,
-                    precision: 15,
+                    precision: 5,
                     i18n: {
                         cancelButton: 'Võta tagasi'
                     },
@@ -1048,7 +1048,7 @@ if(!empty($conflictDates)){// print_r($conflictDates);
                 $('.clock').clockTimePicker({
                     duration: true,
                     durationNegative: true,
-                    precision: 15,
+                    precision: 5,
                     i18n: {
                         cancelButton: 'Võta tagasi'
                     },
