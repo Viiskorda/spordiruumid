@@ -323,6 +323,7 @@ CREATE TABLE `userrights` (
   `buildingID` int(11) NOT NULL,
   `roleID` int(11) NOT NULL,
   `default_room_id` int(11) DEFAULT NULL,
+  `created_at` datetime DEFAULT current_timestamp(),
   PRIMARY KEY (userrightsID)    
 
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;

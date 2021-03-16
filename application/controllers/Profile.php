@@ -44,7 +44,7 @@ class Profile extends CI_Controller
 		$data=$this->menu();
 
         $data['editProfile'] = $this->profile_model->get_profile($slug);
-		$data['allMyRoles'] = $this->profile_model->getAllBuildingIdsWhereIAmAdmin($slug);
+		$data['allMyRoles'] = $this->session->userdata('my_building_ids');
 
     //	var_dump($slug);
         $this->load->view('templates/header', $this->security->xss_clean($data));
@@ -102,7 +102,7 @@ class Profile extends CI_Controller
 
 		$this->form_validation->set_rules('name', 'Nimi', 'trim|htmlspecialchars|required|callback_clubname_check');
 		$this->form_validation->set_rules('phone', 'Telefon', 'trim|htmlspecialchars|callback_PhoneNumber_check');
-		$this->form_validation->set_rules('buildingID', 'Asutus/roll', 'trim|htmlspecialchars|required|is_numeric');
+		$this->form_validation->set_rules('buildingID', 'Asutus/roll', 'trim|htmlspecialchars|required');
 	
 		if($this->form_validation->run() === FALSE ){
 			$this->session->set_flashdata('key',$this->security->xss_clean($postData));
@@ -111,14 +111,23 @@ class Profile extends CI_Controller
 
 		$data['allMyRoles'] = $this->profile_model->getAllBuildingIdsWhereIAmAdmin($this->session->userdata['userID']);
 		$roleID=4;
+
 		$buildingID=$this->input->post('buildingID');
 		$array_key=array_search($buildingID, array_column($data['allMyRoles'], 'buildingID'));
-		if(!in_array($buildingID, array_column($data['allMyRoles'], 'buildingID'))){
+		if($buildingID=='admin' && in_array(1, array_column($data['allMyRoles'], 'roleID'))){
+			$roleID=1;
 			$buildingID=0;
-		} else {
+		} else if(!in_array($buildingID, array_column($data['allMyRoles'], 'buildingID'))){
+			$buildingID=0;
+		} else if ($buildingID!=0) {
 			$roleID=$data['allMyRoles'][$array_key]['roleID'];
+			$this->session->set_flashdata('post_updated', 'test'. $roleID);
 		}
-	
+		// if($buildingID=='admin'){
+
+		// }
+		
+		
 		if($this->input->post('passwordnow')=='' && $this->input->post('password')==''){
 			$data = array(
 				'userName' => $this->input->post('name'),
@@ -164,7 +173,7 @@ class Profile extends CI_Controller
 		
 		$this->profile_model->update_profile($data);
         // Set message
-        $this->session->set_flashdata('post_updated', 'Uuendasid oma profiili');
+     //   $this->session->set_flashdata('post_updated', 'Uuendasid oma profiili');
         redirect('profile/edit/'.$this->session->userdata['userID']);
 	}
 	

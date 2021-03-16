@@ -24,23 +24,22 @@
 							<div class="form-label-group col-12 col-md-6 p-0 pl-0 pl-md-5  pr-5 pr-md-0">
 								<label>Sisse logimisel vaikimisi asutus/roll</label>
 								<select class="form-control" name="buildingID">
-									<option value="0">Tavakasutaja</option>
 									<?php foreach ($allMyRoles as $singleRole) { ?>
-										<option <?php if($value['buildingID']==$singleRole['buildingID']) {echo 'selected';} ?> value="<?php echo $singleRole['buildingID'] ?>"><?php echo $singleRole['name'] ? $singleRole['name'] : 'Linnavalitsuse administraator' ?></option>
+										<option <?php if($value['roleID']==1) {echo 'selected';} else if($value['buildingID']==$singleRole['buildingID'] && $value['roleID']!=1) {echo 'selected';} ?> value="<?php echo $singleRole['buildingID'] ?>"><?php echo $singleRole['name'] ? $singleRole['name'] : 'Määramata' ?></option>
 									<?php 	} ?>
 								</select>
 							</div>
 						<?php	}; ?>
 					</div>
 
-					<?php if ($value['roleID'] == '2' || $value['roleID'] == '3'  || $value['roleID'] == '1') : ?>
+					<?php if ($this->session->userdata['roleID'] == '2' || $this->session->userdata['roleID'] == '3'  || $this->session->userdata['roleID'] == '1') : ?>
 						<div class="row d-flex p-0 mt-4 px-5 mx-md-5">
 							<div class="form-label-group col-12 col-md-6 py-0 pl-0 pr-5">
-								<label>Roll*</label>
+								<label>Praegune roll*</label>
 								<select id="roleID" name="roleID" class="form-control arrow" disabled>
-									<option value="2" <?php if ($value['roleID'] == 1) echo ' selected' ?>>Linnavalitsuse administraator</option>
-									<option value="3" <?php if ($value['roleID'] == 2) echo ' selected' ?>>Peaadministraator</option>
-									<option value="4" <?php if ($value['roleID'] == 3) echo ' selected' ?>>Administraator</option>
+									<option value="2" <?php if ($this->session->userdata['roleID'] == 1) echo ' selected' ?>>Linnavalitsuse administraator</option>
+									<option value="3" <?php if ($this->session->userdata['roleID'] == 2) echo ' selected' ?>>Peaadministraator</option>
+									<option value="4" <?php if ($this->session->userdatae['roleID'] == 3) echo ' selected' ?>>Administraator</option>
 								</select>
 
 

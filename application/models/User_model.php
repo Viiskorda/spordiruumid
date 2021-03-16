@@ -333,6 +333,10 @@
 		function getAllBuildingIdsWhereIAmAdmin($email){
 			$this->db->select('userrights.buildingID, name');  
 			$this->db->where('email',$email);
+			$this->db->group_start();
+				$this->db->where('userrights.roleID !=' , '4');
+				$this->db->where('name !=' , '');
+			$this->db->group_end();
 			$this->db->join('userrights', 'users.userID = userrights.userID' , 'left');
 			$this->db->join('buildings', 'userrights.buildingID = buildings.id' , 'left');
 			$query = $this->db->get('users');
