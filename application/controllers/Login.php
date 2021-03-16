@@ -86,6 +86,16 @@ class Login extends CI_Controller{
 		$roleID = $data['roleID'];
 	//	$room = $data['id'];
 		}
+
+		$getAllBuildingIdsWhereIAmAdmin = $this->login_model->getAllBuildingIdsWhereIAmAdmin($email);
+		array_push($getAllBuildingIdsWhereIAmAdmin, [ "buildingID" => 0, "name" => 'Eraisik' ]);
+		
+		$userHasAlreadyAdditionalRights=$this->login_model->this_user_has_rights($userID);
+
+		if(in_array(1, array_column($userHasAlreadyAdditionalRights, 'roleID'))){
+			array_push($getAllBuildingIdsWhereIAmAdmin, [ "buildingID" => 'admin', "name" => 'Linnavalitsuse administraator' ]);
+		}
+
 		$sesdata = array(
 			'userName'  => $name,
 			'phone'  => $phone,
@@ -95,6 +105,7 @@ class Login extends CI_Controller{
 			'roleID'     => $roleID,
 			'session_id' => TRUE,
 			'oauth'  => true,
+			'my_building_ids' => $getAllBuildingIdsWhereIAmAdmin
 		);
 
 		if( $data['requestFromBuilding']=='0'){
@@ -208,6 +219,16 @@ class Login extends CI_Controller{
 		$roleID = $data['roleID'];
 	//	$room = $data['id'];
 		}
+
+		$getAllBuildingIdsWhereIAmAdmin = $this->login_model->getAllBuildingIdsWhereIAmAdmin($email);
+		array_push($getAllBuildingIdsWhereIAmAdmin, [ "buildingID" => 0, "name" => 'Eraisik' ]);
+		
+		$userHasAlreadyAdditionalRights=$this->login_model->this_user_has_rights($userID);
+
+		if(in_array(1, array_column($userHasAlreadyAdditionalRights, 'roleID'))){
+			array_push($getAllBuildingIdsWhereIAmAdmin, [ "buildingID" => 'admin', "name" => 'Linnavalitsuse administraator' ]);
+		}
+
 		$sesdata = array(
 			'userName'  => $name,
 			'phone'  => $phone,
@@ -217,6 +238,7 @@ class Login extends CI_Controller{
 			'roleID'     => $roleID,
 			'session_id' => TRUE,
 			'oauth'  => true,
+			'my_building_ids' => $getAllBuildingIdsWhereIAmAdmin
 		);
 
 		if( $data['requestFromBuilding']=='0'){
