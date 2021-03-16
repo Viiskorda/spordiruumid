@@ -115,13 +115,19 @@
             </thead>
             <tbody class="">
 			<?php foreach($manageUsers as $singleUser) : 
-				if($singleUser['buildingID']==$this->session->userdata('building')){?>
+				if(in_array($this->session->userdata('building'), $singleUser['additionalBuilding'])){
+					$index_to_show=array_search($this->session->userdata('building'), $singleUser['additionalBuilding']);
+					?>
                 <tr>
                     <td class="pl-3 p-1 text-darkblue border-bottom-light"><?php echo $singleUser['email']; ?></td>
 					<td class="p-1 text-darkblue border-bottom-light"><?php if($singleUser['requestFromBuilding']=='1'){echo '/Nimi ja telefon kuvatakse kui kasutaja on teie kutset aktsepteerinud/';}else {echo $singleUser['userName'];} ?></td>
                     <td class="p-1 text-darkblue border-bottom-light"><?php if($singleUser['requestFromBuilding']=='1'){echo '';}else {echo $singleUser['userPhone'];} ?></td>
-                    <td class="p-1 text-darkblue border-bottom-light"><?php echo $singleUser['name']; ?></td>
-                    <td class="p-1 text-darkblue border-bottom-light"><?php echo $singleUser['role']; ?></td>
+					<td class="p-1 text-darkblue border-bottom-light"><?php 
+							echo $singleUser['buildingName'][$index_to_show] .'<br>';  ?>
+							</td>
+					<td class="p-1 text-darkblue border-bottom-light"><?php 
+						echo $singleUser['roleName'][$index_to_show].'<br>'; ?> 
+							</td>
                     <!-- <td class="p-1 text-darkblue border-bottom-light"><?php if( $singleUser['status']==1){ echo "Aktiivne";} else {echo "Mitteakviivne";} ?></td> -->
                     <td class="d-flex justify-content-end p-1 pr-3">
 					<?php if($this->session->userdata('roleID')==='2'):?>

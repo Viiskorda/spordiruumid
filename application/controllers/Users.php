@@ -31,7 +31,7 @@
 					$this->user_model->insert_old_rights($getOldRightsData, $roomID1);
 				}
 				$userHasAlreadyAdditionalRights=$this->user_model->this_user_has_rights_and_get_building_names($data['manageUsers'][$i]['userID']);
-			
+	
 					$data['additionalRights'] = $userHasAlreadyAdditionalRights;
 					// echo "<pre>";
 					// print_r($data['manageUsers'][$i]['userID']);
@@ -40,6 +40,12 @@
 					$data['manageUsers'][$i]['buildingName']=array_column($userHasAlreadyAdditionalRights, 'name');
 					$data['manageUsers'][$i]['roleName']=array_column($userHasAlreadyAdditionalRights, 'role');
 					$data['manageUsers'][$i]['additionalBuilding']=array_column($userHasAlreadyAdditionalRights, 'buildingID');
+					
+					if ($this->session->userdata('roleID')==='2' || $this->session->userdata('roleID')==='3'){
+						if(!in_array($this->session->userdata('building'),array_column($userHasAlreadyAdditionalRights, 'buildingID'))){
+							$data['manageUsers'][$i]['buildingName']='';
+					};
+				}
 
 			}
 			
