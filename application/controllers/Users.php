@@ -252,7 +252,7 @@
 			
 			$this->form_validation->set_rules('email', 'E-mail', 'trim|htmlspecialchars|valid_email');
 			$this->form_validation->set_rules('password', 'Password', 'required');
-		//	$this->form_validation->set_rules('g-recaptcha-response','Captcha','callback_recaptcha');
+			$this->form_validation->set_rules('g-recaptcha-response','Captcha','callback_recaptcha');
             
 			$inputEmail= $this->input->post('email');
 			if($this->form_validation->run() === FALSE){

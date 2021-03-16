@@ -51,7 +51,7 @@ Under the GPL license, you may use Scheduler and this project without charge. Yo
 <body>
 <?php 
 // echo '<pre>';
-print_r($this->session->all_userdata());
+//print_r($this->session->all_userdata());
 // echo '</pre>';
  ?>
 <!-- Navigation -->
