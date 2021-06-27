@@ -49,8 +49,20 @@ class Edit_model extends CI_Model
 	function insert($insert_data, $id){
 		
 		$this->db->where('bookingID', $id);
-		$this->db->insert('bookingTimes', $insert_data);
-		return $this->db->insert_id();
+		$this->db->where($insert_data);
+		$q = $this->db->get('bookingTimes');
+
+		if ( $q->num_rows() > 0 ) 
+		{
+		   $this->db->where('user_id',$id);
+		   $this->db->update('bookingTimes',$insert_data);
+		   return $this->db->insert_id();
+		} else {
+			$this->db->where('bookingID', $id);
+			$this->db->insert('bookingTimes', $insert_data);
+			return $this->db->insert_id();
+		}
+		
 		}
 
 		public function get_room($insert_data){

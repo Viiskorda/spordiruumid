@@ -20,36 +20,36 @@ class Edit extends CI_Controller {
 		return $data;
 		}
 
-	// function insertAdditionalDateTime()
-	// {
+	function insertAdditionalDateTime()
+	{
 		
 		
-	// 	$formated_startTime = date("H:i:s", strtotime($this->input->post('begin')));
-	// 	$formated_endTime = date("H:i:s", strtotime($this->input->post('end')));
-	// 	$formated_date = date("Y-m-d", strtotime($this->input->post('workoutDate')));
+		$formated_startTime = date("H:i:s", strtotime($this->input->post('begin')));
+		$formated_endTime = date("H:i:s", strtotime($this->input->post('end')));
+		$formated_date = date("Y-m-d", strtotime($this->input->post('workoutDate')));
 
-	// 	$start_date = date('Y-m-d H:i:s', strtotime("$formated_date $formated_startTime"));
-	// 	$end_date = date('Y-m-d H:i:s', strtotime("$formated_date $formated_endTime"));
+		$start_date = date('Y-m-d H:i:s', strtotime("$formated_date $formated_startTime"));
+		$end_date = date('Y-m-d H:i:s', strtotime("$formated_date $formated_endTime"));
 
-	// 	$data = array(
-	// 		'roomID' => $this->input->post('roomID'),
-	// 		'startTime' => $start_date,
-	// 		'endTime' => $end_date,
-	// 		'bookingID' =>$this ->input->post('id'),
-	// 	);
-	// 	print_r($data);
+		$data = array(
+			'roomID' => $this->input->post('roomID'),
+			'startTime' => $start_date,
+			'endTime' => $end_date,
+			'bookingID' =>$this ->input->post('id'),
+		);
+		print_r($data);
 
-	// 	$this->edit_model->insert($data, $this->input->post('id'));
+		$this->edit_model->insert($data, $this->input->post('id'));
 
 
-	// 	$MyVariable=$_POST['timesIdArray'];
-	// 	$this->session->set_flashdata('timesIdArray', $MyVariable);
+		$MyVariable=$_POST['timesIdArray'];
+		$this->session->set_flashdata('timesIdArray', $MyVariable);
 
-	// 	$this->session->set_userdata('referred_from', current_url());
-	// 	$referred_from = $this->session->userdata('referred_from');
-	// //	redirect($referred_from, 'refresh');
+		$this->session->set_userdata('referred_from', current_url());
+		$referred_from = $this->session->userdata('referred_from');
+		redirect($referred_from, 'refresh');
 	
-	// 		}
+			}
 	
 	
 
@@ -431,38 +431,48 @@ class Edit extends CI_Controller {
 					$RedirectToCalendar=false;
 					
 					}
-			
-				
-			//print_r($this->input->post());
 
-		if($this->input->post('additionalBookingDate')){
-		
-			$addtimes = array();
-			for($t = 0; $t <= count($this->input->post('additionalBookingDate')); $t++) {
-			
 
-				if(isset($this->input->post('additionalBookingDate')[$t])){
-				$formated_startTime = date("H:i:s", strtotime($this->input->post('additionalBookingtimeStart')[$t]));
-				$formated_endTime = date("H:i:s", strtotime($this->input->post('additionalBookingtimeEnd')[$t]));
-				$formated_date = date("Y-m-d", strtotime($this->input->post('additionalBookingDate')[$t]));
-		
-				$start_date = date('Y-m-d H:i:s', strtotime("$formated_date $formated_startTime"));
-				$end_date = date('Y-m-d H:i:s', strtotime("$formated_date $formated_endTime"));
-		
-				$addtimes[] = array(
-					'roomID' => $this->input->post('roomID'),
-					'startTime' => $start_date,
-					'endTime' => $end_date,
-					'bookingID' =>$this ->input->post('BookingID'),
-					'bookingTimeColor' =>$this->input->post('addcolor')[$t],
-				
-				);
-			
-				$this->edit_model->insert($addtimes[$t], $this->input->post('id'));
-				
-			}
-			}
-		}	
+				//print_r($this->input->post());
+
+				if ($this->input->post('additionalBookingDate')) {
+
+					$addtimes = array();
+					for ($t = 0; $t <= count($this->input->post('additionalBookingDate')); $t++) {
+
+
+						if (isset($this->input->post('additionalBookingDate')[$t])) {
+							$formated_startTime = date("H:i:s", strtotime($this->input->post('additionalBookingtimeStart')[$t]));
+							$formated_endTime = date("H:i:s", strtotime($this->input->post('additionalBookingtimeEnd')[$t]));
+							$formated_date = date("Y-m-d", strtotime($this->input->post('additionalBookingDate')[$t]));
+
+							$start_date = date('Y-m-d H:i:s', strtotime("$formated_date $formated_startTime"));
+							$end_date = date('Y-m-d H:i:s', strtotime("$formated_date $formated_endTime"));
+
+							if (strtotime("$formated_date $formated_startTime") >= strtotime("$formated_date $formated_endTime")) {
+
+								$this->form_validation->set_message('validationErrorMessage', 'Kuupäevad ei ole õigesti sisestatud.');
+								$this->session->set_flashdata('validationErrorMessage', 'Lisaaja kellaaeg on valesti sisestatud');
+								$data = $this->index();
+
+								$RedirectToCalendar = false;
+								break;
+							} else {
+
+								$addtimes[] = array(
+									'roomID' => $this->input->post('roomID'),
+									'startTime' => $start_date,
+									'endTime' => $end_date,
+									'bookingID' => $this->input->post('BookingID'),
+									'bookingTimeColor' => $this->input->post('addcolor')[$t],
+
+								);
+
+								$this->edit_model->insert($addtimes[$t], $this->input->post('id'));
+							}
+						}
+					}
+				}	
 	
 			if($RedirectToCalendar){
 				redirect('fullcalendar?roomId='.$this->input->post('roomID').'&date='. date('d.m.Y', strtotime($this->input->post('bookingtimesFrom')[0])));

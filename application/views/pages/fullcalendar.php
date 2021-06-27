@@ -418,6 +418,7 @@
 			weekNumbers: true,
 			slotLabelFormat: 'H:mm',
 			timeFormat: 'H:mm',
+			snapDuration: '00:15:00',
 			slotDuration: '00:30:00',
 			minTime: '08:00:00',
 			maxTime: '22:00:00',

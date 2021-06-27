@@ -147,6 +147,14 @@
 								Uued lisatud ajad:
 								<table>
 								<tbody>
+								<tr class="bg-orange mb-5">
+											<td id="month" class="text-white txt-regular td-width-l p-1">Kuupäev</td>
+											<td id="blank" class="text-white txt-regular td-width-m p-1">Vahemik</td>
+											<td id="kp" class="text-white txt-regular td-width-s p-1 pl-3">Kuupäev</td>
+											<td id="alates" class="text-white txt-regular td-width-s p-1 pl-3">Alates</td>
+											<td id="kuni" class="text-white txt-regular td-width-s p-1 pl-3">Kuni</td>
+											<td id="color" class="text-white txt-regular td-width-s p-1 pl-3">Värv</td>
+										</tr>
 								<tr id="x"> <td class="td-width-l"><b>K</b>,&nbsp;<?php echo $allPostData['additionalBookingDate'][0]; ?></td><td class="td-width-m">&nbsp;&nbsp;<?php echo $allPostData['additionalBookingtimeStart'][0]; ?>‑<?php echo $allPostData['additionalBookingtimeEnd'][0]; ?></td><td class="td-width-s pl-3"><input class="datePicker form-control p" id="time_x" data-toggle="datepicker" name="additionalBookingDate[0]" value="<?php echo $allPostData['additionalBookingDate'][0]; ?>" style="border: 1px solid rgb(158, 50, 83);"></td><td class="td-width-s pl-3"><input type="text" class="clock form-control" name="additionalBookingtimeStart[]" data-minimum="06:00" data-maximum="22:00" id="timestartfield28" value="<?php echo $allPostData['additionalBookingtimeStart'][0]; ?>" style="border: 1px solid rgb(158, 50, 83);"></td>  <td class="td-width-s pl-3"><input type="text" class="clock form-control" name="additionalBookingtimeEnd[]" data-minimum="06:00" data-maximum="22:00" id="timeendfield_28" value="<?php echo $allPostData['additionalBookingtimeEnd'][0]; ?>" style="border: 1px solid rgb(158, 50, 83);"></td><td class="pl-3"><input name="addcolor[]" type="color" class="form-control" value="<?php echo $allPostData['addcolor'][0]; ?>" list="presetColors"><datalist id="presetColors">	<option>#ffffff</option><option>#fbebff</option><option>#ffecd6</option><option>#d6ffc7</option><option>#ccffe2</option><option>#dbfbff</option><option>#d9d1ff</option><option>#fffedb</option>	</datalist></td></tr>
 						</tbody>
 							</table>
