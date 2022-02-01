@@ -56,6 +56,91 @@ if(!empty($conflictDates)){// print_r($conflictDates);
             </div>
 
 
+<!-- Modal -->
+
+<!-- <div class="modal fade bd-example-modal-lg" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Kontaktisikud</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+	  <div class="form-check">
+Otsi: 
+<input class="form-input" type="text">
+</div><br>
+		<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Vali</th>
+      <th scope="col">Eesnimi</th>
+      <th scope="col">Perenimi</th>
+      <th scope="col">Telefon</th>
+	  <th scope="col">E-mail</th>
+      <th scope="col">Organisatsioon</th>
+      <th scope="col">Märkus</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+
+	  <td class="text-center">
+					<div class="form-check">
+						<input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+					</div>
+				</td>
+				<td>Peeter</td>
+				<td>Esimene</td>
+				<td>555555</td>
+				<td></td>
+				<td>Spordikool</td>
+				<td>-</td>
+
+    </tr>
+    <tr>
+ 
+	  <td class="text-center">
+					<div class="form-check">
+						<input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+					</div>
+				</td>
+				<td>Katrina</td>
+				<td>Laksakilaks</td>
+				<td>12345</td>
+				<td>laks@superlaks.ee</td>
+				<td>Laksaki</td>
+				<td>Laks laks</td>
+
+    </tr>
+    <tr>
+     
+	  <td class="text-center">
+					<div class="form-check">
+						<input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+					</div>
+				</td>
+				<td>Henri</td>
+				<td>Kaarel</td>
+				<td>5588552</td>
+				<td>h.k.@jask.ee</td>
+				<td></td>
+				<td>Märkus</td>
+
+    </tr>
+  </tbody>
+</table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Sulge</button>
+        <button type="button" class="btn btn-primary">Vali märgistatud</button>
+      </div>
+    </div>
+  </div>
+</div> -->
+
 			
             <div class="tab-content ">
                 <div id="mitmekordne" class="tab-pane center  <?php if(!isset($data['type'])){ echo 'active';}else if($data['type']==1){echo 'active';}; ?>">
@@ -73,6 +158,11 @@ if(!empty($conflictDates)){// print_r($conflictDates);
                             <div class="form-label-group col-12 col-md-6 p-md-0 pl-md-5">
                                 <label>Kontaktisik<?php if($bookingformdata['contactname_admin']==1){echo "*";} ?>	<?php if($this->session->flashdata('validationErrorMessageContactPerson')){  echo $this->session->flashdata('validationErrorMessageContactPerson');} ?> </label>
                                 <input class="form-control" id="contactForSingle" name="contactPerson" value="<?php if(isset($data['contactPerson'])){ echo $data['contactPerson'];} else if($this->session->userdata('roleID')!='2' && $this->session->userdata('roleID')!='3'){echo $this->session->userdata('userName');}; ?>">
+						<!-- Button trigger modal -->
+						<!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+						Otsi olemasolevaid
+						</button> -->
+
                             </div>
                         </div>
                         <div class="row d-flex mt-2 px-md-5 mx-md-5">
