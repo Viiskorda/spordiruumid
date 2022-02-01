@@ -76,6 +76,7 @@ class Fullcalendar extends CI_Controller {
 						'takesPlace'	=>	$row['takes_place'],
 						'approved'	=>	$row['approved'],
 						'typeID'	=>	$row['typeID'],
+						'color'	=>	$row['bookingTimeColor'],
 				
 					);
 				}

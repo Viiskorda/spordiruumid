@@ -661,7 +661,7 @@
 
 		//get buildingID that user can change
 		$getDataAboutUser=$this->user_model->get_user_buildingids_and_roleids($this->session->userdata('email'), $this->session->userdata('userID'), $buildingID);
-	
+		$this->load->library('user_agent');
 		//if buildingID match, then set in session buildingID and roleID
 		
 		if ($buildingID=='0'){
@@ -670,7 +670,7 @@
 			$this->session->set_userdata('room', '');
 			$this->session->set_userdata('buildingName','');
 			$this->session->set_flashdata('user_registered', 'Oled tavakasutaja rollis');
-			redirect('');
+			redirect($this->agent->referrer());
 		} else if($buildingID=='admin'){
 		
 			//check if user has admin rights
@@ -680,7 +680,8 @@
 				$this->session->set_userdata('room', '');
 				$this->session->set_userdata('buildingName','');
 				$this->session->set_flashdata('user_registered', 'Muutsid asutust');
-				redirect('');
+				
+				redirect($this->agent->referrer());
 			}
 		}
 		else if($getDataAboutUser){
@@ -690,7 +691,18 @@
 			$this->session->set_userdata('buildingName',$this->user_model->getBuildingName($getDataAboutUser[0]['buildingID'])['name']);
 
 			$this->session->set_flashdata('user_registered', 'Muutsid asutust');
-			redirect('');
+
+
+
+			$url = $this->agent->referrer();
+
+			if (strpos($url,'fullcalendar') == true) {
+				redirect('fullcalendar?roomId='.$this->session->userdata('room'));
+			} else {
+				redirect($this->agent->referrer());
+			}
+		//	redirect($this->agent->referrer());
+			//redirect($_SERVER['HTTP_REFERER']);
 		}
 		else {
 			//good try hijacking ninja
