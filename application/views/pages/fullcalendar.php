@@ -418,7 +418,7 @@
 			weekNumbers: true,
 			slotLabelFormat: 'H:mm',
 			timeFormat: 'H:mm',
-			snapDuration: '00:15:00',
+			snapDuration: '00:05:00',
 			slotDuration: '00:30:00',
 			minTime: '08:00:00',
 			maxTime: '22:00:00',
@@ -440,6 +440,15 @@
 			selectable:  (displayOrNot == 2 || displayOrNot == 3) ? true:false,
 			selectHelper: true,
 		
+			loading: function( isLoading, view ) {
+				if(isLoading) {// isLoading gives boolean value
+					//show your loader here 
+					$("body").css("cursor", "wait");	
+				} else {
+					//hide your loader here
+					$("body").css("cursor", "default");	
+				}
+     	   },
 			eventRender: function(event, element) {
 				
 				var bookingDuration=diffMinutes($.fullCalendar.formatDate(event.start, 'YYYY-MM-DD HH:m:s'), $.fullCalendar.formatDate(event.end, 'YYYY-MM-DD HH:m:s'));
@@ -461,14 +470,18 @@
 
 				} 
 				if ((displayOrNot == 2 || displayOrNot == 3) && (event.typeID == 1 || event.typeID == 2)) {
+					if(bookingDuration<50){
+						$(element).find('.fc-title').html('');
+						$(element).find('.fc-time').append(event.title);
+					}
 					if(event.timeComment && event.showComment){
 						timeComment='<span class="d-inline"> &#128172; </span>';
 						}
 					if(event.takesPlace != 1){
-						element.find('.fc-time').before(timeComment+"<del><div class='d-inline timequery'>Päring: " + moment(event.created_at).format("DD.MM.YYYY HH:mm") + "</div></del></br>"); // Päringu kirje broneeringu lahtris
+						element.find('.fc-time').before(timeComment+"<del><div class='d-inline timequery'>Päring: " + moment(event.created_at).format("DD.MM.YYYY HH:mm") + "</div></del>"); // Päringu kirje broneeringu lahtris
 					}
 					else{
-					element.find('.fc-time').before(timeComment+"<div class='d-inline timequery'>Päring: " + moment(event.created_at).format("DD.MM.YYYY HH:mm") + "</div></br>"); // Päringu kirje broneeringu lahtris
+					element.find('.fc-time').before(timeComment+"<div class='d-inline timequery'>Päring: " + moment(event.created_at).format("DD.MM.YYYY HH:mm") + "</div>"); // Päringu kirje broneeringu lahtris
 				}
 				
 
@@ -526,7 +539,7 @@
 					});
 				}
 				else if(event.hasChanged==1){
-					element.find('.fc-content').after('<span style="font-size:20px;">&#9432;</span>');
+					element.find('.fc-time').before('<span style="font-size:12px;"> &#9432; </span>');
 				}
 
 			},
@@ -557,6 +570,12 @@
 					})
 					calendar.fullCalendar('refetchEvents');
 					event.preventDefault();
+					}
+
+					//if ajax is still working then do not go further
+					if($.active){
+						setTimeout(function(){calendar.fullCalendar('refetchEvents'); }, 200);
+					return
 					}
 				
 				swal({
@@ -591,13 +610,13 @@
 						success:function()
 						{
 							
-							calendar.fullCalendar('refetchEvents');
+							setTimeout(function(){calendar.fullCalendar('refetchEvents'); }, 200);
 						
 						}
 					});
 				})
 						}
-						else{	calendar.fullCalendar('refetchEvents');}
+						else{	setTimeout(function(){calendar.fullCalendar('refetchEvents'); }, 200);}
 			
 				})
 				
@@ -617,12 +636,19 @@
 					swal({
 						icon: 'info',
 						title: "Trenn peab jääma vahemikku 06:00-22:00!",
+						buttons: "sulge"
 						
 					})
 					calendar.fullCalendar('refetchEvents');
 					return;
 					
 			}
+			
+			//if ajax is still working then do not go further
+			if($.active){
+					setTimeout(function(){calendar.fullCalendar('refetchEvents'); }, 200);
+					return
+				}
 			
 			var eClone = {
 					start: $.fullCalendar.formatDate(event.start, "Y-MM-DD HH:mm:ss"),
@@ -653,7 +679,7 @@
 						success:function()
 						{
 							//console.log( eClone);
-							calendar.fullCalendar('refetchEvents');
+							setTimeout(function(){calendar.fullCalendar('refetchEvents'); }, 200);
 							$.ajax({
 									url: "<?php echo base_url(); ?>fullcalendar/getUnapprovedBookings",
 									success: function(res) {
@@ -665,6 +691,7 @@
 					})
 					} else {
 						calendar.fullCalendar('refetchEvents');
+						return;
 					}
 					});
 			//	event.preventDefault();
@@ -705,7 +732,7 @@
 								success:function()
 								{
 									
-									calendar.fullCalendar('refetchEvents');
+									setTimeout(function(){calendar.fullCalendar('refetchEvents'); return;}, 200);
 									$.ajax({
 									url: "<?php echo base_url(); ?>fullcalendar/getUnapprovedBookings",
 									success: function(res) {
@@ -716,8 +743,10 @@
 							});
 						})
 								}
-						else{	calendar.fullCalendar('refetchEvents');}
-			
+						else{	
+							calendar.fullCalendar('refetchEvents');
+							return;}
+							
 				})
 
 
@@ -730,6 +759,11 @@
 		
 
 			eventClick: function(event) {
+					var callback = function () {
+					if ($.active !== 0) {
+						setTimeout(callback, '500');
+						return;
+					}
 				if (displayOrNot == 2 || displayOrNot == 3){
 				counter = 0;
 				var hasVersions=false;
@@ -816,6 +850,8 @@
 			
 				var id = event.bookingID;
 			
+					
+
 				var events = $('#calendar').fullCalendar('clientEvents');
 				$('tbody').attr('id', id);
 
@@ -825,7 +861,7 @@
 				var arrayOfIDs = [];
 				var arrayOfTitles = [];
 				var monthCheckbox = '';
-
+					
 				for (var i = 0; i < events.length; i++) {
 					var Bid = events[i].bookingID;
 			
@@ -843,7 +879,7 @@
 					
 				}
 			
-		
+				
 				for ( i = 0; i < eventToCheck.length; i++) {
 					
 				var approved = eventToCheck[i].approved;
@@ -933,6 +969,10 @@
 				});
 
 			}
+			//whatever you need to do here
+					//...
+				};
+				callback();
 			}
 
 
@@ -1492,6 +1532,7 @@
 
 		
 		$(".timeCommentShow").click(function() {
+		
 			var $this = $(this);
 			var id = $this.attr("id");
 			var showComment=$this.val();
@@ -1524,6 +1565,7 @@
 				}
 			});
 			setTimeout(function(){calendar.fullCalendar('refetchEvents'); }, 200);
+			
 		
 		});
 		
@@ -1550,7 +1592,6 @@
 					$(".message").delay(2000).fadeOut(1000);
 				},
 				complete: function (data) {
-					
 					
 				}
 			});

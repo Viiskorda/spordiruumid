@@ -19,8 +19,8 @@ Under the GPL license, you may use Scheduler and this project without charge. Yo
     <link href="<?php echo base_url(); ?>assets/css/datepicker.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.css" rel="stylesheet">
     <link href="<?php echo base_url(); ?>assets/css/bootstrap-clockpicker.min.css" type="text/css" rel="stylesheet">
-    <link href="<?php echo base_url(); ?>assets/css/style.css?v=1.1" rel="stylesheet">  
-    <link href="<?php echo base_url(); ?>assets/css/calendar.css" rel="stylesheet">
+    <link href="<?php echo base_url(); ?>assets/css/style.css?v=1.2" rel="stylesheet">  
+    <link href="<?php echo base_url(); ?>assets/css/calendar.css?v=1.1" rel="stylesheet">
 		<link href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.dataTables.min.css" rel="stylesheet">
 		<link href="https://cdn.datatables.net/colreorder/1.5.2/css/colReorder.dataTables.min.css" rel="stylesheet">
 		
