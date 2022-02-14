@@ -12,6 +12,16 @@
 		function menu(){
 			$data['menu'] = 'allbookings'; // Capitalize the first letter
 			$data['unapprovedBookings'] = $this->allbookings_model->getUnapprovedBookings($this->session->userdata('building'));
+				// send room viewing statistic data to database
+			$room_statistic_data = array(
+				'allRooms'	=>	1,
+				'buildingID'	=> $this->session->userdata('building'),
+				'userID'	=>	($this->session->userdata('userID')) ? $this->session->userdata('userID'):'',
+				'userRoleID'	=>	($this->session->userdata('roleID')) ? $this->session->userdata('roleID'):'',
+				'userIP'	=>	$this->input->ip_address(),
+				'userAgent'	=>	$this->input->user_agent(),
+			);
+			$this->allbookings_model->save_statistics($room_statistic_data);
 			return $data;
 			}
 

@@ -39,6 +39,11 @@ class Fullcalendar_model extends CI_Model
 		$this->db->insert('bookingTimeVersions', $data);
 	}
 
+	function save_statistics($data)
+	{
+		$this->db->insert('rooms_statistics', $data);
+	}
+
 	function update_event($data, $id)
 	{
 		$this->db->where('timeID', $id);

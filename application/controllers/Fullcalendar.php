@@ -20,6 +20,16 @@ class Fullcalendar extends CI_Controller {
 
 	function load($roomId)
 	{
+		// send room viewing statistic data to database
+		$room_statistic_data = array(
+			'roomID'	=>	$roomId,
+			'userID'	=>	($this->session->userdata('userID')) ? $this->session->userdata('userID'):'',
+			'userRoleID'	=>	($this->session->userdata('roleID')) ? $this->session->userdata('roleID'):'',
+			'userIP'	=>	$this->input->ip_address(),
+			'userAgent'	=>	$this->input->user_agent(),
+		);
+		$this->fullcalendar_model->save_statistics($room_statistic_data);
+		
 		$this->input->get('saal', TRUE);
 		$event_data = $this->fullcalendar_model->fetch_all_event();
 		if($this->session->userdata('roleID')==='2' || $this->session->userdata('roleID')==='3'){

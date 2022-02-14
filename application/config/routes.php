@@ -57,6 +57,7 @@ $route['editBuilding'] = 'building/index';
 $route['editRegion'] = 'region/index';
 $route['allbookings'] = 'allbookings/index';
 $route['login'] = 'login/index';
+$route['statistics'] = 'statistics/index';
 
 // $route['default_controller'] = 'pages/view';
 $route['(:any)'] = 'pages/view/$1';

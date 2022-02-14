@@ -326,7 +326,19 @@ CREATE TABLE `userrights` (
   `created_at` datetime DEFAULT current_timestamp(),
   PRIMARY KEY (userrightsID)    
 
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+);
+
+CREATE TABLE `rooms_statistics` (
+  `rooms_statistics_id` int(11) NOT NULL AUTO_INCREMENT,
+  `allRooms` tinyint(1) DEFAULT 0,
+  `roomID` int(11) DEFAULT NULL,
+  `buildingID` int(11) DEFAULT NULL,
+  `userID` int(11) DEFAULT NULL,
+  `timestamp` timestamp NULL DEFAULT current_timestamp(),
+  `userIP` varchar(20) DEFAULT NULL,
+  `userAgent` varchar(255) DEFAULT NULL,
+		PRIMARY KEY (rooms_statistics_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
 ```

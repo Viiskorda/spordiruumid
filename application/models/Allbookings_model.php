@@ -145,6 +145,10 @@
 		}
 
 
-
+		function save_statistics($data)
+		{
+			$this->db->insert('rooms_statistics', $data);
+		}
+	
 
 	}
