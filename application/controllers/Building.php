@@ -149,6 +149,124 @@
 			}
 		}
 
+		public function editRoom($slug){
+			// check if user has right to change 
+			$isAllowedOrNot = $this->building_model->checkIfRoomIsBookable($slug);
+			if(!($isAllowedOrNot || $this->session->userdata('roleID')==='1')){
+				redirect('');
+			}
+
+			$data=$this->menu();
+
+			$data['room_info'] = $this->building_model->get_room($slug);
+			$data['room_activity_info'] = $this->building_model->get_room_activities($slug);
+
+			//do changes
+
+			if($this->input->post()){
+				
+				$data['additionalRoomActivity']=$this->input->post('additionalRoomActivity');
+				$this->form_validation->set_rules('room_activity[]', 'Väli', 'trim|htmlspecialchars|xss_clean|max_length[40]');
+				$this->form_validation->set_rules('additionalRoomActivity[]', 'Väli', 'trim|htmlspecialchars|xss_clean|max_length[40]');
+				if ($this->form_validation->run() === FALSE) {
+					$this->session->set_flashdata('errors',
+						'Sisestatud andmetega on midagi korrast ära. Palun proovi uuesti.'
+					);
+					$this->load->view('templates/header', $this->security->xss_clean($data));
+					$this->load->view('pages/editRoom', $this->security->xss_clean($data));
+					$this->load->view('templates/footer');
+									
+				}
+				else {
+
+				$data_to_db = array(
+					'room_id' => $slug
+				);
+
+				//first delete all records
+				$this->building_model->delete_RoomActivity($data_to_db);
+				$this->building_model->delete_ActivityIfIsNotInUse();
+
+				//secondly insert all records
+				$this->insertActivityInfo($this->input->post('room_activity'), $slug);
+				$this->insertActivityInfo($this->input->post('additionalRoomActivity'), $slug);
+				redirect('building/edit/'.$this->session->userdata['building']);
+				// if ($this->session->userdata('roleID') === '2') {
+				// 	redirect('building/edit/' . $this->session->userdata['building']);
+				// }
+				// redirect('building/view/' . $this->session->userdata['building']);
+			}}
+			else {
+				$this->load->view('templates/header', $this->security->xss_clean($data));
+				$this->load->view('pages/editRoom', $this->security->xss_clean($data));
+				$this->load->view('templates/footer');
+			}
+
+				
+		}
+			private function insertActivityInfo($room_activity, $roomID)
+			{
+				
+			if (!empty($room_activity)) {
+				for ($t = 0; $t < count($room_activity); $t++) {
+					if ($room_activity[$t] !== null) {
+
+						$data1[] = array(
+							'activityName' => $room_activity[$t],
+
+						);
+						$getActivityID = $this->building_model->createNewActivity($data1[$t]);
+						$data2[] = array(
+							'activity_id' => $getActivityID,
+							'room_id' => $roomID
+
+						);
+						$this->building_model->createRoomActivity($data2[$t]);
+					}
+				}
+				$this->session->set_flashdata('post_updated', 'Andmed salvestatud');
+				
+			}
+			
+		}
+	
+		public function deleteRoomActivity()
+		{
+			
+			if ($this->session->userdata('roleID') === '1' || $this->session->userdata('roleID') === '2') {
+				$this->form_validation->set_rules('roomID', 'Ruum', 'integer|required');
+				$this->form_validation->set_rules('activityID', 'Tegevus', 'integer|required');
+				if ($this->form_validation->run() === FALSE) {
+					$this->session->set_flashdata('errors', 'Ei tohi süsteemi kompromiteerida');
+					return false;
+				}
+
+				$id = $this->input->post('roomID');
+				if ($this->session->userdata('roleID') === '2' || $this->session->userdata('roleID') === '3') {
+					$isAllowedOrNot = $this->building_model->checkIfRoomIsBookable($id);
+					if (empty($isAllowedOrNot)) {
+						echo json_encode('Sa ei saa võõraid ruume muuta!', JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+						return false;
+					};
+				}
+				$data = array(
+					'activity_id' => $this->input->post('activityID'),
+					'room_id' => $id
+				);
+
+				$deletequery = $this->building_model->delete_RoomActivity($data);
+				// Set message
+				if ($deletequery === FALSE) {
+					//	$this->session->set_flashdata('building_deleted', 'Ei saa ruumi kustutada kuna selles on kehtivad broneeringud. Palun kustuta kõik broneeringud ära ja seejärel proovi uuesti.');	
+					echo json_encode('Ei saa ruumi tegevusi.', JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+					//	redirect('building/view/'.$this->session->userdata['building']);
+				} else {
+					echo json_encode('');
+					//	redirect('building/edit/'.$this->session->userdata['building']);
+				}
+			}
+		}
+
 	
 		public function deleteRoom(){
 			if($this->session->userdata('roleID')==='1' || $this->session->userdata('roleID')==='2'){

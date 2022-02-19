@@ -20,6 +20,18 @@
             <div class="d-flex align-items-center">
                 <div class="col-7 mb-5"  id="form-container">
                     <form action="fullcalendar" method="get">
+					<div class="form-label-group">
+                            <label for="activity">Tegevus</label>
+                            <input id="activity" list="activities" class="form-control arrow" type="text" autocomplete="off">
+                            <datalist id="activities">
+							<option  data-value="0" value="---"></option>
+                                <?php foreach ($activities as $row) {
+                                    echo '<option  data-value="' . $row->activityID . '" value="' . $row->activityName . '"></option>';
+                                }
+                                ?>
+                            </datalist>
+						</div>
+
                     <?php if($this->session->userdata('roleID')!='2'&&$this->session->userdata('roleID')!='3'):?>
 						<h5>
 						<?php 	if(empty($buildings)){
@@ -31,6 +43,7 @@
                             <label for="region">Piirkond</label>
                             <input id="region" list="regions" class="form-control arrow" type="text" autocomplete="off">
                             <datalist id="regions">
+							<option  data-value="0" value="---"></option>
                                 <?php foreach ($regions as $row) {
                                     echo '<option  data-value="' . $row->regionID . '" value="' . $row->regionName . '"></option>';
                                 }
@@ -146,48 +159,6 @@ $display=false;
                 autoPick: true,
             });
 
-        $('#regions1').change(function() {
-            var country_id = $('#regions1').val();
-            if (country_id != '') {
-                $.ajax({
-                    url: "<?php echo base_url(); ?>home/fetch_city",
-                    method: "POST",
-                    data: {
-                        country_id: country_id
-                    },
-                    success: function(data) {
-                        $('#state').html(data);
-                        $('#citys').html('<option value="">Vali asutus</option>');
-                    }
-                });
-            } else {
-                $('#state').html('<option value="">Select State</option>');
-                $('#citys').html('<option value="">Select rerre</option>');
-            }
-        });
-
-        $('#state').change(function() {
-            var value = $('#state').val();
-            var state_id = $('#state [value="' + value + '"]').data('value');
-          //  console.log("stateid is " + state_id);
-            if (state_id != '') {
-             
-                $.ajax({
-                    url: "<?php echo base_url(); ?>home/fetch_building",
-                    method: "POST",
-                    data: {
-                        state_id: state_id
-                    },
-                    success: function(data) {
-                     //   console.log("data is " + data);
-                        $('#citys').html(data);
-                        $('#saal').html(data).appendTo("#saal");
-                    },
-                });
-            } else {
-                $('#city').html('<option value="">Select ruums</option>');
-            }
-        });
 
         $('#room[list]').on('input', function(e) {
             var $input = $(e.target),
@@ -203,6 +174,10 @@ $display=false;
             }
         });
 
+		$('input[id=activity]').focusin(function() {
+            $('input[id=activity]').val('');
+        });
+
         $('input[id=region]').focusin(function() {
             $('input[id=region]').val('');           
         });
@@ -215,6 +190,71 @@ $display=false;
             $('input[id=room]').val('');
         });
 
+
+			//tegevus
+			$("#activity").on('change keydown input paste', function(e) {
+            var $input = $(this),
+                val = $input.val();
+            list = $input.attr('list'),
+                match = $('#' + list + ' option').filter(function() {
+                    return ($(this).val() === val);
+                });
+            if (match.length > 0) {
+
+				$('#region').val('');
+                $('#sport_facility').val('');
+                $('#room').val('');
+
+                var value = $('#activity').val();
+                var activity_id = $('#activities [value="' + value + '"]').data('value');
+			
+				$.ajax({
+                    url: "<?php echo base_url(); ?>home/fetch_region",
+                    method: "POST",
+                    data: {
+                        activity_id: activity_id
+                    },
+                    success: function(data) {
+                        $('#regions').html(data);
+					    $("#room").empty();
+					 
+                    }
+                });
+                $.ajax({
+                    url: "<?php echo base_url(); ?>home/fetch_building_from_activity_or_region",
+                    method: "POST",
+                    data: {
+                        activity_id: activity_id
+                    },
+                    success: function(data) {
+                       // console.log("data on " + data);
+                    
+                        $('#asutus').html(data).appendTo("#asutus");
+                    }
+                });
+			
+				$.ajax({
+                    url: "<?php echo base_url(); ?>home/fetch_rooms_from_region_activity_building",
+                    method: "POST",
+                    data: {
+                        activity_id: activity_id
+                    },
+                    success: function(data) {
+                        $('#saal').html(data);
+                     
+                    }
+                });
+            } else {
+            //    console.log("dismatch");
+				$('#region').val('');
+                $('#sport_facility').val('');
+                $('#room').val('');
+
+            }
+        });
+
+
+		//piirkond
         $("#region").on('change keydown input paste', function(e) {
             var $input = $(this),
                 val = $input.val();
@@ -226,24 +266,39 @@ $display=false;
              
                 var value = $('#region').val();
                 var country_id = $('#regions [value="' + value + '"]').data('value');
+				
+				var activity = $('#activity').val();
+				var activity_id = $('#activities [value="' + activity + '"]').data('value');
+				
+				var building = $('#sport_facility').val();
+                var buildingID = $('#asutus [value="' + building + '"]').data('value');
+				//console.log(buildingID);
+				
                 $.ajax({
-                    url: "<?php echo base_url(); ?>home/fetch_city",
+                    url: "<?php echo base_url(); ?>home/fetch_building_from_activity_or_region",
                     method: "POST",
                     data: {
+						activity_id: activity_id,
                         country_id: country_id
                     },
                     success: function(data) {
-                      //  console.log("data on " + data);
+                      
+						//val('') is for empty input and .empty is for empty datalist
+					 	 $('#sport_facility').val('');
+               			 $('#room').val('');
                         $("#asutus").empty();
                         $("#room").empty();
                         $('#asutus').html(data).appendTo("#asutus");
                     }
                 });
 				$.ajax({
-                    url: "<?php echo base_url(); ?>home/fetch_rooms_from_region",
+                    url: "<?php echo base_url(); ?>home/fetch_rooms_from_region_activity_building",
                     method: "POST",
                     data: {
-                        country_id: country_id
+						activity_id: activity_id,
+                        country_id: country_id, 
+						buildingID: buildingID, 
+
                     },
                     success: function(data) {
                         $('#saal').html(data);
@@ -251,13 +306,14 @@ $display=false;
                     }
                 });
             } else {
-            //    console.log("dismatch");
-                $('#room').val('');
+				
                 $('#sport_facility').val('');
+                $('#room').val('');
 
             }
         });
 
+		//asutus
         $("#sport_facility").on('change keydown input paste', function(e) {
             var $input = $(this),
                 val = $input.val();
@@ -266,26 +322,35 @@ $display=false;
                     return ($(this).val() === val);
                 });
             if (match.length > 0) {
-             
-                var value = $('#sport_facility').val();
-                var state_id = $('#asutus [value="' + value + '"]').data('value');
-       //         console.log(state_id);
+
+				var activity = $('#activity').val();
+				var activity_id = $('#activities [value="' + activity + '"]').data('value');
+				
+				var value = $('#region').val();
+                var country_id = $('#regions [value="' + value + '"]').data('value');
+
+                var building = $('#sport_facility').val();
+                var buildingID = $('#asutus [value="' + building + '"]').data('value');
+	
                 $.ajax({
-                    url: "<?php echo base_url(); ?>home/fetch_building",
+                    url: "<?php echo base_url(); ?>home/fetch_rooms_from_region_activity_building",
                     method: "POST",
                     data: {
-                        state_id: state_id
+						activity_id: activity_id,
+                        country_id: country_id, 
+						buildingID: buildingID
                     },
                     success: function(data) {
                   //      console.log("data on " + data);
-                        $('#room').val('');
+					    $('#room').val('');
+                       	$("#room").empty();
                         $("#saal").empty();
                         $('#saal').html(data).appendTo("#saal");
                     }
                 });
             } else {
          //       console.log("dismatch");
-                $('#room').val('');
+			    $('#room').val('');
             }
         });
     });

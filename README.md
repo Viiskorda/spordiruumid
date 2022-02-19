@@ -328,6 +328,21 @@ CREATE TABLE `userrights` (
 
 );
 
+CREATE TABLE `activities` (
+  `activityID` int(11) NOT NULL AUTO_INCREMENT,
+  `activityName` varchar(100) NOT NULL,
+	PRIMARY KEY (activityID)
+); 
+
+
+CREATE TABLE `room_activity` (
+  `room_activity_id` int(11) NOT NULL AUTO_INCREMENT,
+  `room_id` int(11) NOT NULL,
+  `activity_id` int(11) NOT NULL,
+	PRIMARY KEY (room_activity_id);
+);
+
+
 CREATE TABLE `rooms_statistics` (
   `rooms_statistics_id` int(11) NOT NULL AUTO_INCREMENT,
   `allRooms` tinyint(1) DEFAULT 0,
@@ -339,6 +354,9 @@ CREATE TABLE `rooms_statistics` (
   `userAgent` varchar(255) DEFAULT NULL,
 		PRIMARY KEY (rooms_statistics_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+
+
 
 
 ```

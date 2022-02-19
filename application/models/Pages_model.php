@@ -57,6 +57,25 @@ class Pages_model extends CI_Model
         return $query->result();
     }
 
+	function getAllActivities()
+    {
+		$this->db->select("activityID, activityName");
+		$this->db->distinct();
+        $this->db->order_by('activityName');
+		$this->db->join('room_activity', 'activities.activityID  = room_activity.activity_id', 'left');
+		$this->db->join('rooms', 'rooms.id  = room_activity.room_id', 'left');
+		$this->db->join('buildings', 'buildings.id  = rooms.buildingID', 'left');
+
+		if (empty($this->session->userdata('roleID'))  || $this->session->userdata('roleID') === '4') {
+			$this->db->where('roomActive', '1');
+		}
+		if ($this->session->userdata('roleID')==='2'  || $this->session->userdata('roleID')==='3'){
+			$this->db->where('buildings.id',$this->session->userdata('building'));
+			}
+        $query = $this->db->get('activities');
+        return $query->result();
+    }
+
     function fetch_building($state_id)
     {
         $this->db->where('buildingID', $state_id);

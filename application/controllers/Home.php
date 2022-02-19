@@ -45,6 +45,7 @@ class Home extends CI_Controller
 	
 		$data['title'] = ucfirst($page); // Capitalize the first letter
 
+		$data['activities'] = $this->home_model->getAllActivities();
 		$data['regions'] = $this->home_model->getAllRegions();
 		$data['buildings'] = $this->home_model->getAllBuildings();
 		$data['rooms'] = $this->home_model->getAllRooms();
@@ -56,28 +57,82 @@ class Home extends CI_Controller
 		// $logged = false;
 	}
 
-	function fetch_city()
+	function fetch_building_from_activity_or_region()
 	{
-	 if($this->input->post('country_id'))
-	 {
-	  echo $this->home_model->fetch_city($this->input->post('country_id'));
-	 }
+		$activity_id=NULL;
+		$country_id=NULL;
+
+		$this->form_validation->set_rules('activity_id', '', 'integer');
+		$this->form_validation->set_rules('country_id', '', 'integer');
+
+		if($this->form_validation->run() === FALSE ){
+			return;
+		}
+
+		if ($this->input->post('activity_id')) {
+			$activity_id=$this->input->post('activity_id');
+		}
+		if ($this->input->post('country_id')) {
+			$country_id=$this->input->post('country_id');
+		} 
+		echo $this->home_model->fetch_building_from_activity_or_region($activity_id, $country_id);
 	}
 
-	function fetch_rooms_from_region()
+	function fetch_rooms_from_activity()
 	{
-	 if($this->input->post('country_id'))
-	 {
-	  echo $this->home_model->getRoomsFromRegion($this->input->post('country_id'));
-	 }
+		$this->form_validation->set_rules('activity_id', '', 'integer');
+
+		if ($this->form_validation->run() === FALSE) {
+			return;
+		}
+
+		if ($this->input->post('activity_id')) {
+			echo $this->home_model->fetch_rooms_from_activity($this->input->post('activity_id'));
+		}
 	}
 
-
-	function fetch_building()
+	function fetch_region()
 	{
-	 if($this->input->post('state_id'))
-	 {
-	  echo $this->home_model->fetch_building($this->input->post('state_id'));
-	 }
+		$activity_id = NULL;
+
+		$this->form_validation->set_rules('activity_id', '', 'integer');
+
+		if($this->form_validation->run() === FALSE ){
+			return;
+		}
+
+		if ($this->input->post('activity_id')) {
+			$activity_id = $this->input->post('activity_id');
+		}
+		echo $this->home_model->fetch_region($activity_id);
 	}
+	
+	function fetch_rooms_from_region_activity_building()
+	{
+		$activity_id=NULL;
+		$country_id=NULL;
+		$buildingID=NULL;
+
+		$this->form_validation->set_rules('activity_id', '', 'integer');
+		$this->form_validation->set_rules('country_id', '', 'integer');
+		$this->form_validation->set_rules('buildingID', '', 'integer');
+
+		if($this->form_validation->run() === FALSE ){
+			return;
+		}
+
+		if ($this->input->post('activity_id')) {
+			$activity_id=$this->input->post('activity_id');
+		}
+		if ($this->input->post('country_id')) {
+			$country_id=$this->input->post('country_id');
+		} 
+		if ($this->input->post('buildingID')) {
+			$buildingID=$this->input->post('buildingID');
+		}
+		
+		echo $this->home_model->fetch_rooms_from_region_activity_building($activity_id, $country_id, $buildingID);
+
+	}
+
 }

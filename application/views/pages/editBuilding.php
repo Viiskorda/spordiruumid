@@ -61,9 +61,9 @@
 													<input class="d-none" type="hidden" name="roomID[]" value="'.$value['id'].'"> 
 													<input class="form-control col-6" id="activeRoom[]" type="text" name="room[]" value="' . $value['roomName'] .'">
 													<input name="color[]" type="color" value="'. $value["roomColor"] .'">
+													<a class="btn btn-info btn-width-92 text-white text-center py-1 px-2 txt-strong" href="'.base_url().'building/editRoom/'.$value['id'].'" role="button">Lisainfo</a>
 													<input type="button" id="activeOrPassive'.$value['id'].'" data-id="'.$value['id'].'" class="btn btn-custom btn-width-92 text-white text-center py-1 px-2 txt-strong" value="Nähtav"> 
-
-													<input data-id="'.$value['id'].'" class="btn btn-delete btn-width-92 text-white text-center py-1 px-2 txt-strong"  type="button" value="Kustuta">
+													<input data-id="'.$value['id'].'" class="btn btn-delete btn-width-92 text-white text-center py-1 px-2 txt-strong" type="button" value="Kustuta">
 													</div>'); 
 												}}; ?>
 									</div>
@@ -75,6 +75,7 @@
 													<input class="d-none" type="hidden" name="roomID[]" value="'.$value['id'].'"> 
 													<input class="form-control col-6" id="inactiveRoom[]" type="text" name="room[]" value="' . $value['roomName'] .'">
 													<input name="color[]" type="color" value="'. $value["roomColor"] .'">
+													<a class="btn btn-info btn-width-92 text-white text-center py-1 px-2 txt-strong" href="'.base_url().'building/editRoom/'.$value['id'].'" role="button">Lisainfo</a>
 													<input type="button" id="activeOrPassive' . $value['id']. '" data-id="'.$value['id'].'" class="btn btn-inactive btn-width-92 text-white text-center py-1 px-2 txt-strong" value="Peidus">
 													<input data-id="'.$value['id'].'" class="btn btn-delete btn-width-92 text-white text-center py-1 px-2 txt-strong"  type="button" value="Kustuta">
 													</div>');
@@ -104,7 +105,7 @@
 									<tr>
 															<th ></td>
 															<th class="p-1">
-														 <span data-tooltip="Kohustuslik"><img  src="<?php echo base_url(); ?>assets/img/mark.png" width="70%"></span>
+														 <span data-tooltip="Kohustuslik"><img  src="<?php echo base_url(); ?>assets/img/mark.png" width="40%"></span>
 															</th>
 														
 														</tr>
@@ -198,7 +199,7 @@
 								<tr>
 														<th class="pb-5"></td>
 														<th class="p-1">
-													 <span data-tooltip="Kohustuslik"><img  src="<?php echo base_url(); ?>assets/img/mark.png" width="70%"></span>
+													 <span data-tooltip="Kohustuslik"><img  src="<?php echo base_url(); ?>assets/img/mark.png" width="40%"></span>
 														</th>
 													
 													</tr>
@@ -268,7 +269,7 @@
 											</td>
 											
 											<td class="p-1">
-											<b data-tooltip="Kohustuslik"><img id="tool" src="<?php echo base_url(); ?>assets/img/mark.png" width="70%"></b>
+											<b data-tooltip="Kohustuslik"><img id="tool" src="<?php echo base_url(); ?>assets/img/mark.png" width="40%"></b>
 											</td>
 													
 													</tr>
@@ -451,7 +452,7 @@
 											</td>
 											
 											<td class="p-1">
-											<b data-tooltip="Kohustuslik"><img id="tool" src="<?php echo base_url(); ?>assets/img/mark.png" width="70%"></b>
+											<b data-tooltip="Kohustuslik"><img id="tool" src="<?php echo base_url(); ?>assets/img/mark.png" width="40%"></b>
 											</td>
 										</tr>
 											<tr class="col-5"> 
@@ -628,7 +629,7 @@
 												</td>
 												
 												<td class="p-1">
-												<b data-tooltip="Kohustuslik"><img id="tool" src="<?php echo base_url(); ?>assets/img/mark.png" width="70%"></b>
+												<b data-tooltip="Kohustuslik"><img id="tool" src="<?php echo base_url(); ?>assets/img/mark.png" width="40%"></b>
 												</td>
 											</tr>
 											<tr>

@@ -118,17 +118,70 @@ class Fullcalendar_model extends CI_Model
 
 
 
-    function fetch_building($state_id)
+	function fetch_building_from_activity_or_region($activity_id = NULL, $country_id = NULL)
     {
-        $this->db->where('buildingID', $state_id);
-        $this->db->order_by('id', 'ASC');
-        $query = $this->db->get('rooms');
-        $output = '<option value="">Select room</option>';
+      	$this->db->select("buildings.name, buildings.id");
+		$this->db->distinct();
+		$this->db->join('rooms', 'buildings.id  = rooms.buildingID', 'left');
+		$this->db->join('room_activity', 'rooms.id  = room_activity.room_id' , 'left');
+	
+		if($country_id){
+			$this->db->where('regions.regionID', $country_id);
+			$this->db->join('regions', 'buildings.regionID  = regions.regionID', 'left');
+		}
+		if($activity_id){
+			$this->db->where('activities.activityID', $activity_id);
+			$this->db->join('activities', 'activities.activityID  = room_activity.activity_id' , 'left');
+		}
+		if (empty($this->session->userdata('roleID'))  || $this->session->userdata('roleID')==='4'){
+			$this->db->where('roomActive','1');
+			}
+        $query = $this->db->get('buildings');
+		$output = '<option  data-value="0" value="---"></option>';
         foreach ($query->result() as $row) {
-            $output .= '<option  data-value="' . $row->id . '" value="' . $row->roomName . '">'.$row->roomName.'</option>';
+            $output .= '<option  data-value="' . $row->id . '" value="' . $row->name . '">'.$row->name.'</option>';
         }
         return $output;
     }
+
+	function fetch_rooms_from_region_activity_building($activity_id = NULL, $country_id=NULL, $buildingID = NULL)
+	{
+		$this->db->order_by('rooms.id', 'ASC');
+		if($buildingID){
+			$this->db->where('rooms.buildingID', $buildingID);
+		}
+		$this->db->select("rooms.id, rooms.roomName, rooms.roomActive");
+		$this->db->distinct();
+		$this->db->join('room_activity', 'rooms.id  = room_activity.room_id', 'left');
+		$this->db->join('buildings', 'buildings.id  = rooms.buildingID', 'left');
+		
+		if($country_id){
+			$this->db->where('regions.regionID', $country_id);
+			$this->db->join('regions', 'buildings.regionID  = regions.regionID', 'left');
+		}
+		if($activity_id){
+			$this->db->where('activities.activityID', $activity_id);
+			$this->db->join('activities', 'activities.activityID  = room_activity.activity_id', 'left');
+		}
+		if (empty($this->session->userdata('roleID'))  || $this->session->userdata('roleID') === '4') {
+			$this->db->where('roomActive', '1');
+		}
+		if ($this->session->userdata('roleID')==='2'  || $this->session->userdata('roleID')==='3'){
+			$this->db->where('buildings.id',$this->session->userdata('building'));
+			}
+		$query = $this->db->get('rooms');
+		$output = '';
+		foreach ($query->result() as $row) {
+
+			if ($row->roomActive == 0) {
+				$output .= '<option  data-value="' . $row->id . '" value="' . $row->roomName . ' (peidetud)">' . $row->roomName . ' (peidetud)</option>';
+			} else {
+				$output .= '<option  data-value="' . $row->id . '" value="' . $row->roomName . '">' . $row->roomName . '</option>';
+			}
+		}
+
+		return $output;
+	}
 
 	function getUnapprovedBookings($buildingID )
 	{

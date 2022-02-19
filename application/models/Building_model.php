@@ -53,6 +53,12 @@
 			return $query->result_array();
 		}
 
+		public function get_room($roomID){
+			$this->db->where('id', $roomID);
+			$query = $this->db->get('rooms');
+			return $query->row_array();
+		}
+
 		public function get_all_roomsID_from_one_building($buildingID){
 			$this->db->select('id');
 			$this->db->where('buildingID', $buildingID);
@@ -110,11 +116,8 @@
 						return false;
 						echo $row->endTime;
 					}
-				
-					
 				}
 		
-			
 			$this->db->where('id', $id);
 			$this->db->delete('rooms');
 			return true;
@@ -187,7 +190,55 @@
 		
 		}
 
+		public function get_room_activities($roomID){
+			$this->db->order_by('activityName', 'ASC');
+			$this->db->where('room_id',$roomID);
+			$this->db->join('activities', ' room_activity.activity_id = activities.activityID' , 'left');
+			$query = $this->db->get('room_activity');
+			return $query->result_array();
+		}
 
+		public function createNewActivity($data){
+			
+			// Insert activity if not exists
+
+			$g = $this->db->get_where('activities',$data);
+
+			if ($g->num_rows() > 0) {
+				return $g->row()->activityID;
+			} else {
+				$this->db->insert('activities', $data);
+				return $this->db->insert_id();
+			}
+		
+		
+		}
+
+		public function createRoomActivity($data){
+			
+			// Insert activity if not exists
+
+			$g = $this->db->get_where('room_activity',$data);
+
+			if ($g->num_rows() < 1) {
+				$this->db->insert('room_activity', $data);
+				return true;
+			} 
+		
+		
+		}
+
+		public function delete_RoomActivity($array){
+			$this->db->where($array);
+			$this->db->delete('room_activity');
+			return true;
+		}
+
+		public function delete_ActivityIfIsNotInUse(){
+
+			$sql = "DELETE activities FROM  activities LEFT JOIN room_activity ON activities.activityID=room_activity.activity_id WHERE room_activity.activity_id IS NULL";
+			$this->db->query($sql);
+		}
 
 		function getAllRegions()
 		{

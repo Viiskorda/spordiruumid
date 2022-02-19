@@ -8,14 +8,25 @@
 <div class="container">
 	<div class="row pt-2" id="widthToggle">
 		
-		<form class="row  d-flex flex-row col-sm-12  col-xl-8 col-lg-7 p-0" action="fullcalendar" method="get">
-
+		<form class="row  d-flex flex-row col-sm-12 col-lg-7 col-xl-8 p-0" action="fullcalendar" method="get">
+		<div class="form-label-group col-sm-5 col-md-3 col-lg-4 col-xl-2 p-0 mr-2">
+						<label for="activity">Tegevus</label>
+						<input id="activity" list="activities" class="form-control arrow" type="text" autocomplete="off">
+						<datalist id="activities">
+								<option  data-value="0" value="---"></option>
+							<?php foreach ($activities as $row) {
+								echo '<option  data-value="' . $row->activityID . '" value="' . $row->activityName . '"></option>';
+							}
+							?>
+						</datalist>
+					</div>
 			<?php if ($this->session->userdata('roleID') != '2' && $this->session->userdata('roleID') != '3') : ?>
-				<div class="form-label-group col-sm-5 col-lg-3 p-0 mr-2">
+				<div class="form-label-group col-sm-6 col-md-4 col-lg-6 col-xl-2 p-0 mr-2">
 
 					<label for="region">Piirkond</label>
 					<input id="region" list="regions" class="form-control arrow" type="text" value="<?php echo $rooms['regionName'];?>"  autocomplete="off">
 					<datalist id="regions">
+						<option  data-value="0" value="---"></option>
 						<?php foreach ($regions as $row) {
 							echo '<option  data-value="' . $row->regionID . '" value="' . $row->regionName . '"></option>';
 						}
@@ -24,10 +35,11 @@
 					<input type="hidden" id="roomId" name="roomId" value="roomId" />
 				</div>
 
-				<div class="form-label-group col-sm-5 col-lg-3 p-0 mr-2">
+				<div class="form-label-group col-sm-5 col-md-4 col-lg-5 col-xl-3 p-0 mr-2">
 					<label for="sport_facility">Asutus</label>
 					<input id="sport_facility" list="asutus" class="form-control arrow" value="<?php echo $rooms['name']; ?>"  autocomplete="off">
 					<datalist id="asutus">
+					<option  data-value="0" value="---"></option>
 						<?php foreach ($sportPlaces as $each) {
 							if ($rooms['regionID'] == $each->regionID) {
 								echo '<option data-value="' . $each->id . '" value="' . $each->name . '"></option>';
@@ -40,7 +52,7 @@
 			<?php endif; ?>
 
 
-			<div class="form-label-group col-sm-5 col-lg-3 p-0 mr-2">
+			<div class="form-label-group col-sm-6 col-md-3 col-lg-3 col-xl-2 p-0 mr-2">
 				<label for="room">Ruum</label>
 				<input id="room" list="saal" class="form-control arrow" value="<?php echo $rooms['roomName'];?>"  autocomplete="off">
 				<datalist id="saal">
@@ -66,7 +78,7 @@
 				<input type="hidden" id="roomId" name="roomId" value="roomId" />
 			</div>
 
-			<div class="form-label-group  col-sm-5 col-lg-2 p-0  mr-2">
+			<div class="form-label-group  col-md-3 col-lg-3 col-xl-2 p-0  mr-2">
 				<label for="datepicker">Kuupäev</label>
 				<input id="datepicker" class="datePicker form-control" data-toggle="datepicker" name="date" autocomplete="off" />
 			</div>
@@ -74,10 +86,10 @@
 
 
 		<?php if ($this->session->userdata('roleID') === '2' || $this->session->userdata('roleID') === '3') { ?>
-			<div class="col-sm-8  col-lg-5 col-xl-4 mr-auto p-0">
+			<div class="ml-md-auto col-sm-8 col-lg-4 col-xl-4 mr-auto p-0">
 				<div class="col-1  col-sm-12 col-xl-2">	</div>
-				<a id="allCalenderLink" class="text-center py-2 px-sm-2 px-lg-5 px-md-4 float-right pluss" href="<?php echo base_url(); ?>/allbookings/weekView/?date=">Kõik ruumid</a>
-				<a class="col-12 col-lg-6 col-sm-8 btn btn-custom text-white text-center py-2 px-sm-2 px-lg-4 px-md-4 float-right pluss" href="<?php echo base_url(); ?>booking/create/">
+				<a id="allCalenderLink" class="text-center py-2 px-sm-2 px-lg-4 px-md-4 float-right pluss" href="<?php echo base_url(); ?>/allbookings/weekView/?date=">Kõik ruumid</a>
+				<a class="col-12 col-lg-7 col-xl-6 col-sm-8 btn btn-custom text-white text-center py-2 px-sm-2 px-lg-4 px-md-4 float-right pluss" href="<?php echo base_url(); ?>booking/create/">
 					<p class="m-0 txt-lg txt-strong text-center">Uus broneering</p>
 				</a>
 			<?php  } elseif ($this->session->userdata('session_id') === TRUE) { ?>
@@ -86,16 +98,16 @@
 						<p class="m-0 txt-lg txt-strong text-center">Esita päring</p>
 					</a> -->
 
-					<div class="col-1  col-sm-2 col-xl-1">	</div>
-					<div class="col-lg-3 p-0 col-md-12 bg-blue info-label text-white px-3 py-2">
+					
+					<div class="ml-auto col-xl-4 col-lg-3 p-0 col-md-12 bg-blue info-label text-white px-3 py-2">
 						<p class="txt-strong">Broneerimiseks kirjuta või helista:</p>
 						<p><?php if($rooms['contact_email']){echo $rooms['contact_email'].', ';} echo $rooms['phone']; ?></p>
 						<a  class="text-light" href="<?php echo $rooms['price_url']; ?>"  target="_blank"><?php echo $rooms['price_url']; ?></a>
 				<?php }; ?>
 
 				<?php if (!$this->session->userdata('session_id')) { ?>
-					<div class="col-1  col-sm-2 col-xl-1">	</div>
-					<div class="col-lg-3 p-0 col-md-12 bg-blue info-label text-white px-3 py-2">
+		
+					<div class="ml-auto col-lg-3 p-0 col-md-12 bg-blue info-label text-white px-3 py-2">
 						<p class="txt-strong">Broneerimiseks kirjuta või helista:</p>
 						<p><?php if($rooms['contact_email']){echo $rooms['contact_email'].', ';} echo $rooms['phone']; ?></p>
 						<a  class="text-light" href="<?php echo $rooms['price_url']; ?>"  target="_blank"><?php echo $rooms['price_url']; ?></a>
@@ -337,6 +349,7 @@
 
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/datepicker.js"></script>
+<script type="text/javascript" src="<?php echo base_url(); ?>assets/js/locale/et.js"></script>
 <script>
 	var counter = 0;
 	$(document).ready(function() {
@@ -386,7 +399,7 @@
 			header: {
 				left: '',
 				center: 'prev, title, next',
-				right: ''
+				right: 'list, month, agendaWeek, agendaDay, agendaList'
 			},
 			height: 'parent',
 			// contentHeight: 600,
@@ -400,6 +413,7 @@
 				if ($(window).width() < 768){
 					dayNames: ['P', 'E', 'T', 'K', 'N', 'R', 'L'];
 				}
+
 			},
 			dayNamesShort: ['P', 'E', 'T', 'K', 'N', 'R', 'L'],
 			monthNames: ['jaanuar', 'veebruar', 'märts', 'aprill', 'mai', 'juuni', 'juuli', 'august', 'september', 'oktoober', 'november', 'detsember'],
@@ -413,6 +427,14 @@
 				}
 
 			},
+			viewRender: (function () {
+				return function (view) {
+		
+					$('.fc-slats tr').css('height', rowHeight + 'px');
+					$(window).trigger('resize');
+					$(".fc-body").trigger('reload');
+				}
+			})(),
 			defaultDate: moment('<?php if($this->input->get("date")){ echo ($this->input->get("date")); } else{ echo date("dd.mm.YYYY");}?>', "DD.MM.YYYY"),
 			defaultView: 'agendaWeek',
 			weekNumbers: true,
@@ -449,6 +471,8 @@
 					$("body").css("cursor", "default");	
 				}
      	   },
+			locale: 'est',
+			lang: 'est',
 			eventRender: function(event, element) {
 				
 				var bookingDuration=diffMinutes($.fullCalendar.formatDate(event.start, 'YYYY-MM-DD HH:m:s'), $.fullCalendar.formatDate(event.end, 'YYYY-MM-DD HH:m:s'));
@@ -470,18 +494,18 @@
 
 				} 
 				if ((displayOrNot == 2 || displayOrNot == 3) && (event.typeID == 1 || event.typeID == 2)) {
-					if(bookingDuration<50){
+					if(bookingDuration<40){
 						$(element).find('.fc-title').html('');
-						$(element).find('.fc-time').append(event.title);
+						$(element).find('.fc-time').append(' '+event.title);
 					}
 					if(event.timeComment && event.showComment){
 						timeComment='<span class="d-inline"> &#128172; </span>';
 						}
 					if(event.takesPlace != 1){
-						element.find('.fc-time').before(timeComment+"<del><div class='d-inline timequery'>Päring: " + moment(event.created_at).format("DD.MM.YYYY HH:mm") + "</div></del>"); // Päringu kirje broneeringu lahtris
+						element.find('.fc-time').before(timeComment+"<del><div class='timequery'>Päring: " + moment(event.created_at).format("DD.MM.YYYY HH:mm") + " </div></del>"); // Päringu kirje broneeringu lahtris
 					}
 					else{
-					element.find('.fc-time').before(timeComment+"<div class='d-inline timequery'>Päring: " + moment(event.created_at).format("DD.MM.YYYY HH:mm") + "</div>"); // Päringu kirje broneeringu lahtris
+					element.find('.fc-time').before(timeComment+"<div class='timequery'>Päring: " + moment(event.created_at).format("DD.MM.YYYY HH:mm") + " </div>"); // Päringu kirje broneeringu lahtris
 				}
 				
 
@@ -539,7 +563,7 @@
 					});
 				}
 				else if(event.hasChanged==1){
-					element.find('.fc-time').before('<span style="font-size:12px;"> &#9432; </span>');
+					element.find('.fc-time').before('<span class="timequery"> &#9432; </span>');
 				}
 
 			},
@@ -1417,21 +1441,86 @@
 		$(window).trigger('resize');
 		$(".fc-body").trigger('reload');
 
-	
 
-		$('input[id=region]').focusin(function() {
+		$('input[id=activity]').focusin(function() {
+            $('input[id=activity]').val('');
+        });
 
-			$('input[id=region]').val('');
+        $('input[id=region]').focusin(function() {
+            $('input[id=region]').val('');           
+        });
 
-		});
+        $('input[id=sport_facility]').focusin(function() {
+            $('input[id=sport_facility]').val('');
+        });
 
-		$('input[id=sport_facility]').focusin(function() {
-			$('input[id=sport_facility]').val('');
-		});
+        $('input[id=room]').focusin(function() {
+            $('input[id=room]').val('');
+        });
 
-		$('input[id=room]').focusin(function() {
-			$('input[id=room]').val('');
-		});
+
+			//tegevus
+			$("#activity").on('change keydown input paste', function(e) {
+            var $input = $(this),
+                val = $input.val();
+            list = $input.attr('list'),
+                match = $('#' + list + ' option').filter(function() {
+                    return ($(this).val() === val);
+                });
+            if (match.length > 0) {
+
+				$('#region').val('');
+                $('#sport_facility').val('');
+                $('#room').val('');
+
+                var value = $('#activity').val();
+                var activity_id = $('#activities [value="' + value + '"]').data('value');
+			
+				$.ajax({
+                    url: "<?php echo base_url(); ?>home/fetch_region",
+                    method: "POST",
+                    data: {
+                        activity_id: activity_id
+                    },
+                    success: function(data) {
+                        $('#regions').html(data);
+					    $("#room").empty();
+					 
+                    }
+                });
+                $.ajax({
+                    url: "<?php echo base_url(); ?>home/fetch_building_from_activity_or_region",
+                    method: "POST",
+                    data: {
+                        activity_id: activity_id
+                    },
+                    success: function(data) {
+                       // console.log("data on " + data);
+                    
+                        $('#asutus').html(data).appendTo("#asutus");
+                    }
+                });
+			
+				$.ajax({
+                    url: "<?php echo base_url(); ?>home/fetch_rooms_from_region_activity_building",
+                    method: "POST",
+                    data: {
+                        activity_id: activity_id
+                    },
+                    success: function(data) {
+                        $('#saal').html(data);
+                     
+                    }
+                });
+            } else {
+            //    console.log("dismatch");
+				$('#region').val('');
+                $('#sport_facility').val('');
+                $('#room').val('');
+
+            }
+        });
+
 
 		$("#region").on('change keydown input paste', function(e) {
 
@@ -1445,11 +1534,19 @@
 		
 				var value = $('#region').val();
 				var country_id = $('#regions [value="' + value + '"]').data('value');
+
+				var activity = $('#activity').val();
+				var activity_id = $('#activities [value="' + activity + '"]').data('value');
+
+				var building = $('#sport_facility').val();
+                var buildingID = $('#asutus [value="' + building + '"]').data('value');
+
 				$.ajax({
-					url: "<?php echo base_url(); ?>home/fetch_city",
+					url: "<?php echo base_url(); ?>home/fetch_building_from_activity_or_region",
 					method: "POST",
 					data: {
-						country_id: country_id
+						country_id: country_id,
+						activity_id: activity_id,
 					},
 					success: function(data) {
 				
@@ -1459,10 +1556,12 @@
 					}
 				});
 				$.ajax({
-                    url: "<?php echo base_url(); ?>home/fetch_rooms_from_region",
+                    url: "<?php echo base_url(); ?>home/fetch_rooms_from_region_activity_building",
                     method: "POST",
                     data: {
-                        country_id: country_id
+                        country_id: country_id, 
+						buildingID: buildingID, 
+						activity_id: activity_id,
                     },
                     success: function(data) {
 						$('#saal').html(data).appendTo("#saal");
@@ -1485,22 +1584,29 @@
 				});
 			if (match.length > 0) {
 			
-				var value = $('#sport_facility').val();
-				var state_id = $('#asutus [value="' + value + '"]').data('value');
+				var activity = $('#activity').val();
+				var activity_id = $('#activities [value="' + activity + '"]').data('value');
+
+				var country = $('#region').val();
+				var country_id = $('#regions [value="' + country + '"]').data('value');
+
+				var building = $('#sport_facility').val();
+                var buildingID = $('#asutus [value="' + building + '"]').data('value');
 			
 				$.ajax({
-					url: "<?php echo base_url(); ?>home/fetch_building",
+					url: "<?php echo base_url(); ?>home/fetch_rooms_from_region_activity_building",
 					method: "POST",
 					data: {
-						state_id: state_id	
+						activity_id: activity_id,
+						country_id: country_id, 
+						buildingID: buildingID, 
 					},
 					success: function(data) {
 					
 						$('#room').val('');
-						$("#saal").empty();
-
-						//	$('#saal').html('<option value="">Vali asutus</option>');
-						$('#saal').html(data).appendTo("#saal");
+                       	$("#room").empty();
+                        $("#saal").empty();
+                        $('#saal').html(data).appendTo("#saal");
 					}
 				});
 			} else {

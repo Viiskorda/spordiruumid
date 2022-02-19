@@ -43,6 +43,7 @@ class Pages extends CI_Controller
 	   
 	       if($page=='fullcalendar' ||$page=='privacypolicy' ||$page=='guide'){
 		$data['regions'] = $this->pages_model->getAllRegions();
+		$data['activities'] = $this->pages_model->getAllActivities();
                 //print_r($data['rooms']);
                 $this->load->view('templates/header', $data);
                 $this->load->view('pages/' . $page, $data);

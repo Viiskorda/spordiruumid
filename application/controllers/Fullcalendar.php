@@ -261,21 +261,46 @@ class Fullcalendar extends CI_Controller {
 	}
 
 
-	function fetch_city()
+	function fetch_rooms_from_region_activity_building()
 	{
-	 if($this->input->post('country_id'))
-	 {
-	  echo $this->home_model->fetch_city($this->input->post('country_id'));
-	 }
+		$activity_id=NULL;
+		$country_id=NULL;
+		$buildingID=NULL;
+
+		$this->form_validation->set_rules('activity_id', '', 'integer');
+		$this->form_validation->set_rules('country_id', '', 'integer');
+		$this->form_validation->set_rules('buildingID', '', 'integer');
+
+		if($this->form_validation->run() === FALSE ){
+			return;
+		}
+
+		if ($this->input->post('activity_id')) {
+			$activity_id=$this->input->post('activity_id');
+		}
+		if ($this->input->post('country_id')) {
+			$country_id=$this->input->post('country_id');
+		} 
+		if ($this->input->post('buildingID')) {
+			$buildingID=$this->input->post('buildingID');
+		}
+		
+		echo $this->fullcalendar_model->fetch_rooms_from_region_activity_building($activity_id, $country_id, $buildingID);
 	}
 
 
-	function fetch_building()
+	function fetch_building_from_activity_or_region()
 	{
-	 if($this->input->post('state_id'))
-	 {
-	  echo $this->home_model->fetch_building($this->input->post('state_id'));
-	 }
+		$country_id = NULL;
+		$this->form_validation->set_rules('state_id', '', 'integer');
+
+		if ($this->form_validation->run() === FALSE) {
+			return;
+		}
+		if ($this->input->post('state_id')) {
+			$country_id = $this->input->post('state_id');
+		}
+		echo $this->fullcalendar_model->fetch_building_from_activity_or_region($country_id);
 	}
 
 

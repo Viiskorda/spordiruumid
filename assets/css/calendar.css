@@ -98,8 +98,9 @@
     /* display:flex; */
     flex-flow: column;
     text-align: left;
-    margin-bottom: 8px;
+    margin-bottom: 7px;
     margin-left: 5px;
+	margin-top: 1px;
 }
 
 .timequery {
@@ -107,6 +108,8 @@
     font-weight: 300 !important;
     padding-top: 1px;
     padding-bottom: 2px;
+	display: inline;
+    vertical-align: top;
 }
 
 .fc-content div, .fc-time span {
@@ -114,6 +117,13 @@
     line-height: 15px;
     font-weight: 400;
 }
+@media (max-width:1599px) { 
+	.fc-content div, .fc-time span {
+		font-size: 12px;
+		line-height: 12px;
+		font-weight: 400;
+	}
+ }
 
 .fc-unthemed td.fc-today {
     background: rgba(11, 57, 84, 0.1)
@@ -122,7 +132,8 @@
 .fc-unthemed .fc-divider,
 .fc-unthemed .fc-popover .fc-header,
 .fc-unthemed .fc-list-heading td {
-	background: rgb(189, 82, 82);
+	background: #1A7AB7;
+	color:#FFF;
 }
 
 .fc-bgevent { /* default look for background events */
