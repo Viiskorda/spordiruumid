@@ -99,7 +99,7 @@
 					</a> -->
 
 					
-					<div class="ml-auto col-xl-4 col-lg-3 p-0 col-md-12 bg-blue info-label text-white px-3 py-2">
+					<div class="ml-auto col-lg-3 p-0 col-md-12 bg-blue info-label text-white px-3 py-2">
 						<p class="txt-strong">Broneerimiseks kirjuta või helista:</p>
 						<p><?php if($rooms['contact_email']){echo $rooms['contact_email'].', ';} echo $rooms['phone']; ?></p>
 						<a  class="text-light" href="<?php echo $rooms['price_url']; ?>"  target="_blank"><?php echo $rooms['price_url']; ?></a>

@@ -339,7 +339,7 @@ CREATE TABLE `room_activity` (
   `room_activity_id` int(11) NOT NULL AUTO_INCREMENT,
   `room_id` int(11) NOT NULL,
   `activity_id` int(11) NOT NULL,
-	PRIMARY KEY (room_activity_id);
+	PRIMARY KEY (room_activity_id)
 );
 
 
