@@ -349,7 +349,8 @@ CREATE TABLE `rooms_statistics` (
   `roomID` int(11) DEFAULT NULL,
   `buildingID` int(11) DEFAULT NULL,
   `userID` int(11) DEFAULT NULL,
-  `timestamp` timestamp NULL DEFAULT current_timestamp(),
+	`userRoleID` int(11) DEFAULT NULL,
+	`timestamp` timestamp NULL DEFAULT current_timestamp(),
   `userIP` varchar(20) DEFAULT NULL,
   `userAgent` varchar(255) DEFAULT NULL,
 		PRIMARY KEY (rooms_statistics_id)
