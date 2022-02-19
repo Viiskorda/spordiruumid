@@ -190,6 +190,11 @@
 				//secondly insert all records
 				$this->insertActivityInfo($this->input->post('room_activity'), $slug);
 				$this->insertActivityInfo($this->input->post('additionalRoomActivity'), $slug);
+				
+				if ($this->session->userdata('roleID')==='1'){
+					$buildingID=$this->building_model->get_rooms_buildingID($slug);
+					redirect('building/edit/'.$buildingID);
+				}
 				redirect('building/edit/'.$this->session->userdata['building']);
 				// if ($this->session->userdata('roleID') === '2') {
 				// 	redirect('building/edit/' . $this->session->userdata['building']);

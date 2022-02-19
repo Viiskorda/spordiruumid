@@ -104,6 +104,13 @@
 				$query = $this->db->get('rooms');
 				return $query->result();
 		}
+		public function get_rooms_buildingID($roomID){
+			$this->db->select("buildingID");
+			$this->db->where('rooms.id',$roomID);
+			$query = $this->db->get('rooms');
+			$result = $query->row();
+			return $result->buildingID;  
+		}
 
 
 		public function delete_room($id){
