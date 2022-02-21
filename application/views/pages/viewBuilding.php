@@ -118,7 +118,7 @@
                  
                     <td class="d-flex justify-content-end p-1 pr-3">
                        
-						<?php echo form_open('building/edit/'.$singleBuilding['id'], array('class' => 'cat-delete', 'id' => "change")); ?>
+						<?php echo form_open('building/edit/'.$singleBuilding['id'], array('class' => 'cat-delete', 'id' => "change", 'method'=>'get')); ?>
                             <button type="submit" class="btn btn-second btn-width text-white text-center py-1 px-2 txt-strong ">Muuda</button>
                         </form>
 						<?php echo form_open('building/delete/'.$singleBuilding['id'], array('class' => 'cat-delete pl-1', 'id' => "delete")); ?>
