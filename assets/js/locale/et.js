@@ -3,7 +3,8 @@ $.fullCalendar.locale("et", {
 		month: "Kuu",
 		week: "Nädal",
 		day: "Päev",
-		list: "Päevakord"
+		list: "Päevakord",
+		listWeek: 'Päevakord',
 	},
 	allDayText: "Kogu päev",
 	eventLimitText: function(n) {

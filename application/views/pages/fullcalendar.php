@@ -349,7 +349,7 @@
 
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/datepicker.js"></script>
-<script type="text/javascript" src="<?php echo base_url(); ?>assets/js/locale/et.js"></script>
+<script type="text/javascript" src="<?php echo base_url(); ?>assets/js/locale/et.js?v=1.1"></script>
 <script>
 	var counter = 0;
 	$(document).ready(function() {
@@ -399,7 +399,7 @@
 			header: {
 				left: '',
 				center: 'prev, title, next',
-				right: 'list, month, agendaWeek, agendaDay, agendaList'
+				right: 'listWeek, month, agendaWeek, agendaDay, agendaList'
 			},
 			height: 'parent',
 			// contentHeight: 600,
