@@ -23,10 +23,14 @@ class Pages extends CI_Controller
 		}
 		$data=$this->menu();
 	        $data['title'] = ucfirst($page); // Capitalize the first letter
-                $roomid=$this->input->get('roomId');
-                $data['rooms'] = $this->pages_model->getAllRooms($roomid);
-                $data['sportPlaces'] = $this->pages_model->getAllBuildings();
-		$data['sportPlacesToChoose'] = $this->pages_model->getAllBuildingRooms();
+                $roomid=$this->input->get('roomId', TRUE);
+		$activity_id='';
+		if($this->input->get('activity')&&$this->input->get('activity')!='---'){
+			$activity_id =$this->pages_model->getActivityID($this->input->get('activity'));
+		};
+                $data['rooms'] = $this->pages_model->getAllRooms($roomid, $activity_id);
+                $data['sportPlaces'] = $this->pages_model->getAllBuildings($activity_id);
+		$data['sportPlacesToChoose'] = $this->pages_model->getAllBuildingRooms($activity_id);
 		
 		
                // $data['allBookingInfo'] = $this->pages_model->getAllBookings();
@@ -42,7 +46,7 @@ class Pages extends CI_Controller
                 };
 	   
 	       if($page=='fullcalendar' ||$page=='privacypolicy' ||$page=='guide'){
-		$data['regions'] = $this->pages_model->getAllRegions();
+		$data['regions'] = $this->pages_model->getAllRegions($activity_id);
 		$data['activities'] = $this->pages_model->getAllActivities();
                 //print_r($data['rooms']);
                 $this->load->view('templates/header', $data);

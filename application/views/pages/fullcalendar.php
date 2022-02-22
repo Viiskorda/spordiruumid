@@ -8,10 +8,10 @@
 <div class="container">
 	<div class="row pt-2" id="widthToggle">
 		
-		<form class="row  d-flex flex-row col-sm-12 col-lg-7 col-xl-8 p-0" action="fullcalendar" method="get">
+		<form class="row d-flex flex-row col-sm-12 col-lg-7 col-xl-8 p-0" action="fullcalendar" method="get">
 		<div class="form-label-group col-sm-5 col-md-3 col-lg-4 col-xl-2 p-0 mr-2">
 						<label for="activity">Tegevus</label>
-						<input id="activity" list="activities" class="form-control arrow" type="text" autocomplete="off">
+						<input id="activity" list="activities" class="form-control arrow" type="text" autocomplete="off" name="activity" value="<?php echo $this->input->get('activity', TRUE); ?>">
 						<datalist id="activities">
 								<option  data-value="0" value="---"></option>
 							<?php foreach ($activities as $row) {
@@ -1461,6 +1461,7 @@
 
 			//tegevus
 			$("#activity").on('change keydown input paste', function(e) {
+				$("body").css("cursor", "wait");	
             var $input = $(this),
                 val = $input.val();
             list = $input.attr('list'),
@@ -1509,8 +1510,10 @@
                     },
                     success: function(data) {
                         $('#saal').html(data);
-                     
-                    }
+                    },
+					complete: function (data) {
+						$("body").css("cursor", "default");	
+					}
                 });
             } else {
             //    console.log("dismatch");
@@ -1626,11 +1629,12 @@
 
 			if (match.length > 0 && val.length > 0) {
 				val = $('#room').val();
-				var xyz = $('#saal   option').filter(function() {
+				var activity = 'activity='+$('#activity').val()+'&';
+				var xyz = $('#saal option').filter(function() {
 					return this.value == val;
 				}).data('value');
 
-				window.location.href = '<?php echo base_url(); ?>fullcalendar?roomId=' + xyz + '&date=' + $('#calendar').fullCalendar('getDate').format('DD.MM.YYYY');
+				window.location.href = '<?php echo base_url(); ?>fullcalendar?'+activity+'roomId=' + xyz + '&date=' + $('#calendar').fullCalendar('getDate').format('DD.MM.YYYY');
 			} else {
 		
 			}

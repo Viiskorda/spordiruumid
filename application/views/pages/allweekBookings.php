@@ -29,15 +29,18 @@ foreach($rooms as $value){
 <link href='<?php echo base_url(); ?>assets/css/fullcalendar.print.css' rel="stylesheet" type="text/css"  media="print">`
 <link href='<?php echo base_url(); ?>assets/packages/core/main.css' rel='stylesheet' />
 <link href='<?php echo base_url(); ?>assets/packages/daygrid/main.css' rel='stylesheet' />
+<!-- <link href='<?php echo base_url(); ?>assets/packages/list/main.css' rel='stylesheet' /> -->
 <link href='<?php echo base_url(); ?>assets/packages/timegrid/main.css' rel='stylesheet' />
 <link href='<?php echo base_url(); ?>assets/css/style.css' rel="stylesheet" /> 
 <link href='<?php echo base_url(); ?>assets/css/calendar.css' rel="stylesheet" />
 <script src='<?php echo base_url(); ?>assets/packages/core/main.js'></script>
 <script src='<?php echo base_url(); ?>assets/packages/interaction/main.js'></script>
 <script src='<?php echo base_url(); ?>assets/packages/daygrid/main.js'></script>
+<!-- <script src='<?php echo base_url(); ?>assets/packages/list/main.js'></script> -->
 <script src='<?php echo base_url(); ?>assets/packages/timegrid/main.js'></script>
 <script src='<?php echo base_url(); ?>assets/packages-premium/resource-common/main.js'></script>
 <script src='<?php echo base_url(); ?>assets/packages-premium/resource-daygrid/main.js'></script>
+<!-- <script src='<?php echo base_url(); ?>assets/packages-premium/resource-timeline/main.js'></script> -->
 <script src='<?php echo base_url(); ?>assets/packages-premium/resource-timegrid/main.js'></script>
 
 <script>
@@ -116,7 +119,7 @@ foreach($rooms as $value){
     //   container: 'body'
     // });
   },
-      plugins: [ 'interaction', 'resourceDayGrid', 'resourceTimeGrid','momentPlugin' ],
+      plugins: [ 'interaction', 'resourceDayGrid', 'resourceTimeGrid','momentPlugin', 'listPlugin' ],
 			defaultDate:dateConvert,
       defaultView: defaultView,
 	   datesAboveResources: true,
@@ -154,7 +157,7 @@ foreach($rooms as $value){
       header: {
         left: 'today',
         center: 'prev,title,next',
-        right: 'resourceTimeGridDay,resourceTimeGridThreeDay,resourceTimeGridFourDay,resourceTimeGridWeek,timeGridWeek,dayGridMonth'
+        right: 'resourceTimeGridDay,resourceTimeGridThreeDay,resourceTimeGridFourDay,resourceTimeGridWeek,timeGridWeek,dayGridMonth,list'
       },
 			
       views: {
@@ -181,6 +184,9 @@ foreach($rooms as $value){
 		 },
 		 dayGridMonth: {
           buttonText: 'Kuu',
+		 },
+     list: {
+          buttonText: 'list',
 		 }
       
       },

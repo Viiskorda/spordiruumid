@@ -22,7 +22,7 @@
                     <form action="fullcalendar" method="get">
 					<div class="form-label-group">
                             <label for="activity">Tegevus</label>
-                            <input id="activity" list="activities" class="form-control arrow" type="text" autocomplete="off">
+                            <input id="activity" list="activities" class="form-control arrow" type="text" autocomplete="off" name="activity">
                             <datalist id="activities">
 							<option  data-value="0" value="---"></option>
                                 <?php foreach ($activities as $row) {
