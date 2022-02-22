@@ -214,7 +214,7 @@
 				
 			if (!empty($room_activity)) {
 				for ($t = 0; $t < count($room_activity); $t++) {
-					if ($room_activity[$t] !== null) {
+					if ($room_activity[$t] !== '') {
 
 						$data1[] = array(
 							'activityName' => $room_activity[$t],

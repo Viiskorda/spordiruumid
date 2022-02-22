@@ -29,15 +29,15 @@
 							<?php for ($i = 0; $i < count($room_activity_info); $i++) { ?>
 								<!-- <?php print_r($room_activity_info[$i]['activityName']);  ?> -->
 								<div class="row d-flex mb-3 p-0 justify-content-between">
-									<input class="form-control col-6" type="text" name="room_activity[]" value="<?php echo set_value('room_activity[' . $i . ']', $room_activity_info[$i]['activityName']); ?>">
+									<input class="form-control col-6" type="text" name="room_activity[]"  required value="<?php echo set_value('room_activity[' . $i . ']', $room_activity_info[$i]['activityName']); ?>">
 									<input data-id="<?php echo $room_activity_info[$i]['activity_id'] ?>" class="btn btn-delete btn-width-92 text-white text-center py-1 px-2 txt-strong" type="button" value="Kustuta">
 								</div>
 							<?php } ?>
 						
-							<?php if(isset($additionalRoomActivity) ){ for ($i = 0; $i < count($additionalRoomActivity); $i++) { ?>
+							<?php if(!empty($additionalRoomActivity) ){ for ($i = 0; $i < count($additionalRoomActivity); $i++) { ?>
 						
 								<div class="row d-flex mb-3 p-0 justify-content-between">
-									<input class="form-control col-6" type="text" name="additionalRoomActivity[]" value="<?php echo $additionalRoomActivity[$i] ?>">
+									<input class="form-control col-6" type="text" name="additionalRoomActivity[]" required value="<?php echo $additionalRoomActivity[$i] ?>">
 									<input data-id="<?php echo $additionalRoomActivity[$i] ?>" class="abc btn btn-delete btn-width-92 text-white text-center py-1 px-2 txt-strong" type="button" value="Kustuta">
 								</div>
 							<?php }} ?>
@@ -76,7 +76,7 @@
 	$(document).ready(function() {
 		var counter = 1;
 		$('#addActivity').on('click', function() {
-			$('#activities').append('<div class="row d-flex mb-3 p-0 justify-content-between"><input class="form-control col-6" " type="text" name="additionalRoomActivity[]" value="">	<input data-id=""  class="abc btn btn-delete btn-width-92 text-white text-center py-1 px-2 txt-strong"  type="button" value="Kustuta"></div>');
+			$('#activities').append('<div class="row d-flex mb-3 p-0 justify-content-between"><input class="form-control col-6" " type="text" name="additionalRoomActivity[]" required value="">	<input data-id=""  class="abc btn btn-delete btn-width-92 text-white text-center py-1 px-2 txt-strong"  type="button" value="Kustuta"></div>');
 			counter++;
 		});
 

@@ -26,7 +26,7 @@ class Pages extends CI_Controller
                 $roomid=$this->input->get('roomId', TRUE);
 		$activity_id='';
 		if($this->input->get('activity')&&$this->input->get('activity')!='---'){
-			$activity_id =$this->pages_model->getActivityID($this->input->get('activity'));
+			$activity_id =$this->pages_model->getActivityID($this->input->get('activity'), TRUE);
 		};
                 $data['rooms'] = $this->pages_model->getAllRooms($roomid, $activity_id);
                 $data['sportPlaces'] = $this->pages_model->getAllBuildings($activity_id);
