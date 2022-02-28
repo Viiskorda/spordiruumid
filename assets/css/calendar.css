@@ -101,6 +101,7 @@
     margin-bottom: 7px;
     margin-left: 5px;
 	margin-top: 1px;
+    line-height: 12px;
 }
 
 .timequery {
@@ -119,8 +120,8 @@
 }
 @media (max-width:1599px) { 
 	.fc-content div, .fc-time span {
-		font-size: 12px;
-		line-height: 12px;
+		font-size: 10px;
+		line-height: 10px;
 		font-weight: 400;
 	}
  }
