@@ -111,18 +111,28 @@
     padding-bottom: 2px;
 	display: inline;
     vertical-align: top;
+    white-space: normal;
+}
+.tiny-slot-time{
+   
+    font-weight: 300 !important;
+    padding-top: 1px;
+    padding-bottom: 2px;
+	display: inline;
+    vertical-align: top;
+    white-space: normal;
 }
 
 .fc-content div, .fc-time span {
-    font-size: 13px;
-    line-height: 13px;
+    font-size: 12px;
+    line-height: 12px;
     font-weight: 400;
-    white-space: normal;
 }
+
 @media (max-width:1599px) { 
 	.fc-content div, .fc-time span {
 		font-size: 10px;
-		line-height: 10px;
+		line-height: 11px;
 		font-weight: 400;
 	}
  }
@@ -212,9 +222,9 @@
 
 
 
-
 .fc-time-grid-event.fc-short .fc-time span {
     display: inline;
+   
 }
 
 .fc-time-grid-event.fc-short .fc-time:before {
@@ -225,10 +235,10 @@
     content: normal;
 }
 
-
-
-
-
+.fc-time-grid-event.fc-short .fc-content{
+    white-space: normal;
+   
+}
 
 
 

@@ -483,21 +483,29 @@
 				var timeComment="";
 
 				//järgmisel real element[0].title tähistab popupi
-				element[0].title = $.fullCalendar.formatDate(event.start, "HH:mm") + ' - '+ $.fullCalendar.formatDate(event.end, "HH:mm") +tooltipTitle+ tooltipDescription;
+				event.time=$.fullCalendar.formatDate(event.start, "HH:mm") + ' - '+ $.fullCalendar.formatDate(event.end, "HH:mm");
+				element[0].title = 	event.time +tooltipTitle+ tooltipDescription;
 		//	 $(element).tooltip({title: $.fullCalendar.formatDate(event.start, "HH:mm") + ' - '+ $.fullCalendar.formatDate(event.end, "HH:mm") +tooltipTitle+ tooltipDescription , container: "body",  trigger: 'hover'});  
 				}
 				if (event.description) {
-					if(bookingDuration>60){
+					if(bookingDuration>50){
 						spaceOrnextLine='</br>'; // Päringu kirje broneeringu lahtris
 					}
 					element.find('.fc-time').append(spaceOrnextLine+'<span style="padding-top:4px;padding-right:1px;font-weight:450;font-size:12px">' + event.description + ' </span>');
 
 				} 
 				if ((displayOrNot == 2 || displayOrNot == 3) && (event.typeID == 1 || event.typeID == 2)) {
-					if(bookingDuration<40){
+
+					//this one goes with line 518  (if(bookingDuration<40){)
+					if(bookingDuration<40 ){
 						$(element).find('.fc-title').html('');
+						$(element).find('.fc-time').html('');
+						$(element).find('.fc-time').append(' '+event.description);
 						$(element).find('.fc-time').append(' '+event.title);
+						
 					}
+					
+				
 					if(event.timeComment && event.showComment){
 						timeComment='<span class="d-inline"> &#128172; </span>';
 						}
@@ -507,6 +515,10 @@
 					else{
 					element.find('.fc-time').before(timeComment+"<div class='timequery'>Päring: " + moment(event.created_at).format("DD.MM.YYYY HH:mm") + " </div>"); // Päringu kirje broneeringu lahtris
 				}
+				if(bookingDuration<40){
+						showTimeSlot="<div class='tiny-slot-time'>"+event.time+" </div>";
+						element.find('.fc-time').before(showTimeSlot); 
+					}
 				
 
 				}
@@ -565,6 +577,7 @@
 				else if(event.hasChanged==1){
 					element.find('.fc-time').before('<span class="timequery"> &#9432; </span>');
 				}
+			
 
 			},
 
