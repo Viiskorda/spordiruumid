@@ -26,6 +26,7 @@
 			}
 
 		function fetch_allbookings(){  
+			
 			if (empty($this->session->userdata('roleID'))  || $this->session->userdata('roleID')==='4'  || $this->session->userdata('roleID')==='1'){
 				$this->session->set_flashdata('errors', 'Sul ei ole õigusi');
 				redirect('');
@@ -46,10 +47,10 @@
 				 $savedDate = date('d.m.Y', strtotime($row->startTime));  
 				 
 				 $sub_array = array();  
-				 $sub_array[] = date('d.m.Y H:i', strtotime($row->created_at));  
+				 $sub_array[] = date('Y-m-d H:i', strtotime($row->created_at));  
 				 $sub_array[] = $row->roomName;  
 				 $sub_array[] = $weekdays[idate('w', strtotime($row->startTime))];  
-				 $sub_array[] = '<a href="'.base_url().'fullcalendar?roomId='.$row->roomID.'&date='.$savedDate.'">'.date('d.m.Y', strtotime($row->startTime)).'</a>';  
+				 $sub_array[] = date('Y-m-d', strtotime($row->startTime));  
 				 $sub_array[] = date('H:i', strtotime($row->startTime));  
 				 $sub_array[] =  date('H:i', strtotime($row->endTime)); 
 				 $sub_array[] = round(abs( strtotime($row->endTime) -  strtotime($row->startTime)) / 60,2);
@@ -71,7 +72,9 @@
 				 "draw"                    =>     intval($_POST["draw"]),  
 				 "recordsTotal"          =>      $this->allbookings_model->get_all_data(),  
 				 "recordsFiltered"     =>     $this->allbookings_model->get_filtered_data(),  
-				 "data"                    =>     $data  
+				 "data"                    =>     $data,
+				 "post_data"                    =>    $this->input->post('columns'),
+				 "totalSumOverPages"      =>    $this->allbookings_model->get_sum_over_pages(),  
 			);  
 		
 		
