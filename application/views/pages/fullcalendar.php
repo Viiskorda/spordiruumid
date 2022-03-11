@@ -500,8 +500,8 @@
 					if(bookingDuration<40 ){
 						$(element).find('.fc-title').html('');
 						$(element).find('.fc-time').html('');
-						$(element).find('.fc-time').append(' '+event.description);
-						$(element).find('.fc-time').append(' '+event.title);
+						if (event.description) 	$(element).find('.fc-time').append(' '+event.description);;
+						if (event.title) $(element).find('.fc-time').append(' '+event.title);
 						
 					}
 					
@@ -514,7 +514,7 @@
 					}
 					else{
 					element.find('.fc-time').before(timeComment+"<div class='timequery'>Päring: " + moment(event.created_at).format("DD.MM.YYYY HH:mm") + " </div>"); // Päringu kirje broneeringu lahtris
-				}
+					}
 				if(bookingDuration<40){
 						showTimeSlot="<div class='tiny-slot-time'>"+event.time+" </div>";
 						element.find('.fc-time').before(showTimeSlot); 
