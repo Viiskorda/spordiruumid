@@ -246,6 +246,10 @@
     line-height: 14px;
   }
 
+  thead input {
+    width: 100%;
+}
+
   #myTable.table td,.table th,#myTablePeriod.table td,.table th{
     padding:0;
     vertical-align: middle;
