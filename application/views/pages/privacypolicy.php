@@ -55,7 +55,8 @@
 				</ul>
 
 				<p> Pärnu Linnavalitsuse spordiruumide veebirakendus ei edasta kliendi andmeid väljapoole Euroopa (EU) Majanduspiirkonda.
-					Kliendi isikuandmeid ei jagata kolmandatele osapooltele. Kõiki andmeid kasutatakse ainult suhtlemiseks ja parema teenuse pakkumise eesmärgil.</p></br>
+					Kliendi isikuandmeid ei jagata kolmandatele osapooltele. Kõiki andmeid kasutatakse ainult suhtlemiseks ja parema teenuse pakkumise eesmärgil.
+				 Isikuandmete töötlemisega seotud (sh enda andmete kustutamisega) küsimuste puhul palume pöörduda <a href = "mailto: it@parnu.ee">it@parnu.ee</a> poole. </p></br>
 
 
 				<p> Kui me isikuandmeid enam ei vaja ja õigusaktid nende säilitamist ei nõua, kustutame me need isikuandmed. Võime jätkata andmete kasutamist statistilistel eesmärkidel, kuid üksnes pseudonümiseeritud või anonümiseeritud kujul.</p></br>
