@@ -28,6 +28,13 @@
 				<p> Kui leiate, et teie isikuandmete töötlemisel on rikutud andmekaitse nõudeid, siis on Teil õigus esitada vastuväiteid isikuandmete töötlemise kohta. Linnavalitsus uurib vastuväidet ning arvestab sellega, kui vastuväide on põhjendatud. Vaidluse ajaks on teil õigus nõuda isikuandmete töötlemise piiramist
 					Kui oleme eriarvamusel, on teil on õigus pöörduda kaebusega Andmekaitse Inspektsiooni poole. Kui Andmekaitse Inspektsioon ei rahulda kaebust või lükkab selle tagasi, on teil õigus pöörduda halduskohtusse halduskohtumenetluse seadustikus sätestatud tähtajal ja korras.
 				</p></br>
+				<p> Pärnu Linnavalitsuse spordiruumide veebirakendus ei edasta kliendi andmeid väljapoole Euroopa (EU) Majanduspiirkonda.
+					Kliendi isikuandmeid ei jagata kolmandatele osapooltele. Kõiki andmeid kasutatakse ainult suhtlemiseks ja parema teenuse pakkumise eesmärgil.
+				 Isikuandmete töötlemisega seotud (sh enda andmete kustutamisega) küsimuste puhul palume pöörduda <a href = "mailto: it@parnu.ee">it@parnu.ee</a> poole. </p></br>
+
+
+				<p> Kui me isikuandmeid enam ei vaja ja õigusaktid nende säilitamist ei nõua, kustutame me need isikuandmed. Võime jätkata andmete kasutamist statistilistel eesmärkidel, kuid üksnes pseudonümiseeritud või anonümiseeritud kujul.</p></br>
+
 
 				<h5>KÜPSISED</h5></br>
 				<p> Kasutajate paremaks teenindamiseks kasutab veebileht küpsiseid ehk cookie’sid.</p></br>
@@ -54,13 +61,7 @@
 					<!-- Eri tüüpi veebilehitsejad kasutavad küpsiste keelamiseks erinevaid meetodeid. Täpsem informatsioon on kuvatud veebilehel http://www.aki.ee/et/kupsised.</br> -->
 				</ul>
 
-				<p> Pärnu Linnavalitsuse spordiruumide veebirakendus ei edasta kliendi andmeid väljapoole Euroopa (EU) Majanduspiirkonda.
-					Kliendi isikuandmeid ei jagata kolmandatele osapooltele. Kõiki andmeid kasutatakse ainult suhtlemiseks ja parema teenuse pakkumise eesmärgil.
-				 Isikuandmete töötlemisega seotud (sh enda andmete kustutamisega) küsimuste puhul palume pöörduda <a href = "mailto: it@parnu.ee">it@parnu.ee</a> poole. </p></br>
-
-
-				<p> Kui me isikuandmeid enam ei vaja ja õigusaktid nende säilitamist ei nõua, kustutame me need isikuandmed. Võime jätkata andmete kasutamist statistilistel eesmärkidel, kuid üksnes pseudonümiseeritud või anonümiseeritud kujul.</p></br>
-
+			
 			</div>
 
 
