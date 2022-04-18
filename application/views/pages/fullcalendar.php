@@ -1865,7 +1865,7 @@
 	$('#allCalenderLink').click( function(e) { 
 		e.preventDefault();
 	
-		window.location.href = '<?php echo base_url(); ?>allbookings/weekView/?date='+	moment($('#calendar').fullCalendar('getDate')).format("DD.MM.YYYY");
+		window.location.href = '<?php echo base_url(); ?>allbookings/weekView/?date='+	moment($('#calendar').fullCalendar('getDate')).format("DD.MM.YYYY")+'&roomID=<?php echo ($this->input->get('roomId')); ?>';
 		} );
 
 	

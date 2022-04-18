@@ -18,7 +18,9 @@
 			$this->db->join('rooms', 'bookingTimes.roomID = rooms.id' , 'left');
 			$this->db->join('buildings', 'rooms.buildingID = buildings.id' , 'left');
 			$this->db->where('buildingID', $buildingID);
-			$this->db->where('endTime >=',   date("Y-m-d H:i:s", strtotime("-52 week")));
+			$this->db->where('DATE(bookingTimes.startTime) >=', date('Y-m-d H:i:s',strtotime($this->input->get('start', TRUE))));
+			$this->db->where('DATE(bookingTimes.endTime) <=', date('Y-m-d H:i:s',strtotime($this->input->get('end', TRUE))));
+			//$this->db->where('endTime >=',   date("Y-m-d H:i:s", strtotime("-150 week")));
 			return $this->db->get('bookingTimes');
 		}
 
@@ -29,7 +31,7 @@
 		}
 
 		function fetch_all_rooms_for_checkbox($buildingID){
-			$this->db->order_by('id');
+			$this->db->order_by('roomName');
 			$this->db->where('buildingID', $buildingID);
 			$query =  $this->db->get('rooms');
 			return $query->result_array();
@@ -203,5 +205,29 @@
 			$this->db->insert('rooms_statistics', $data);
 		}
 	
+		public function collect_all_room_from_user_session_buildingdata($slug){
+			$this->db->select("rooms.id");
+			$this->db->join('rooms', ' buildings.id = rooms.buildingID' , 'left');
+			$query = $this->db->get_where('buildings', array('buildings.id' => $slug));
+			$array = $query->result_array();
+			return array_column($array,"id");
+		
+		}
+
+		function update_event($data, $id)
+		{
+			$this->db->where('timeID', $id);
+			$this->db->update('bookingTimes', $data);
+		}
+
+		function insert_version($data)
+		{
+			$this->db->insert('bookingTimeVersions', $data);
+		}
+	
+		function insert_event($data)
+		{
+			$this->db->insert('bookingTimes', $data);
+		}
 
 	}

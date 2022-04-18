@@ -7,6 +7,8 @@ class Fullcalendar_model extends CI_Model
 		$this->db->join('bookings', 'bookingTimes.bookingID = bookings.id' , 'left');
 		$this->db->join('rooms', 'bookingTimes.roomID = rooms.id' , 'left');
 		$this->db->join('buildings', 'rooms.buildingID = buildings.id' , 'left');
+		// $this->db->where('DATE(bookingTimes.startTime) >=', date('Y-m-d H:i:s',strtotime($this->input->get('start', TRUE))));
+		// $this->db->where('DATE(bookingTimes.endTime) <=', date('Y-m-d H:i:s',strtotime($this->input->get('end', TRUE))));
 		return $this->db->get('bookingTimes');
 	}
 

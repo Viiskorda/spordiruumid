@@ -117,7 +117,7 @@ class Fullcalendar extends CI_Controller {
 			$arrayOfRoomIDWhereCanMakeChanges=$this->fullcalendar_model->collect_all_room_from_user_session_buildingdata($this->session->userdata('building'));
 			if (in_array($this->input->post('selectedRoomID'), $arrayOfRoomIDWhereCanMakeChanges)) {
 			$data = array(
-				'roomID'			=>	$this->input->post('roomID'),
+				'roomID'			=>	$this->input->post('selectedRoomID'),
 				'startTime'	=>	$this->input->post('start'),
 				'endTime'		=>	$this->input->post('end'),
 				'bookingID'			=>	$this->input->post('bookingID'),

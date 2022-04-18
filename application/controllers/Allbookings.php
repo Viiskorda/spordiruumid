@@ -106,6 +106,41 @@
 				$this->session->set_flashdata('errors', 'Sul ei ole õigusi');
 				redirect('');
 			}
+			
+
+			$data['weekdays']=array('Pühapäev','Esmaspäev','Teisipäev','Kolmapäev','Neljapäev','Reede' ,'Laupäev');
+			$data['manageUsers'] = $this->allbookings_model->get_bookings();
+			$data=$this->menu();
+			$data['menu'] = 'calendar'; // Capitalize the first letter
+			$data['rooms']=$this->allbookings_model->fetch_all_rooms_for_checkbox($this->session->userdata('building'));
+			$event_data = $this->allbookings_model->fetch_all_rooms($this->session->userdata['building']);
+
+			foreach($event_data->result_array() as $row)
+			{
+				$roomName=$row['roomName'];
+				
+
+				$room_data[] = array(
+					'id'	=>	$row['id'],
+					 'title'	=> $roomName,
+					 'description'	=> $row['roomName'],
+					 'eventColor'	=>	$row['roomColor']
+				);
+		
+		}
+			
+			$data['rooms_resource']=json_encode($this->security->xss_clean($room_data));
+			
+			$this->load->view('templates/header', $this->security->xss_clean($data));
+			$this->load->view('pages/allweekBookings2', $this->security->xss_clean($data));
+			$this->load->view('templates/footer');
+		}
+
+		public function weekView2(){
+			if (empty($this->session->userdata('roleID'))  || $this->session->userdata('roleID')==='4'  || $this->session->userdata('roleID')==='1'){
+				$this->session->set_flashdata('errors', 'Sul ei ole õigusi');
+				redirect('');
+			}
 			$data['weekdays']=array('Pühapäev','Esmaspäev','Teisipäev','Kolmapäev','Neljapäev','Reede' ,'Laupäev');
 			$data['manageUsers'] = $this->allbookings_model->get_bookings();
 			$data=$this->menu();
@@ -129,20 +164,25 @@
 				
 			{
 				$data[] = array(
-			//		'id'	=>	$row['bookingID'],
+					'bookingID'	=>	$row['bookingID'],
 					'resourceId'	=>	$row['roomID'],
-				//	'timeID'=>	$row['timeID'],
+					'timeID'=>	$row['timeID'],
 					'title'	=>	$row['public_info'],
-				//	'description'	=>	$row['workout'],
+					'roomName'	=>	$row['roomName'],
+					'eventdescription'	=>	$row['workout'],
 					'start'	=>	$row['startTime'],
 					'end'	=>	$row['endTime'],
+					'takesPlace'	=>	$row['takes_place'],
+					'typeID'	=>	$row['typeID'],
+					'approved'	=>	$row['approved'],
+					'bookingTimeColor'	=>	$row['bookingTimeColor'],
+					
 				//	'clubname'	=>	$row['c_name'],
-				//	'color'	=>	$row['bookingTimeColor'],
 					
 				//	 'building'	=>	$row['name'],
 				//	 'roomName'	=>	$row['roomName'],
 				//	 'organizer'	=>	$row['organizer'],
-				//	 'typeID'	=>	$row['typeID'],
+					 
 	
 				);
 		
@@ -169,8 +209,18 @@
 				}
 				else if( strlen($roomName) > 12){ 
 					$roomName=	mb_substr($roomName, 0, 9,"utf-8").' '.	mb_substr($roomName, 9, 8,"utf-8");
-				
 				}
+				else if($count >8){ 
+				
+					if(strpos($roomName, ' ') !== false){ 
+						$pieces =explode(" ", $roomName);
+						$roomName= mb_substr($pieces[0], 0, 3,"utf-8").'-'.mb_substr($pieces[1], 0, 1,"utf-8");
+					}
+					else {
+						$roomName=	mb_substr($roomName, 0, 2,"utf-8").' '.	mb_substr($roomName, 9, 8,"utf-8");
+					}
+				}
+
 				$data[] = array(
 					'id'	=>	$row['id'],
 					 'title'	=> $roomName,
@@ -184,7 +234,57 @@
 			echo json_encode($this->security->xss_clean($data));
 		}
 
-		
+		function insert()
+		{
+			if($this->session->userdata('roleID')==='2' || $this->session->userdata('roleID')==='3'){
+				$arrayOfRoomIDWhereCanMakeChanges=$this->allbookings_model->collect_all_room_from_user_session_buildingdata($this->session->userdata('building'));
+				if (in_array($this->input->post('selectedRoomID'), $arrayOfRoomIDWhereCanMakeChanges)) {
+				$data = array(
+					'roomID'			=>	$this->input->post('selectedRoomID'),
+					'startTime'	=>	$this->input->post('start'),
+					'endTime'		=>	$this->input->post('end'),
+					'bookingID'			=>	$this->input->post('bookingID'),
+					'bookingTimeColor'	=>	$this->input->post('color'),
+					'takes_place'		=>	$this->input->post('takesPlace'),
+					'approved'			=>	$this->input->post('approved')
+				);
+				$this->allbookings_model->insert_event($data);
+			
+			}
+		}
+		}
+
+		function updateEvent()
+		{
+			if($this->session->userdata('roleID')==='2' || $this->session->userdata('roleID')==='3'){
+				$arrayOfRoomIDWhereCanMakeChanges=$this->allbookings_model->collect_all_room_from_user_session_buildingdata($this->session->userdata('building'));
+				if (in_array($this->input->post('selectedRoomID'), $arrayOfRoomIDWhereCanMakeChanges)) {
+					if($this->input->post('timeID'))
+					{
+						$data = array(
+							'startTime'	=>	$this->input->post('start'),
+							'endTime'		=>	$this->input->post('end'),
+							'roomID'			=>	$this->input->post('selectedRoomID'),
+							'hasChanged'	=>	1,
+							);
+
+						$this->allbookings_model->update_event($data, $this->input->post('timeID'));
+
+						$dataForVersioning = array(
+							'timeID'	=>	$this->input->post('timeID'),
+							'startTime'		=>	$this->input->post('versionStart'),
+							'endTime'	=>	$this->input->post('versionEnd'),
+							'nameWhoChanged'		=> $this->session->userdata('userName'),
+							'reason'	=>	$this->input->post('reason'),
+						
+							);
+
+						$this->allbookings_model->insert_version($dataForVersioning);
+					}	
+				}	
+			}
+		}
+
 
 
 	}
